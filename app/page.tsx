@@ -1,6 +1,8 @@
+import Link from 'next/link';
 import Countdown from '@/components/Countdown';
 import Image from 'next/image';
 import { Sparkles } from 'lucide-react';
+
 import styles from './page.module.css';
 
 
