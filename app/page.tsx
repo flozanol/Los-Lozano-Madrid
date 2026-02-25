@@ -28,11 +28,7 @@ const HomePage = () => {
         <p className={styles.dates}>26 MAR — 06 ABR 2026</p>
 
         <div className={styles.ctaGroup}>
-          <a href="/chat" className="btn-primary">
-            <Sparkles size={20} />
-            Consultar Guía IA
-          </a>
-          <a href="/calendar" className={styles.btnSecondary}>Ver Itinerario</a>
+          <Link href="/calendar" className="btn-primary">Ver Itinerario</Link>
         </div>
       </div>
 

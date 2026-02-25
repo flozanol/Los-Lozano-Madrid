@@ -31,9 +31,9 @@ const Navbar = () => {
           <li><Link href="/gallery" onClick={() => setIsOpen(false)}>Galería</Link></li>
           <li><Link href="/map" onClick={() => setIsOpen(false)}>Mapa</Link></li>
 
-          <li><Link href="/chat" onClick={() => setIsOpen(false)}>Guía IA</Link></li>
           <li><Link href="/social" onClick={() => setIsOpen(false)}>Recados</Link></li>
         </ul>
+
 
 
       </div>
