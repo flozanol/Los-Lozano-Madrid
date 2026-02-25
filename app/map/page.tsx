@@ -11,7 +11,7 @@ const MapContainer = dynamic(() => import('react-leaflet').then(mod => mod.MapCo
 const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLayer), { ssr: false });
 const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { ssr: false });
 const Popup = dynamic(() => import('react-leaflet').then(mod => mod.Popup), { ssr: false });
-const useMapEvents = dynamic(() => import('react-leaflet').then(mod => mod.useMapEvents), { ssr: false });
+
 
 const MapPage = () => {
     const [L, setL] = useState<any>(null);
@@ -39,14 +39,15 @@ const MapPage = () => {
     };
 
     const MapEvents = () => {
-        useMapEvents({
-            click(e) {
+        const map = (require('react-leaflet') as any).useMapEvents({
+            click(e: any) {
                 setNewPinCoords([e.latlng.lat, e.latlng.lng]);
                 setShowForm(true);
             },
         });
         return null;
     };
+
 
     const handleAddPin = async (e: React.FormEvent) => {
         e.preventDefault();
