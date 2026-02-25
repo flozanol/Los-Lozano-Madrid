@@ -1,59 +1,63 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { Plus, Loader2, MapPin } from 'lucide-react';
 import styles from './page.module.css';
+import { supabase } from '@/lib/supabase';
+
+interface Place {
+    id: string;
+    name: string;
+    category: string;
+    desc: string;
+    image: string;
+    created_at: string;
+}
 
 const PlacesPage = () => {
-    const [places, setPlaces] = useState([
-        {
-            name: "Palacio Real",
-            category: "Monumento",
-            desc: "Residencia oficial de la Familia Real, aunque solo para actos de Estado.",
-            image: "/madrid_royalty_borbones.png"
-        },
-        {
-            name: "Museo del Prado",
-            category: "Arte",
-            desc: "Nuestra pinacoteca más importante. Goya, Velázquez y El Greco nos esperan.",
-            image: "/madrid_xix_century.png"
-        },
-        {
-            name: "Parque del Retiro",
-            category: "Naturaleza",
-            desc: "El pulmón de Madrid. Paseo en barca obligado y visita al Palacio de Cristal.",
-            image: "/madrid_hero_cibeles.png"
-        },
-        {
-            name: "Gran Vía",
-            category: "Ocio",
-            desc: "El Broadway madrileño. Luces, teatros y la mejor arquitectura del siglo XX.",
-            image: "/madrid_movida_80s.png"
-        },
-        {
-            name: "Templo de Debod",
-            category: "Historia",
-            desc: "Un regalo de Egipto. El mejor atardecer de todo Madrid sin ninguna duda.",
-            image: "/madrid_mayrit_arabic.png"
-        }
-
-
-
-
-
-    ]);
-
+    const [places, setPlaces] = useState<Place[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
-    const [newItem, setNewItem] = useState({ name: '', category: 'Visita', desc: '', image: '' });
+    const [newItem, setNewItem] = useState({ name: '', category: 'Monumento', desc: '', image: '' });
+    const [isSaving, setIsSaving] = useState(false);
 
-    const handleAdd = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (newItem.name && newItem.desc) {
-            const img = newItem.image || "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=600&auto=format&fit=crop";
-            setPlaces([...places, { ...newItem, image: img }]);
-            setNewItem({ name: '', category: 'Visita', desc: '', image: '' });
-            setShowForm(false);
+    useEffect(() => {
+        fetchPlaces();
+    }, []);
+
+    const fetchPlaces = async () => {
+        setIsLoading(true);
+        const { data, error } = await supabase
+            .from('places_to_visit')
+            .select('*')
+            .order('created_at', { ascending: true });
+
+        if (!error && data) {
+            setPlaces(data);
         }
+        setIsLoading(false);
+    };
+
+    const handleAdd = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newItem.name || !newItem.desc) return;
+
+        setIsSaving(true);
+        const img = newItem.image || "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=600&auto=format&fit=crop";
+
+        const { error } = await supabase
+            .from('places_to_visit')
+            .insert([{ ...newItem, image: img }]);
+
+        if (!error) {
+            setNewItem({ name: '', category: 'Monumento', desc: '', image: '' });
+            setShowForm(false);
+            fetchPlaces();
+        } else {
+            alert('Error al guardar: Crea la tabla "places_to_visit" en tu editor SQL de Supabase.');
+        }
+        setIsSaving(false);
     };
 
     return (
@@ -72,63 +76,78 @@ const PlacesPage = () => {
                         style={{ marginTop: '2rem' }}
                         onClick={() => setShowForm(!showForm)}
                     >
-                        {showForm ? 'Cancelar' : '+ Sugerir Lugar'}
+                        {showForm ? 'Cancelar' : <><Plus size={20} /> Sugerir Lugar</>}
                     </button>
                 </div>
 
                 <div className="container">
                     {showForm && (
-                        <form className={styles.addForm} onSubmit={handleAdd}>
-                            <input
-                                type="text"
-                                placeholder="Nombre del lugar"
-                                value={newItem.name}
-                                onChange={e => setNewItem({ ...newItem, name: e.target.value })}
-                                required
-                            />
-                            <input
-                                type="text"
-                                placeholder="Categoría (Ej: Museo)"
-                                value={newItem.category}
-                                onChange={e => setNewItem({ ...newItem, category: e.target.value })}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Descripción corta"
-                                value={newItem.desc}
-                                onChange={e => setNewItem({ ...newItem, desc: e.target.value })}
-                                required
-                            />
-                            <input
-                                type="text"
-                                placeholder="URL de Imagen (opcional)"
-                                value={newItem.image}
-                                onChange={e => setNewItem({ ...newItem, image: e.target.value })}
-                            />
-                            <button type="submit" className="btn-primary">Añadir</button>
+                        <form className={`${styles.addForm} glass`} onSubmit={handleAdd}>
+                            <div className={styles.formGrid}>
+                                <input
+                                    type="text"
+                                    placeholder="Nombre del lugar"
+                                    value={newItem.name}
+                                    onChange={e => setNewItem({ ...newItem, name: e.target.value })}
+                                    required
+                                />
+                                <select
+                                    value={newItem.category}
+                                    onChange={e => setNewItem({ ...newItem, category: e.target.value })}
+                                >
+                                    <option value="Monumento">Monumento</option>
+                                    <option value="Museo">Museo / Arte</option>
+                                    <option value="Parque">Parque / Naturaleza</option>
+                                    <option value="Ocio">Ocio / Compras</option>
+                                    <option value="Historia">Historia</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    placeholder="Descripción corta"
+                                    value={newItem.desc}
+                                    onChange={e => setNewItem({ ...newItem, desc: e.target.value })}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="URL de Imagen (opcional)"
+                                    value={newItem.image}
+                                    onChange={e => setNewItem({ ...newItem, image: e.target.value })}
+                                />
+                            </div>
+                            <button type="submit" className="btn-primary" disabled={isSaving}>
+                                {isSaving ? <Loader2 className="animate-spin" /> : 'Añadir a la lista'}
+                            </button>
                         </form>
                     )}
 
-                    <div className={styles.grid}>
-                        {places.map((place, index) => (
-                            <div key={index} className={styles.card}>
-                                <div className={styles.imageBox}>
-                                    <Image
-                                        src={place.image}
-                                        alt={place.name}
-                                        width={600}
-                                        height={400}
-                                        className={styles.image}
-                                    />
-                                    <span className={styles.category}>{place.category}</span>
+                    {isLoading ? (
+                        <div className="text-center py-20">
+                            <Loader2 className="animate-spin mx-auto text-gold" size={40} />
+                        </div>
+                    ) : (
+                        <div className={styles.grid}>
+                            {places.map((place) => (
+                                <div key={place.id} className={styles.card}>
+                                    <div className={styles.imageBox}>
+                                        <Image
+                                            src={place.image}
+                                            alt={place.name}
+                                            width={600}
+                                            height={400}
+                                            className={styles.image}
+                                            unoptimized={place.image.startsWith('http')}
+                                        />
+                                        <span className={styles.category}>{place.category}</span>
+                                    </div>
+                                    <div className={styles.cardContent}>
+                                        <h3>{place.name}</h3>
+                                        <p>{place.desc}</p>
+                                    </div>
                                 </div>
-                                <div className={styles.cardContent}>
-                                    <h3>{place.name}</h3>
-                                    <p>{place.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </>

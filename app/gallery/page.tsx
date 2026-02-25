@@ -27,15 +27,19 @@ const GalleryPage = () => {
 
     const fetchPhotos = async () => {
         setIsLoading(true);
-        const { data, error } = await supabase
-            .from('photos')
-            .select('*')
-            .order('created_at', { ascending: false });
+        try {
+            const { data, error } = await supabase
+                .from('photos')
+                .select('*')
+                .order('created_at', { ascending: false });
 
-        if (!error && data) {
-            setPhotos(data);
+            if (error) throw error;
+            if (data) setPhotos(data);
+        } catch (err) {
+            console.error('Fetch error:', err);
+        } finally {
+            setIsLoading(false);
         }
-        setIsLoading(false);
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,22 +56,31 @@ const GalleryPage = () => {
 
         setIsUploading(true);
         try {
+            // Check if bucket exists/is accessible by trying to list or just upload
+            // We'll use 'gallery' lowercase as it's the standard internal ID
+            const bucketName = 'gallery';
+
             const fileExt = selectedFile.name.split('.').pop();
-            const fileName = `${Math.random()}.${fileExt}`;
+            const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
             const filePath = `${fileName}`;
 
-            // 1. Upload to Supabase Storage (Bucket name: GALLERY)
+            // 1. Upload to Supabase Storage
             const { error: uploadError } = await supabase.storage
-                .from('GALLERY')
-                .upload(filePath, selectedFile);
+                .from(bucketName)
+                .upload(filePath, selectedFile, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
 
-            if (uploadError) throw uploadError;
+            if (uploadError) {
+                console.error('Upload Error Details:', uploadError);
+                throw new Error(`Error de Storage: ${uploadError.message}. Verifica que el bucket '${bucketName}' exista y sea público.`);
+            }
 
             // 2. Get Public URL
             const { data: { publicUrl } } = supabase.storage
-                .from('GALLERY')
+                .from(bucketName)
                 .getPublicUrl(filePath);
-
 
             // 3. Save reference to database
             const { error: dbError } = await supabase
@@ -82,13 +95,13 @@ const GalleryPage = () => {
 
             if (dbError) throw dbError;
 
-            alert('¡Foto subida con éxito!');
+            alert('¡Foto subida con éxito! Ya puedes verla en la galería.');
             setInputCaption('');
             setSelectedFile(null);
             fetchPhotos();
         } catch (error: any) {
-            console.error('Error:', error);
-            alert(`Error al subir: ${error.message || 'Verifica la configuración del bucket'}`);
+            console.error('Final Upload Error:', error);
+            alert(error.message || 'Error inesperado al subir la foto.');
         } finally {
             setIsUploading(false);
         }
@@ -133,7 +146,7 @@ const GalleryPage = () => {
                                     accept="image/*"
                                     onChange={handleFileChange}
                                 />
-                                <Camera size={48} className={selectedFile ? "text-success" : "text-gold"} />
+                                <Camera size={48} className={selectedFile ? "text-success" : "text-gold"} style={{ color: selectedFile ? '#22c55e' : '#D4AF37' }} />
                                 <p>{selectedFile ? `Foto seleccionada: ${selectedFile.name}` : "Pulsa aquí para elegir una foto"}</p>
                             </div>
                             <button className="btn-primary" onClick={handleUpload} disabled={isUploading}>

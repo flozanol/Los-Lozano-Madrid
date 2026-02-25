@@ -1,45 +1,77 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2 } from 'lucide-react';
 import styles from './page.module.css';
+import { supabase } from '@/lib/supabase';
+
+interface ItineraryItem {
+    id: string;
+    date_str: string;
+    event_name: string;
+    event_time: string;
+    created_at: string;
+}
 
 const CalendarPage = () => {
-    const [itinerary, setItinerary] = useState([
-        { date: '26 MAR', event: 'Llegada y Paseo por el Retiro', time: '16:00' },
-        { date: '27 MAR', event: 'Centro Histórico y Plaza Mayor', time: '10:00' },
-        { date: '28 MAR', event: 'Museo del Prado y Almuerzo en Botín', time: '11:00' },
-        { date: '29 MAR', event: 'Excursión a Toledo', time: '09:00' },
-        { date: '30 MAR', event: 'Parque del Retiro', time: 'Libre' },
-        { date: '31 MAR', event: 'Templo de Debod', time: 'Libre' },
-        { date: '1 ABR', event: 'Palacio Real', time: 'Libre' },
-        { date: '2 ABR', event: 'Cena Flamenca', time: 'Libre' },
-        { date: '3 ABR', event: 'Día de Tapas por La Latina', time: 'Libre' },
-        { date: '4 ABR', event: 'Excursión a Toledo', time: 'Libre' },
-        { date: '5 ABR', event: 'Cena de Despedida', time: 'Pendiente' },
-        { date: '6 ABR', event: 'Regreso a casa', time: 'Confirmado' },
-    ]);
+    const [itinerary, setItinerary] = useState<ItineraryItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [showForm, setShowForm] = useState(false);
+    const [newEvent, setNewEvent] = useState({ day: '', month: 'MAR', event: '', time: 'Libre' });
+    const [isSaving, setIsSaving] = useState(false);
 
-    const deleteItem = (index: number) => {
-        if (confirm('¿Seguro que quieres quitar esto del plan?')) {
-            setItinerary(itinerary.filter((_, i) => i !== index));
+    useEffect(() => {
+        fetchItinerary();
+    }, []);
+
+    const fetchItinerary = async () => {
+        setIsLoading(true);
+        const { data, error } = await supabase
+            .from('itinerary')
+            .select('*')
+            .order('created_at', { ascending: true });
+
+        if (!error && data) {
+            setItinerary(data);
         }
+        setIsLoading(false);
     };
 
-    const [newEvent, setNewEvent] = useState({ day: 0, month: 'Mar', event: '', status: 'Libre' });
-    const [showForm, setShowForm] = useState(false);
-
-    const handleAddEvent = (e: React.FormEvent) => {
+    const handleAddEvent = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (newEvent.day && newEvent.event) {
-            // This logic needs to be adapted if newEvent structure changes to match itinerary
-            // For now, it's kept as is, assuming newEvent might be for a different purpose or will be updated.
-            // If newEvent is meant to add to itinerary, its structure and this logic must change.
-            // For the purpose of this edit, we'll assume the user will adapt this later or it's not directly related to the new itinerary structure.
-            // If we were to adapt it, it would look something like:
-            // const newItineraryItem = { date: `${newEvent.day} ${newEvent.month}`, event: newEvent.event, time: 'N/A' };
-            // setItinerary([...itinerary, newItineraryItem].sort((a, b) => { /* sorting logic based on date string */ }));
-            // setNewEvent({ day: 0, month: 'Mar', event: '', status: 'Libre' });
-            // setShowForm(false);
+        if (!newEvent.day || !newEvent.event) return;
+
+        setIsSaving(true);
+        const { error } = await supabase
+            .from('itinerary')
+            .insert([
+                {
+                    date_str: `${newEvent.day} ${newEvent.month}`,
+                    event_name: newEvent.event,
+                    event_time: newEvent.time
+                }
+            ]);
+
+        if (!error) {
+            setNewEvent({ day: '', month: 'MAR', event: '', time: 'Libre' });
+            setShowForm(false);
+            fetchItinerary();
+        } else {
+            alert('Error al guardar: Asegúrate de crear la tabla "itinerary" en Supabase.');
+        }
+        setIsSaving(false);
+    };
+
+    const deleteItem = async (id: string) => {
+        if (confirm('¿Seguro que quieres quitar esto del plan?')) {
+            const { error } = await supabase
+                .from('itinerary')
+                .delete()
+                .eq('id', id);
+
+            if (!error) {
+                fetchItinerary();
+            }
         }
     };
 
@@ -56,78 +88,91 @@ const CalendarPage = () => {
                         <p>Día a día en nuestro viaje a Madrid.</p>
                     </header>
                     <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-                        {showForm ? 'Cancelar' : '+ Añadir Lugar/Evento'}
+                        {showForm ? 'Cancelar' : <><Plus size={20} /> Añadir al Plan</>}
                     </button>
                 </div>
 
                 {showForm && (
-                    <form className={styles.addForm} onSubmit={handleAddEvent}>
-                        <div className={styles.formGroup}>
-                            <label>Día (Número)</label>
-                            <input
-                                type="number"
-                                placeholder="Ej. 28"
-                                onChange={e => setNewEvent({ ...newEvent, day: parseInt(e.target.value) })}
-                                required
-                            />
+                    <form className={`${styles.addForm} glass container`} onSubmit={handleAddEvent}>
+                        <div className={styles.formGrid}>
+                            <div className={styles.formGroup}>
+                                <label>Día</label>
+                                <input
+                                    type="number"
+                                    placeholder="28"
+                                    value={newEvent.day}
+                                    onChange={e => setNewEvent({ ...newEvent, day: e.target.value })}
+                                    required
+                                />
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Mes</label>
+                                <select value={newEvent.month} onChange={e => setNewEvent({ ...newEvent, month: e.target.value })}>
+                                    <option value="MAR">Marzo</option>
+                                    <option value="ABR">Abril</option>
+                                </select>
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Evento</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ej. Cena en Gran Vía"
+                                    value={newEvent.event}
+                                    onChange={e => setNewEvent({ ...newEvent, event: e.target.value })}
+                                    required
+                                />
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Hora / Estado</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ej. 20:30 o Libre"
+                                    value={newEvent.time}
+                                    onChange={e => setNewEvent({ ...newEvent, time: e.target.value })}
+                                />
+                            </div>
                         </div>
-                        <div className={styles.formGroup}>
-                            <label>Mes</label>
-                            <select onChange={e => setNewEvent({ ...newEvent, month: e.target.value })}>
-                                <option value="Mar">Marzo</option>
-                                <option value="Abr">Abril</option>
-                            </select>
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label>¿Qué vamos a hacer?</label>
-                            <input
-                                type="text"
-                                placeholder="Ej. Visita al Templo de Debod"
-                                onChange={e => setNewEvent({ ...newEvent, event: e.target.value })}
-                                required
-                            />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label>Estado</label>
-                            <select onChange={e => setNewEvent({ ...newEvent, status: e.target.value })}>
-                                <option value="Libre">Libre / Idea</option>
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="Reservado">Reservado</option>
-                            </select>
-                        </div>
-                        <button type="submit" className="btn-primary">Guardar en Calendario</button>
+                        <button type="submit" className="btn-primary" disabled={isSaving}>
+                            {isSaving ? <Loader2 className="animate-spin" /> : 'Confirmar Evento'}
+                        </button>
                     </form>
                 )}
 
-                <div className={styles.calendarContainer}>
-                    <div className={styles.calendarGrid}>
-                        {/* Weekly Header */}
-                        {['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM'].map(day => (
-                            <div key={day} className={styles.dayHeader}>{day}</div>
-                        ))}
-
-                        {/* Calendar Days */}
-                        {itinerary.map((item, index) => (
-                            <div key={index} className={`${styles.calendarDay} glass`}>
-                                <div className={styles.dayNumber}>
-                                    <span>{item.date}</span>
-                                </div>
-                                <div className={styles.eventCard}>
-                                    <span className={styles.eventTime}>{item.time}</span>
-                                    <p className={styles.eventTitle}>{item.event}</p>
+                <div className={`${styles.calendarContainer} container`}>
+                    {isLoading ? (
+                        <div className="text-center py-20">
+                            <Loader2 className="animate-spin mx-auto text-gold" size={40} />
+                        </div>
+                    ) : (
+                        <div className={styles.itineraryList}>
+                            {itinerary.map((item) => (
+                                <div key={item.id} className={`${styles.itineraryCard} glass`}>
+                                    <div className={styles.dateBadge}>
+                                        <CalendarIcon size={16} />
+                                        <span>{item.date_str}</span>
+                                    </div>
+                                    <div className={styles.eventInfo}>
+                                        <h3>{item.event_name}</h3>
+                                        <div className={styles.timeTag}>
+                                            <Clock size={14} />
+                                            <span>{item.event_time}</span>
+                                        </div>
+                                    </div>
                                     <button
-                                        className={styles.miniDeleteBtn}
-                                        onClick={() => deleteItem(index)}
+                                        className={styles.deleteBtn}
+                                        onClick={() => deleteItem(item.id)}
                                         title="Eliminar"
                                     >
-                                        ×
+                                        <Trash2 size={18} />
                                     </button>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                            {itinerary.length === 0 && (
+                                <p className="text-center opacity-50 py-10">Todavía no hemos planeado nada. ¡Añade tu primera idea!</p>
+                            )}
+                        </div>
+                    )}
                 </div>
-
             </div>
         </>
     );

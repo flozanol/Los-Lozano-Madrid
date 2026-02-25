@@ -1,50 +1,64 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { Plus, Loader2, Utensils, Star } from 'lucide-react';
 import styles from './page.module.css';
+import { supabase } from '@/lib/supabase';
+
+interface Restaurant {
+    id: string;
+    name: string;
+    specialty: string;
+    desc: string;
+    rating: string;
+    image: string;
+    created_at: string;
+}
 
 const RestaurantsPage = () => {
-    const [restaurants, setRestaurants] = useState([
-        {
-            name: "Sobrino de Botín",
-            specialty: "Cochinillo Asado",
-            desc: "El restaurante más antiguo del mundo según el Guinness. ¡Historia comestible!",
-            rating: "⭐⭐⭐⭐⭐",
-            image: "/madrid_austrias_habsburg.png"
-        },
-        {
-            name: "Casa Lucio",
-            specialty: "Huevos Estrellados",
-            desc: "Un clásico madrileño. Si no has comido sus huevos, no has estado en Madrid.",
-            rating: "⭐⭐⭐⭐",
-            image: "/madrid_hero_cibeles.png"
-        },
-        {
-            name: "Chocolatería San Ginés",
-            specialty: "Chocolate con Churros",
-            desc: "Perfecto para después de una caminata o para empezar el día con energía.",
-            rating: "⭐⭐⭐⭐⭐",
-            image: "/madrid_movida_80s.png"
-        }
-
-
-
-
-
-    ]);
-
+    const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [newItem, setNewItem] = useState({ name: '', specialty: '', desc: '', rating: '⭐⭐⭐⭐⭐', image: '' });
+    const [isSaving, setIsSaving] = useState(false);
 
-    const handleAdd = (e: React.FormEvent) => {
+    useEffect(() => {
+        fetchRestaurants();
+    }, []);
+
+    const fetchRestaurants = async () => {
+        setIsLoading(true);
+        const { data, error } = await supabase
+            .from('restaurants')
+            .select('*')
+            .order('created_at', { ascending: true });
+
+        if (!error && data) {
+            setRestaurants(data);
+        }
+        setIsLoading(false);
+    };
+
+    const handleAdd = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (newItem.name && newItem.desc) {
-            const img = newItem.image || "https://images.unsplash.com/photo-1515516969-d41f71df9138?auto=format&fit=crop&w=600&q=80";
-            setRestaurants([...restaurants, { ...newItem, image: img }]);
+        if (!newItem.name || !newItem.desc) return;
+
+        setIsSaving(true);
+        const img = newItem.image || "https://images.unsplash.com/photo-1515516969-d41f71df9138?auto=format&fit=crop&w=600&q=80";
+
+        const { error } = await supabase
+            .from('restaurants')
+            .insert([{ ...newItem, image: img }]);
+
+        if (!error) {
             setNewItem({ name: '', specialty: '', desc: '', rating: '⭐⭐⭐⭐⭐', image: '' });
             setShowForm(false);
+            fetchRestaurants();
+        } else {
+            alert('Error al guardar: Crea la tabla "restaurants" en tu editor SQL de Supabase.');
         }
+        setIsSaving(false);
     };
 
     return (
@@ -63,69 +77,90 @@ const RestaurantsPage = () => {
                         style={{ marginTop: '2rem' }}
                         onClick={() => setShowForm(!showForm)}
                     >
-                        {showForm ? 'Cancelar' : '+ Añadir Restaurante'}
+                        {showForm ? 'Cancelar' : <><Plus size={20} /> Añadir Restaurante</>}
                     </button>
                 </div>
 
                 <div className="container">
                     {showForm && (
-                        <form className={styles.addForm} onSubmit={handleAdd}>
-                            <input
-                                type="text"
-                                placeholder="Nombre del restaurante"
-                                value={newItem.name}
-                                onChange={e => setNewItem({ ...newItem, name: e.target.value })}
-                                required
-                            />
-                            <input
-                                type="text"
-                                placeholder="Especialidad"
-                                value={newItem.specialty}
-                                onChange={e => setNewItem({ ...newItem, specialty: e.target.value })}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Descripción"
-                                value={newItem.desc}
-                                onChange={e => setNewItem({ ...newItem, desc: e.target.value })}
-                                required
-                            />
-                            <input
-                                type="text"
-                                placeholder="URL de Imagen (opcional)"
-                                value={newItem.image}
-                                onChange={e => setNewItem({ ...newItem, image: e.target.value })}
-                            />
-                            <button type="submit" className="btn-primary">Añadir</button>
+                        <form className={`${styles.addForm} glass`} onSubmit={handleAdd}>
+                            <div className={styles.formGrid}>
+                                <input
+                                    type="text"
+                                    placeholder="Nombre del restaurante"
+                                    value={newItem.name}
+                                    onChange={e => setNewItem({ ...newItem, name: e.target.value })}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Especialidad (Ej: Cochinillo)"
+                                    value={newItem.specialty}
+                                    onChange={e => setNewItem({ ...newItem, specialty: e.target.value })}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Descripción"
+                                    value={newItem.desc}
+                                    onChange={e => setNewItem({ ...newItem, desc: e.target.value })}
+                                    required
+                                />
+                                <select
+                                    value={newItem.rating}
+                                    onChange={e => setNewItem({ ...newItem, rating: e.target.value })}
+                                >
+                                    <option value="⭐⭐⭐⭐⭐">5 Estrellas</option>
+                                    <option value="⭐⭐⭐⭐">4 Estrellas</option>
+                                    <option value="⭐⭐⭐">3 Estrellas</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    placeholder="URL de Imagen (opcional)"
+                                    value={newItem.image}
+                                    onChange={e => setNewItem({ ...newItem, image: e.target.value })}
+                                />
+                            </div>
+                            <button type="submit" className="btn-primary" disabled={isSaving}>
+                                {isSaving ? <Loader2 className="animate-spin" /> : 'Añadir Restaurante'}
+                            </button>
                         </form>
                     )}
 
-                    <div className={styles.list}>
-                        {restaurants.map((rest, index) => (
-                            <div key={index} className={styles.item}>
-                                <div className={styles.itemImageWrapper}>
-                                    <Image
-                                        src={rest.image}
-                                        alt={rest.name}
-                                        width={400}
-                                        height={300}
-                                        className={styles.itemImage}
-                                    />
-                                </div>
-                                <div className={styles.itemInfo}>
-                                    <div className={styles.itemNameWrapper}>
-                                        <h3>{rest.name}</h3>
-                                        <span className={styles.rating}>{rest.rating}</span>
+                    {isLoading ? (
+                        <div className="text-center py-20">
+                            <Loader2 className="animate-spin mx-auto text-gold" size={40} />
+                        </div>
+                    ) : (
+                        <div className={styles.list}>
+                            {restaurants.map((rest) => (
+                                <div key={rest.id} className={styles.item}>
+                                    <div className={styles.itemImageWrapper}>
+                                        <Image
+                                            src={rest.image}
+                                            alt={rest.name}
+                                            width={400}
+                                            height={300}
+                                            className={styles.itemImage}
+                                            unoptimized={rest.image.startsWith('http')}
+                                        />
                                     </div>
-                                    <p className={styles.specialty}><strong>Especialidad:</strong> {rest.specialty}</p>
-                                    <p className={styles.desc}>{rest.desc}</p>
+                                    <div className={styles.itemInfo}>
+                                        <div className={styles.itemNameWrapper}>
+                                            <h3>{rest.name}</h3>
+                                            <span className={styles.rating}>{rest.rating}</span>
+                                        </div>
+                                        <p className={styles.specialty}><strong>Especialidad:</strong> {rest.specialty}</p>
+                                        <p className={styles.desc}>{rest.desc}</p>
+                                    </div>
+                                    <div className={styles.itemActions}>
+                                        <button className={styles.btnVote}>
+                                            <Utensils size={16} /> Lo quiero probar
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className={styles.itemActions}>
-                                    <button className={styles.btnVote}>Lo quiero probar</button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </>
