@@ -66,7 +66,8 @@ const HistoryPage = () => {
 
     return (
         <div className={styles.container}>
-            <div className="section-bg" style={{ backgroundImage: 'url(/madrid_xix_century.png)', opacity: 0.2 }}></div>
+            <div className={styles.watermarkBg}></div>
+            <div className="section-bg" style={{ backgroundImage: 'url(/madrid_hero_cibeles.png)', opacity: 0.1 }}></div>
 
             <div className={`content-wrapper ${styles.historyView}`}>
                 {/* HERO SECTION */}

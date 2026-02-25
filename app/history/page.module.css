@@ -294,3 +294,20 @@
         padding-top: 3rem;
     }
 }
+
+.watermarkBg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Coat_of_Arms_of_Madrid.svg/1200px-Coat_of_Arms_of_Madrid.svg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.03;
+    filter: grayscale(1);
+    pointer-events: none;
+    z-index: -1;
+}
