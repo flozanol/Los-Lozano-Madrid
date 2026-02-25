@@ -6,6 +6,11 @@ import ChatAssistant from "@/components/ChatAssistant";
 export const metadata: Metadata = {
   title: "Los Lozano en Madrid 2026",
   description: "App de viaje para la familia Lozano en Madrid",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -15,9 +20,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <head>
-        <link rel="icon" href="/logo.png" />
-      </head>
       <body>
 
         <Navbar />
