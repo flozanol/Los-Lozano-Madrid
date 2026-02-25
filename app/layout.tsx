@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import ChatAssistant from "@/components/ChatAssistant";
 
 export const metadata: Metadata = {
   title: "Los Lozano en Madrid 2026",
@@ -23,8 +24,10 @@ export default function RootLayout({
         <main>
           {children}
         </main>
+        <ChatAssistant />
       </body>
     </html>
   );
 }
+
 
