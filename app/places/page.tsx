@@ -10,7 +10,7 @@ interface Place {
     id: string;
     name: string;
     category: string;
-    desc: string;
+    description: string;
     image: string;
     created_at: string;
 }
@@ -19,7 +19,7 @@ const PlacesPage = () => {
     const [places, setPlaces] = useState<Place[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
-    const [newItem, setNewItem] = useState({ name: '', category: 'Monumento', desc: '', image: '' });
+    const [newItem, setNewItem] = useState({ name: '', category: 'Monumento', description: '', image: '' });
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
@@ -41,7 +41,7 @@ const PlacesPage = () => {
 
     const handleAdd = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newItem.name || !newItem.desc) return;
+        if (!newItem.name || !newItem.description) return;
 
         setIsSaving(true);
         const img = newItem.image || "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=600&auto=format&fit=crop";
@@ -51,11 +51,12 @@ const PlacesPage = () => {
             .insert([{ ...newItem, image: img }]);
 
         if (!error) {
-            setNewItem({ name: '', category: 'Monumento', desc: '', image: '' });
+            setNewItem({ name: '', category: 'Monumento', description: '', image: '' });
             setShowForm(false);
             fetchPlaces();
         } else {
-            alert('Error al guardar: Crea la tabla "places_to_visit" en tu editor SQL de Supabase.');
+            console.error(error);
+            alert('Error al guardar: Crea la tabla "places_to_visit" en tu editor SQL de Supabase con el campo "description".');
         }
         setIsSaving(false);
     };
@@ -104,8 +105,8 @@ const PlacesPage = () => {
                                 <input
                                     type="text"
                                     placeholder="Descripción corta"
-                                    value={newItem.desc}
-                                    onChange={e => setNewItem({ ...newItem, desc: e.target.value })}
+                                    value={newItem.description}
+                                    onChange={e => setNewItem({ ...newItem, description: e.target.value })}
                                     required
                                 />
                                 <input
@@ -142,7 +143,7 @@ const PlacesPage = () => {
                                     </div>
                                     <div className={styles.cardContent}>
                                         <h3>{place.name}</h3>
-                                        <p>{place.desc}</p>
+                                        <p>{place.description}</p>
                                     </div>
                                 </div>
                             ))}

@@ -10,7 +10,7 @@ interface Restaurant {
     id: string;
     name: string;
     specialty: string;
-    desc: string;
+    description: string;
     rating: string;
     image: string;
     created_at: string;
@@ -20,7 +20,7 @@ const RestaurantsPage = () => {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
-    const [newItem, setNewItem] = useState({ name: '', specialty: '', desc: '', rating: '⭐⭐⭐⭐⭐', image: '' });
+    const [newItem, setNewItem] = useState({ name: '', specialty: '', description: '', rating: '⭐⭐⭐⭐⭐', image: '' });
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const RestaurantsPage = () => {
 
     const handleAdd = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newItem.name || !newItem.desc) return;
+        if (!newItem.name || !newItem.description) return;
 
         setIsSaving(true);
         const img = newItem.image || "https://images.unsplash.com/photo-1515516969-d41f71df9138?auto=format&fit=crop&w=600&q=80";
@@ -52,11 +52,12 @@ const RestaurantsPage = () => {
             .insert([{ ...newItem, image: img }]);
 
         if (!error) {
-            setNewItem({ name: '', specialty: '', desc: '', rating: '⭐⭐⭐⭐⭐', image: '' });
+            setNewItem({ name: '', specialty: '', description: '', rating: '⭐⭐⭐⭐⭐', image: '' });
             setShowForm(false);
             fetchRestaurants();
         } else {
-            alert('Error al guardar: Crea la tabla "restaurants" en tu editor SQL de Supabase.');
+            console.error(error);
+            alert('Error al guardar: Crea la tabla "restaurants" en tu editor SQL de Supabase con el campo "description".');
         }
         setIsSaving(false);
     };
@@ -101,8 +102,8 @@ const RestaurantsPage = () => {
                                 <input
                                     type="text"
                                     placeholder="Descripción"
-                                    value={newItem.desc}
-                                    onChange={e => setNewItem({ ...newItem, desc: e.target.value })}
+                                    value={newItem.description}
+                                    onChange={e => setNewItem({ ...newItem, description: e.target.value })}
                                     required
                                 />
                                 <select
@@ -150,7 +151,7 @@ const RestaurantsPage = () => {
                                             <span className={styles.rating}>{rest.rating}</span>
                                         </div>
                                         <p className={styles.specialty}><strong>Especialidad:</strong> {rest.specialty}</p>
-                                        <p className={styles.desc}>{rest.desc}</p>
+                                        <p className={styles.description}>{rest.description}</p>
                                     </div>
                                     <div className={styles.itemActions}>
                                         <button className={styles.btnVote}>
