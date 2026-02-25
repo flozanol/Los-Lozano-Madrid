@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Plus, Loader2, MapPin } from 'lucide-react';
+import { Plus, Loader2, Trash2 } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -56,9 +56,22 @@ const PlacesPage = () => {
             fetchPlaces();
         } else {
             console.error(error);
-            alert('Error al guardar: Crea la tabla "places_to_visit" en tu editor SQL de Supabase con el campo "description".');
+            alert('Error al guardar: Asegúrate de que la tabla "places_to_visit" existe.');
         }
         setIsSaving(false);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (confirm('¿Quieres eliminar este lugar de la lista?')) {
+            const { error } = await supabase
+                .from('places_to_visit')
+                .delete()
+                .eq('id', id);
+
+            if (!error) {
+                fetchPlaces();
+            }
+        }
     };
 
     return (
@@ -140,6 +153,13 @@ const PlacesPage = () => {
                                             unoptimized={place.image.startsWith('http')}
                                         />
                                         <span className={styles.category}>{place.category}</span>
+                                        <button
+                                            className={styles.deleteBtn}
+                                            onClick={() => handleDelete(place.id)}
+                                            title="Eliminar"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
                                     </div>
                                     <div className={styles.cardContent}>
                                         <h3>{place.name}</h3>

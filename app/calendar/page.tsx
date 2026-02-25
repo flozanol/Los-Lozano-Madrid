@@ -57,7 +57,7 @@ const CalendarPage = () => {
             setShowForm(false);
             fetchItinerary();
         } else {
-            alert('Error al guardar: Asegúrate de crear la tabla "itinerary" en Supabase.');
+            alert('Error al guardar: Asegúrate de que la tabla "itinerary" existe.');
         }
         setIsSaving(false);
     };
@@ -86,10 +86,10 @@ const CalendarPage = () => {
                     <header className={styles.header}>
                         <h1>Itinerario <span className="text-gold">Familiar</span></h1>
                         <p>Día a día en nuestro viaje a Madrid.</p>
+                        <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
+                            {showForm ? 'Cancelar' : <><Plus size={20} /> Añadir al Plan</>}
+                        </button>
                     </header>
-                    <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-                        {showForm ? 'Cancelar' : <><Plus size={20} /> Añadir al Plan</>}
-                    </button>
                 </div>
 
                 {showForm && (

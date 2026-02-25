@@ -1,28 +1,40 @@
 .calendarPage {
-    padding: 5rem 0;
+    min-height: 100vh;
+    padding-top: 120px;
+    color: white;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center;
     margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .title {
-    font-size: 3.5rem;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 800;
 }
 
 .addForm {
-    background: var(--madrid-gray);
-    padding: 2rem;
-    border-radius: 12px;
-    margin-bottom: 3rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    max-width: 800px;
+    margin: 0 auto 5rem;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
-    align-items: flex-end;
-    border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
 }
 
 .formGroup {
@@ -32,120 +44,102 @@
 }
 
 .formGroup label {
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--madrid-black);
-}
-
-.formGroup input,
-.formGroup select {
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-family: inherit;
-}
-
-.calendarContainer {
-    margin-top: 2rem;
-    overflow-x: auto;
-}
-
-.calendarGrid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    min-width: 900px;
-}
-
-.dayHeader {
-    text-align: center;
-    padding: 1rem;
-    font-family: var(--font-heading);
-    color: var(--madrid-palace-gold);
-    font-weight: 800;
     font-size: 0.8rem;
-    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
 }
 
-.calendarDay {
-    min-height: 180px;
-    padding: 0.8rem;
+.addForm input,
+.addForm select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    color: white;
+    border-radius: 8px;
+}
+
+.itineraryList {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    transition: var(--transition-smooth);
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto 5rem;
 }
 
-.calendarDay:hover {
-    background: rgba(255, 255, 255, 0.1);
+.itineraryCard {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 2rem;
+    transition: all 0.3s ease;
 }
 
-.dayNumber {
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
+.itineraryCard:hover {
+    border-color: var(--gold);
+    transform: translateX(10px);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dateBadge {
+    background: var(--gold);
+    color: black;
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
     font-weight: 800;
-    color: var(--madrid-luxury-black);
+}
+
+.eventInfo {
+    flex: 1;
+}
+
+.eventInfo h3 {
+    font-size: 1.4rem;
     margin-bottom: 0.5rem;
 }
 
-.eventCard {
-    background: var(--madrid-crimson);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(161, 17, 22, 0.2);
-    transition: var(--transition-smooth);
+.timeTag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
 }
 
-.eventCard:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(161, 17, 22, 0.3);
-}
-
-.eventTime {
-    display: block;
-    font-size: 0.7rem;
-    font-weight: 800;
-    opacity: 0.8;
-    margin-bottom: 2px;
-}
-
-.eventTitle {
-    font-weight: 600;
-    line-height: 1.2;
-}
-
-.miniDeleteBtn {
-    position: absolute;
-    top: 2px;
-    right: 5px;
+.deleteBtn {
     background: none;
     border: none;
-    color: white;
-    font-size: 1.2rem;
+    color: rgba(220, 38, 38, 0.6);
     cursor: pointer;
-    opacity: 0;
-    transition: var(--transition-smooth);
+    padding: 0.5rem;
+    transition: all 0.2s ease;
 }
 
-.eventCard:hover .miniDeleteBtn {
-    opacity: 1;
+.deleteBtn:hover {
+    color: #ef4444;
+    transform: scale(1.2);
 }
 
-.miniDeleteBtn:hover {
-    transform: scale(1.3);
-    color: var(--madrid-palace-gold);
-}
-
-@media (max-width: 1000px) {
-    .calendarGrid {
-        grid-template-columns: repeat(1, 1fr);
-        min-width: 100%;
+@media (max-width: 600px) {
+    .itineraryCard {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
     }
 
-    .calendarDay {
-        min-height: auto;
+    .dateBadge {
+        flex-direction: row;
+        gap: 0.5rem;
+        min-width: auto;
+    }
+
+    .deleteBtn {
+        align-self: flex-end;
     }
 }

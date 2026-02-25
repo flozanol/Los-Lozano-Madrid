@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Plus, Loader2, Utensils, Star } from 'lucide-react';
+import { Plus, Loader2, Utensils, Trash2 } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -57,9 +57,22 @@ const RestaurantsPage = () => {
             fetchRestaurants();
         } else {
             console.error(error);
-            alert('Error al guardar: Crea la tabla "restaurants" en tu editor SQL de Supabase con el campo "description".');
+            alert('Error al guardar: Asegúrate de que la tabla "restaurants" existe.');
         }
         setIsSaving(false);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (confirm('¿Quieres eliminar este restaurante de la lista?')) {
+            const { error } = await supabase
+                .from('restaurants')
+                .delete()
+                .eq('id', id);
+
+            if (!error) {
+                fetchRestaurants();
+            }
+        }
     };
 
     return (
@@ -144,6 +157,13 @@ const RestaurantsPage = () => {
                                             className={styles.itemImage}
                                             unoptimized={rest.image.startsWith('http')}
                                         />
+                                        <button
+                                            className={styles.deleteBtn}
+                                            onClick={() => handleDelete(rest.id)}
+                                            title="Eliminar"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
                                     </div>
                                     <div className={styles.itemInfo}>
                                         <div className={styles.itemNameWrapper}>
