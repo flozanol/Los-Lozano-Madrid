@@ -32,30 +32,39 @@ const HistoryPage = () => {
 
 
     return (
-        <div className={styles.historyPage}>
-            <header className={styles.header}>
-                <div className="container">
-                    <h1 className={styles.mainTitle}>Historia de <span className="text-gold">Madrid</span></h1>
-                    <p className={styles.subtitle}>Un recorrido por los siglos en la Villa y Corte.</p>
-                </div>
-            </header>
+        <>
+            <div
+                className="section-bg"
+                style={{ backgroundImage: 'url(/madrid_mayrit_arabic.png)' }}
+            ></div>
+            <div className="content-wrapper">
+                <div className={styles.historyPage}>
 
-            <div className="container">
-                <div className={styles.timeline}>
-                    {sections.map((section, index) => (
-                        <div key={index} className={styles.section}>
-                            <div className={styles.content}>
-                                <h2>{section.title}</h2>
-                                <p>{section.text}</p>
-                            </div>
-                            <div className={styles.imageWrapper}>
-                                <img src={section.image} alt={section.title} className={styles.image} />
-                            </div>
+                    <header className={styles.header}>
+                        <div className="container">
+                            <h1 className={styles.mainTitle}>Historia de <span className="text-gold">Madrid</span></h1>
+                            <p className={styles.subtitle}>Un recorrido por los siglos en la Villa y Corte.</p>
                         </div>
-                    ))}
+                    </header>
+
+                    <div className="container">
+                        <div className={styles.timeline}>
+                            {sections.map((section, index) => (
+                                <div key={index} className={styles.section}>
+                                    <div className={styles.content}>
+                                        <h2>{section.title}</h2>
+                                        <p>{section.text}</p>
+                                    </div>
+                                    <div className={styles.imageWrapper}>
+                                        <img src={section.image} alt={section.title} className={styles.image} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

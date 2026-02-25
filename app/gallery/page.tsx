@@ -49,68 +49,74 @@ const GalleryPage = () => {
     };
 
     return (
-        <div className={styles.galleryPage}>
-            <div className="container">
-                <header className={styles.header}>
-                    <h1>Galería <span className="text-gold">Familiar</span></h1>
-                    <p>Capturando cada momento de los Lozano en la Villa y Corte.</p>
-                </header>
+        <>
+            <div
+                className="section-bg"
+                style={{ backgroundImage: 'url(/madrid_movida_80s.png)' }}
+            ></div>
+            <div className={`content-wrapper ${styles.galleryPage}`}>
 
-                <section className={styles.uploadSection}>
-                    <div className={`${styles.uploadCard} glass`}>
-                        <div className={styles.formGroup}>
-                            <input
-                                type="text"
-                                placeholder="Tu nombre..."
-                                value={inputUser}
-                                onChange={(e) => setInputUser(e.target.value)}
-                                className={styles.input}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Título de la foto..."
-                                value={inputCaption}
-                                onChange={(e) => setInputCaption(e.target.value)}
-                                className={styles.input}
-                            />
-                        </div>
-                        <div className={styles.dropzone}>
-                            <Camera size={48} className="text-gold" />
-                            <p>Haz clic para seleccionar una foto</p>
-                        </div>
-                        <button className="btn-primary" onClick={handleUpload} disabled={isUploading}>
-                            {isUploading ? <Loader2 className="animate-spin" /> : <Upload size={20} />}
-                            Subir Foto
-                        </button>
-                    </div>
-                </section>
+                <div className="container">
+                    <header className={styles.header}>
+                        <h1>Galería <span className="text-gold">Familiar</span></h1>
+                        <p>Capturando cada momento de los Lozano en la Villa y Corte.</p>
+                    </header>
 
-                {isLoading ? (
-                    <div className="text-center py-10">
-                        <Loader2 className="animate-spin mx-auto text-gold" size={40} />
-                    </div>
-                ) : (
-                    <div className={styles.grid}>
-                        {photos.map(photo => (
-                            <div key={photo.id} className={styles.photoCard}>
-                                <div className={styles.imageBox}>
-                                    <img src={photo.url} alt={photo.caption} />
-                                </div>
-                                <div className={styles.photoInfo}>
-                                    <h3>{photo.caption}</h3>
-                                    <p>Por <strong>{photo.user_name}</strong> — {new Date(photo.created_at).toLocaleDateString()}</p>
-                                </div>
+                    <section className={styles.uploadSection}>
+                        <div className={`${styles.uploadCard} glass`}>
+                            <div className={styles.formGroup}>
+                                <input
+                                    type="text"
+                                    placeholder="Tu nombre..."
+                                    value={inputUser}
+                                    onChange={(e) => setInputUser(e.target.value)}
+                                    className={styles.input}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Título de la foto..."
+                                    value={inputCaption}
+                                    onChange={(e) => setInputCaption(e.target.value)}
+                                    className={styles.input}
+                                />
                             </div>
-                        ))}
-                        {photos.length === 0 && (
-                            <p className="text-center col-span-full opacity-50">Aún no hay fotos. ¡Sé el primero en subir una!</p>
-                        )}
-                    </div>
-                )}
+                            <div className={styles.dropzone}>
+                                <Camera size={48} className="text-gold" />
+                                <p>Haz clic para seleccionar una foto</p>
+                            </div>
+                            <button className="btn-primary" onClick={handleUpload} disabled={isUploading}>
+                                {isUploading ? <Loader2 className="animate-spin" /> : <Upload size={20} />}
+                                Subir Foto
+                            </button>
+                        </div>
+                    </section>
+
+                    {isLoading ? (
+                        <div className="text-center py-10">
+                            <Loader2 className="animate-spin mx-auto text-gold" size={40} />
+                        </div>
+                    ) : (
+                        <div className={styles.grid}>
+                            {photos.map(photo => (
+                                <div key={photo.id} className={styles.photoCard}>
+                                    <div className={styles.imageBox}>
+                                        <img src={photo.url} alt={photo.caption} />
+                                    </div>
+                                    <div className={styles.photoInfo}>
+                                        <h3>{photo.caption}</h3>
+                                        <p>Por <strong>{photo.user_name}</strong> — {new Date(photo.created_at).toLocaleDateString()}</p>
+                                    </div>
+                                </div>
+                            ))}
+                            {photos.length === 0 && (
+                                <p className="text-center col-span-full opacity-50">Aún no hay fotos. ¡Sé el primero en subir una!</p>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
 export default GalleryPage;
-

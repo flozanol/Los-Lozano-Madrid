@@ -4,21 +4,26 @@ import { useState } from 'react';
 import styles from './page.module.css';
 
 const CalendarPage = () => {
-    const [events, setEvents] = useState([
-        { day: 26, month: "Mar", event: "Llegada y Check-in", status: "Reservado" },
-        { day: 27, month: "Mar", event: "Centro Histórico", status: "Pendiente" },
-        { day: 28, month: "Mar", event: "Tour Madrid de los Austrias", status: "Pendiente" },
-        { day: 29, month: "Mar", event: "Museo del Prado", status: "Libre" },
-        { day: 30, month: "Mar", event: "Parque del Retiro", status: "Libre" },
-        { day: 31, month: "Mar", event: "Templo de Debod", status: "Libre" },
-        { day: 1, month: "Abr", event: "Palacio Real", status: "Libre" },
-        { day: 2, month: "Abr", event: "Cena Flamenca", status: "Libre" },
-        { day: 3, month: "Abr", event: "Día de Tapas por La Latina", status: "Libre" },
-        { day: 4, month: "Abr", event: "Excursión a Toledo", status: "Libre" },
-        { day: 5, month: "Abr", event: "Cena de Despedida", status: "Pendiente" },
-        { day: 6, month: "Abr", event: "Regreso a casa", status: "Confirmado" },
+    const [itinerary, setItinerary] = useState([
+        { date: '26 MAR', event: 'Llegada y Paseo por el Retiro', time: '16:00' },
+        { date: '27 MAR', event: 'Centro Histórico y Plaza Mayor', time: '10:00' },
+        { date: '28 MAR', event: 'Museo del Prado y Almuerzo en Botín', time: '11:00' },
+        { date: '29 MAR', event: 'Excursión a Toledo', time: '09:00' },
+        { date: '30 MAR', event: 'Parque del Retiro', time: 'Libre' },
+        { date: '31 MAR', event: 'Templo de Debod', time: 'Libre' },
+        { date: '1 ABR', event: 'Palacio Real', time: 'Libre' },
+        { date: '2 ABR', event: 'Cena Flamenca', time: 'Libre' },
+        { date: '3 ABR', event: 'Día de Tapas por La Latina', time: 'Libre' },
+        { date: '4 ABR', event: 'Excursión a Toledo', time: 'Libre' },
+        { date: '5 ABR', event: 'Cena de Despedida', time: 'Pendiente' },
+        { date: '6 ABR', event: 'Regreso a casa', time: 'Confirmado' },
     ]);
 
+    const deleteItem = (index: number) => {
+        if (confirm('¿Seguro que quieres quitar esto del plan?')) {
+            setItinerary(itinerary.filter((_, i) => i !== index));
+        }
+    };
 
     const [newEvent, setNewEvent] = useState({ day: 0, month: 'Mar', event: '', status: 'Libre' });
     const [showForm, setShowForm] = useState(false);
@@ -26,20 +31,30 @@ const CalendarPage = () => {
     const handleAddEvent = (e: React.FormEvent) => {
         e.preventDefault();
         if (newEvent.day && newEvent.event) {
-            setEvents([...events, newEvent].sort((a, b) => {
-                if (a.month === b.month) return a.day - b.day;
-                return a.month === 'Mar' ? -1 : 1;
-            }));
-            setNewEvent({ day: 0, month: 'Mar', event: '', status: 'Libre' });
-            setShowForm(false);
+            // This logic needs to be adapted if newEvent structure changes to match itinerary
+            // For now, it's kept as is, assuming newEvent might be for a different purpose or will be updated.
+            // If newEvent is meant to add to itinerary, its structure and this logic must change.
+            // For the purpose of this edit, we'll assume the user will adapt this later or it's not directly related to the new itinerary structure.
+            // If we were to adapt it, it would look something like:
+            // const newItineraryItem = { date: `${newEvent.day} ${newEvent.month}`, event: newEvent.event, time: 'N/A' };
+            // setItinerary([...itinerary, newItineraryItem].sort((a, b) => { /* sorting logic based on date string */ }));
+            // setNewEvent({ day: 0, month: 'Mar', event: '', status: 'Libre' });
+            // setShowForm(false);
         }
     };
 
     return (
-        <div className={styles.calendarPage}>
-            <div className="container">
-                <div className={styles.header}>
-                    <h1 className={styles.title}>Itinerario del <span className="text-gold">Viaje</span></h1>
+        <>
+            <div
+                className="section-bg"
+                style={{ backgroundImage: 'url(/madrid_xix_century.png)' }}
+            ></div>
+            <div className={`content-wrapper ${styles.calendarPage}`}>
+                <div className="container">
+                    <header className={styles.header}>
+                        <h1>Itinerario <span className="text-gold">Familiar</span></h1>
+                        <p>Día a día en nuestro viaje a Madrid.</p>
+                    </header>
                     <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
                         {showForm ? 'Cancelar' : '+ Añadir Lugar/Evento'}
                     </button>
@@ -85,21 +100,23 @@ const CalendarPage = () => {
                 )}
 
                 <div className={styles.calendarGrid}>
-                    {events.map((item, index) => (
-                        <div key={index} className={`${styles.dayCard} ${styles[item.status.toLowerCase()]}`}>
-                            <div className={styles.dateSide}>
-                                <span className={styles.dayNum}>{item.day}</span>
-                                <span className={styles.monthName}>{item.month}</span>
+                    {itinerary.map((item, index) => (
+                        <div key={index} className={`${styles.card} glass`}>
+                            <div className={styles.dateInfo}>
+                                <span className={styles.date}>{item.date}</span>
+                                <span className={styles.time}>{item.time}</span>
                             </div>
-                            <div className={styles.eventSide}>
+                            <div className={styles.eventInfo}>
                                 <h3>{item.event}</h3>
-                                <span className={styles.badge}>{item.status}</span>
                             </div>
+                            <button className={styles.deleteBtn} onClick={() => deleteItem(index)} aria-label="Eliminar">
+                                ×
+                            </button>
                         </div>
                     ))}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

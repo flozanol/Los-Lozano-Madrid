@@ -24,7 +24,8 @@ const HomePage = () => {
           />
         </div>
 
-        <h1 className={styles.title}>VILLA Y CORTE</h1>
+        <h1 className={styles.title}>VIAJE DE LOS LOZANO <span className="text-gold">A MADRID</span></h1>
+
         <p className={styles.dates}>26 MAR — 06 ABR 2026</p>
 
         <div className={styles.ctaGroup}>

@@ -13,9 +13,13 @@ const Navbar = () => {
     <nav className={styles.nav}>
       <div className={`${styles.navContainer} container`}>
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoText}>LOZANO</span>
-          <span className={styles.logoYear}>2026</span>
+          <Image src="/logo.png" alt="Logo" width={50} height={40} className={styles.logoImg} />
+          <div className={styles.logoBrand}>
+            <span className={styles.logoText}>LOZANO</span>
+            <span className={styles.logoYear}>2026</span>
+          </div>
         </Link>
+
 
         <button className={styles.mobileToggle} onClick={toggleMenu} aria-label="Toggle Navigation">
           <div className={`${styles.bar} ${isOpen ? styles.bar1 : ''}`}></div>

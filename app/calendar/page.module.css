@@ -52,6 +52,44 @@
 }
 
 
+.dayC.card {
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    border: 1px solid var(--glass-border);
+    transition: var(--transition-smooth);
+}
+
+.card:hover {
+    transform: translateX(10px);
+    border-color: var(--madrid-palace-gold);
+}
+
+.deleteBtn {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--madrid-crimson);
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.card:hover .deleteBtn {
+    opacity: 1;
+}
+
+.deleteBtn:hover {
+    color: red;
+    transform: translateY(-50%) scale(1.2);
+}
+
 .dayCard {
     background: #fff;
     border-radius: 12px;
