@@ -56,17 +56,18 @@ const GalleryPage = () => {
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `${fileName}`;
 
-            // 1. Upload to Supabase Storage (Bucket name: gallery)
+            // 1. Upload to Supabase Storage (Bucket name: GALLERY)
             const { error: uploadError } = await supabase.storage
-                .from('gallery')
+                .from('GALLERY')
                 .upload(filePath, selectedFile);
 
             if (uploadError) throw uploadError;
 
             // 2. Get Public URL
             const { data: { publicUrl } } = supabase.storage
-                .from('gallery')
+                .from('GALLERY')
                 .getPublicUrl(filePath);
+
 
             // 3. Save reference to database
             const { error: dbError } = await supabase
