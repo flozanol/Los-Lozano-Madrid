@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { supabase } from '@/lib/supabase';
 import 'leaflet/dist/leaflet.css';
 import styles from './page.module.css';
 
@@ -10,14 +11,18 @@ const MapContainer = dynamic(() => import('react-leaflet').then(mod => mod.MapCo
 const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLayer), { ssr: false });
 const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { ssr: false });
 const Popup = dynamic(() => import('react-leaflet').then(mod => mod.Popup), { ssr: false });
+const useMapEvents = dynamic(() => import('react-leaflet').then(mod => mod.useMapEvents), { ssr: false });
 
 const MapPage = () => {
     const [L, setL] = useState<any>(null);
+    const [pins, setPins] = useState<any[]>([]);
+    const [showForm, setShowForm] = useState(false);
+    const [newPinCoords, setNewPinCoords] = useState<[number, number] | null>(null);
+    const [pinData, setPinData] = useState({ name: '', category: 'Interés' });
 
     useEffect(() => {
         import('leaflet').then(m => {
             setL(m);
-            // Fix for default marker icons in Leaflet + Webpack
             delete (m.Icon.Default.prototype as any)._getIconUrl;
             m.Icon.Default.mergeOptions({
                 iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -25,35 +30,89 @@ const MapPage = () => {
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
             });
         });
+        fetchPins();
     }, []);
 
-    const pins = [
-        { name: "Palacio Real", position: [40.4173, -3.7144], category: "Monumento" },
-        { name: "Museo del Prado", position: [40.4137, -3.6921], category: "Arte" },
-        { name: "Parque del Retiro", position: [40.4153, -3.6844], category: "Naturaleza" },
-        { name: "Plaza Mayor", position: [40.4153, -3.7073], category: "Historia" },
-        { name: "Gran Vía", position: [40.4199, -3.7022], category: "Ocio" },
-        { name: "Templo de Debod", position: [40.4239, -3.7176], category: "Historia" },
-        { name: "Casa Lucio", position: [40.4124, -3.7101], category: "Restaurante" },
-        { name: "Sobrino de Botín", position: [40.4141, -3.7081], category: "Restaurante" }
-    ];
+    const fetchPins = async () => {
+        const { data, error } = await supabase.from('pins').select('*');
+        if (data) setPins(data);
+    };
+
+    const MapEvents = () => {
+        useMapEvents({
+            click(e) {
+                setNewPinCoords([e.latlng.lat, e.latlng.lng]);
+                setShowForm(true);
+            },
+        });
+        return null;
+    };
+
+    const handleAddPin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newPinCoords || !pinData.name) return;
+
+        const { error } = await supabase.from('pins').insert([
+            {
+                name: pinData.name,
+                category: pinData.category,
+                latitude: newPinCoords[0],
+                longitude: newPinCoords[1]
+            }
+        ]);
+
+        if (!error) {
+            setPinData({ name: '', category: 'Interés' });
+            setShowForm(false);
+            setNewPinCoords(null);
+            fetchPins();
+        }
+    };
 
     if (!L) return <div className={styles.loading}>Cargando mapa...</div>;
 
     return (
         <div className={styles.mapPage}>
             <div className="container">
-                <h1 className={styles.title}>Mapa de <span className="text-gold">Madrid</span></h1>
-                <p className={styles.subtitle}>Explora los lugares y descubre dónde están nuestros planes.</p>
+                <header className={styles.header}>
+                    <h1 className={styles.title}>Mapa de <span className="text-gold">Madrid</span></h1>
+                    <p className={styles.subtitle}>Haz clic en cualquier punto del mapa para añadir un nuevo pin.</p>
+                </header>
+
+                {showForm && (
+                    <div className={`${styles.pinForm} glass`}>
+                        <h3>Añadir Marcador</h3>
+                        <form onSubmit={handleAddPin}>
+                            <input
+                                type="text"
+                                placeholder="Nombre del lugar"
+                                value={pinData.name}
+                                onChange={e => setPinData({ ...pinData, name: e.target.value })}
+                                required
+                            />
+                            <select value={pinData.category} onChange={e => setPinData({ ...pinData, category: e.target.value })}>
+                                <option value="Monumento">Monumento</option>
+                                <option value="Restaurante">Restaurante</option>
+                                <option value="Ocio">Ocio</option>
+                                <option value="Interés">Interés</option>
+                            </select>
+                            <div className={styles.formButtons}>
+                                <button type="submit" className="btn-primary">Guardar Pin</button>
+                                <button type="button" onClick={() => setShowForm(false)} className={styles.btnCancel}>Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                )}
 
                 <div className={styles.mapWrapper}>
                     <MapContainer center={[40.4168, -3.7038]} zoom={14} style={{ height: '600px', width: '100%' }}>
                         <TileLayer
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            attribution='&copy; OpenStreetMap contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
+                        <MapEvents />
                         {pins.map((pin, index) => (
-                            <Marker key={index} position={pin.position as [number, number]}>
+                            <Marker key={index} position={[pin.latitude, pin.longitude]}>
                                 <Popup>
                                     <div className={styles.popup}>
                                         <strong>{pin.name}</strong><br />
@@ -62,6 +121,11 @@ const MapPage = () => {
                                 </Popup>
                             </Marker>
                         ))}
+                        {newPinCoords && (
+                            <Marker position={newPinCoords}>
+                                <Popup>Nuevo Pin aquí...</Popup>
+                            </Marker>
+                        )}
                     </MapContainer>
                 </div>
             </div>
@@ -70,3 +134,4 @@ const MapPage = () => {
 };
 
 export default MapPage;
+
