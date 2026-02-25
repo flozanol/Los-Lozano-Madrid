@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2, User, Users } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -10,6 +10,8 @@ interface ItineraryItem {
     date_str: string;
     event_name: string;
     event_time: string;
+    created_by: string;
+    participants: string;
     created_at: string;
 }
 
@@ -17,7 +19,14 @@ const CalendarPage = () => {
     const [itinerary, setItinerary] = useState<ItineraryItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
-    const [newEvent, setNewEvent] = useState({ day: '', month: 'MAR', event: '', time: 'Libre' });
+    const [newEvent, setNewEvent] = useState({
+        day: '',
+        month: 'MAR',
+        event: '',
+        time: 'Libre',
+        created_by: '',
+        participants: 'Toda la familia'
+    });
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
@@ -29,6 +38,7 @@ const CalendarPage = () => {
         const { data, error } = await supabase
             .from('itinerary')
             .select('*')
+            .order('date_str', { ascending: true }) // Useful but created_at is safer for multi-month
             .order('created_at', { ascending: true });
 
         if (!error && data) {
@@ -48,16 +58,26 @@ const CalendarPage = () => {
                 {
                     date_str: `${newEvent.day} ${newEvent.month}`,
                     event_name: newEvent.event,
-                    event_time: newEvent.time
+                    event_time: newEvent.time,
+                    created_by: newEvent.created_by,
+                    participants: newEvent.participants
                 }
             ]);
 
         if (!error) {
-            setNewEvent({ day: '', month: 'MAR', event: '', time: 'Libre' });
+            setNewEvent({
+                day: '',
+                month: 'MAR',
+                event: '',
+                time: 'Libre',
+                created_by: '',
+                participants: 'Toda la familia'
+            });
             setShowForm(false);
             fetchItinerary();
         } else {
-            alert('Error al guardar: Asegúrate de que la tabla "itinerary" existe.');
+            console.error(error);
+            alert('Error al guardar: Asegúrate de actualizar la tabla "itinerary" en Supabase.');
         }
         setIsSaving(false);
     };
@@ -131,6 +151,24 @@ const CalendarPage = () => {
                                     onChange={e => setNewEvent({ ...newEvent, time: e.target.value })}
                                 />
                             </div>
+                            <div className={styles.formGroup}>
+                                <label>Quién lo propone</label>
+                                <input
+                                    type="text"
+                                    placeholder="Tu nombre"
+                                    value={newEvent.created_by}
+                                    onChange={e => setNewEvent({ ...newEvent, created_by: e.target.value })}
+                                />
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Quiénes van</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ej. Todos, o Solo adultos"
+                                    value={newEvent.participants}
+                                    onChange={e => setNewEvent({ ...newEvent, participants: e.target.value })}
+                                />
+                            </div>
                         </div>
                         <button type="submit" className="btn-primary" disabled={isSaving}>
                             {isSaving ? <Loader2 className="animate-spin" /> : 'Confirmar Evento'}
@@ -152,10 +190,22 @@ const CalendarPage = () => {
                                         <span>{item.date_str}</span>
                                     </div>
                                     <div className={styles.eventInfo}>
-                                        <h3>{item.event_name}</h3>
-                                        <div className={styles.timeTag}>
-                                            <Clock size={14} />
-                                            <span>{item.event_time}</span>
+                                        <div className={styles.eventHeader}>
+                                            <h3>{item.event_name}</h3>
+                                            <div className={styles.timeTag}>
+                                                <Clock size={14} />
+                                                <span>{item.event_time}</span>
+                                            </div>
+                                        </div>
+                                        <div className={styles.cardFooter}>
+                                            <div className={styles.author}>
+                                                <User size={14} />
+                                                <span>Propone: <strong>{item.created_by || 'Lozano'}</strong></span>
+                                            </div>
+                                            <div className={styles.participants}>
+                                                <Users size={14} />
+                                                <span>Van: <strong>{item.participants || 'Toda la familia'}</strong></span>
+                                            </div>
                                         </div>
                                     </div>
                                     <button
