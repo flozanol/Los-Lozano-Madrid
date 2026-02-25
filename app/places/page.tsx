@@ -10,32 +10,33 @@ const PlacesPage = () => {
             name: "Palacio Real",
             category: "Monumento",
             desc: "Residencia oficial de la Familia Real, aunque solo para actos de Estado.",
-            image: "https://images.unsplash.com/photo-1543783232-af9942f4a47d?q=80&w=1200&auto=format&fit=crop"
+            image: "/madrid_royalty_borbones.png"
         },
         {
             name: "Museo del Prado",
             category: "Arte",
             desc: "Nuestra pinacoteca más importante. Goya, Velázquez y El Greco nos esperan.",
-            image: "https://images.unsplash.com/photo-1542151624-945768565251?q=80&w=1200&auto=format&fit=crop"
+            image: "/madrid_xix_century.png"
         },
         {
             name: "Parque del Retiro",
             category: "Naturaleza",
             desc: "El pulmón de Madrid. Paseo en barca obligado y visita al Palacio de Cristal.",
-            image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1200&auto=format&fit=crop"
+            image: "/madrid_hero_cibeles.png"
         },
         {
             name: "Gran Vía",
             category: "Ocio",
             desc: "El Broadway madrileño. Luces, teatros y la mejor arquitectura del siglo XX.",
-            image: "https://images.unsplash.com/photo-1512753360424-aa830768e82a?q=80&w=1200&auto=format&fit=crop"
+            image: "/madrid_movida_80s.png"
         },
         {
             name: "Templo de Debod",
             category: "Historia",
             desc: "Un regalo de Egipto. El mejor atardecer de todo Madrid sin ninguna duda.",
-            image: "https://images.unsplash.com/photo-1568289463259-245c48b26500?q=80&w=1200&auto=format&fit=crop"
+            image: "/madrid_mayrit_arabic.png"
         }
+
 
 
 

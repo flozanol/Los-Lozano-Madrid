@@ -11,22 +11,23 @@ const RestaurantsPage = () => {
             specialty: "Cochinillo Asado",
             desc: "El restaurante más antiguo del mundo según el Guinness. ¡Historia comestible!",
             rating: "⭐⭐⭐⭐⭐",
-            image: "https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?q=80&w=1200&auto=format&fit=crop"
+            image: "/madrid_austrias_habsburg.png"
         },
         {
             name: "Casa Lucio",
             specialty: "Huevos Estrellados",
             desc: "Un clásico madrileño. Si no has comido sus huevos, no has estado en Madrid.",
             rating: "⭐⭐⭐⭐",
-            image: "https://images.unsplash.com/photo-1541544741938-0af808b77e40?q=80&w=1200&auto=format&fit=crop"
+            image: "/madrid_hero_cibeles.png"
         },
         {
             name: "Chocolatería San Ginés",
             specialty: "Chocolate con Churros",
             desc: "Perfecto para después de una caminata o para empezar el día con energía.",
             rating: "⭐⭐⭐⭐⭐",
-            image: "https://images.unsplash.com/photo-1514361892635-6b07eaf1aa5a?q=80&w=1200&auto=format&fit=crop"
+            image: "/madrid_movida_80s.png"
         }
+
 
 
 
