@@ -10,22 +10,23 @@ const RestaurantsPage = () => {
             specialty: "Cochinillo Asado",
             desc: "El restaurante más antiguo del mundo según el Guinness. ¡Historia comestible!",
             rating: "⭐⭐⭐⭐⭐",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Restaurante_Bot%C3%ADn.jpg/1200px-Restaurante_Bot%C3%ADn.jpg"
+            image: "https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?auto=format&fit=crop&w=1200&q=80"
         },
         {
             name: "Casa Lucio",
             specialty: "Huevos Estrellados",
             desc: "Un clásico madrileño. Si no has comido sus huevos, no has estado en Madrid.",
             rating: "⭐⭐⭐⭐",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Casa_Lucio_-_Madrid.jpg/1200px-Casa_Lucio_-_Madrid.jpg"
+            image: "https://images.unsplash.com/photo-1541544741938-0af808b77e40?auto=format&fit=crop&w=1200&q=80"
         },
         {
             name: "Chocolatería San Ginés",
             specialty: "Chocolate con Churros",
             desc: "Perfecto para después de una caminata o para empezar el día con energía.",
             rating: "⭐⭐⭐⭐⭐",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Chocolater%C3%ADa_San_Gin%C3%A9s_-_Madrid.jpg/1200px-Chocolater%C3%ADa_San_Gin%C3%A9s_-_Madrid.jpg"
+            image: "https://images.unsplash.com/photo-1514361892635-6b07eaf1aa5a?auto=format&fit=crop&w=1200&q=80"
         }
+
 
 
 

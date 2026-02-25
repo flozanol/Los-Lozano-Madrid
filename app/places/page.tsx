@@ -9,32 +9,33 @@ const PlacesPage = () => {
             name: "Palacio Real",
             category: "Monumento",
             desc: "Residencia oficial de la Familia Real, aunque solo para actos de Estado.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Palacio_Real_de_Madrid_at_sunset.jpg/1200px-Palacio_Real_de_Madrid_at_sunset.jpg"
+            image: "https://images.unsplash.com/photo-1543783232-af9942f4a47d?auto=format&fit=crop&w=1200&q=80"
         },
         {
             name: "Museo del Prado",
             category: "Arte",
             desc: "Nuestra pinacoteca más importante. Goya, Velázquez y El Greco nos esperan.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Museo_del_Prado_2016_%2825185969599%29.jpg/1200px-Museo_del_Prado_2016_%2825185969599%29.jpg"
+            image: "https://images.unsplash.com/photo-1542151624-945768565251?auto=format&fit=crop&w=1200&q=80"
         },
         {
             name: "Parque del Retiro",
             category: "Naturaleza",
             desc: "El pulmón de Madrid. Paseo en barca obligado y visita al Palacio de Cristal.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Parque_del_Buen_Retiro_en_Madrid_01.jpg/1200px-Parque_del_Buen_Retiro_en_Madrid_01.jpg"
+            image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1200&q=80"
         },
         {
             name: "Gran Vía",
             category: "Ocio",
             desc: "El Broadway madrileño. Luces, teatros y la mejor arquitectura del siglo XX.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Gran_V%C3%ADa_%28Madrid%29_11.jpg/1200px-Gran_V%C3%ADa_%28Madrid%29_11.jpg"
+            image: "https://images.unsplash.com/photo-1512753360424-aa830768e82a?auto=format&fit=crop&w=1200&q=80"
         },
         {
             name: "Templo de Debod",
             category: "Historia",
             desc: "Un regalo de Egipto. El mejor atardecer de todo Madrid sin ninguna duda.",
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Temple_of_Debod_01.jpg/1200px-Temple_of_Debod_01.jpg"
+            image: "https://images.unsplash.com/photo-1568289463259-245c48b26500?auto=format&fit=crop&w=1200&q=80"
         }
+
 
 
 
