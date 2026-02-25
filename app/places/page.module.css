@@ -65,18 +65,23 @@
     height: 250px;
     position: relative;
     overflow: hidden;
+    background: #f0f0f0;
+    /* Fallback for broken images */
 }
 
-.imageBox img {
+.imageBox img,
+.image {
     width: 100%;
-    height: 100%;
+    height: 100% !important;
     object-fit: cover;
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.card:hover .image,
 .card:hover .imageBox img {
     transform: scale(1.1);
 }
+
 
 .category {
     position: absolute;

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import styles from './page.module.css';
 
 const RestaurantsPage = () => {
@@ -10,21 +11,21 @@ const RestaurantsPage = () => {
             specialty: "Cochinillo Asado",
             desc: "El restaurante más antiguo del mundo según el Guinness. ¡Historia comestible!",
             rating: "⭐⭐⭐⭐⭐",
-            image: "https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?q=80&w=1200&auto=format&fit=crop"
         },
         {
             name: "Casa Lucio",
             specialty: "Huevos Estrellados",
             desc: "Un clásico madrileño. Si no has comido sus huevos, no has estado en Madrid.",
             rating: "⭐⭐⭐⭐",
-            image: "https://images.unsplash.com/photo-1541544741938-0af808b77e40?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1541544741938-0af808b77e40?q=80&w=1200&auto=format&fit=crop"
         },
         {
             name: "Chocolatería San Ginés",
             specialty: "Chocolate con Churros",
             desc: "Perfecto para después de una caminata o para empezar el día con energía.",
             rating: "⭐⭐⭐⭐⭐",
-            image: "https://images.unsplash.com/photo-1514361892635-6b07eaf1aa5a?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1514361892635-6b07eaf1aa5a?q=80&w=1200&auto=format&fit=crop"
         }
 
 
@@ -102,7 +103,13 @@ const RestaurantsPage = () => {
                         {restaurants.map((rest, index) => (
                             <div key={index} className={styles.item}>
                                 <div className={styles.itemImageWrapper}>
-                                    <img src={rest.image} alt={rest.name} className={styles.itemImage} />
+                                    <Image
+                                        src={rest.image}
+                                        alt={rest.name}
+                                        width={400}
+                                        height={300}
+                                        className={styles.itemImage}
+                                    />
                                 </div>
                                 <div className={styles.itemInfo}>
                                     <div className={styles.itemNameWrapper}>

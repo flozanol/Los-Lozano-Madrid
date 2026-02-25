@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import styles from './page.module.css';
 
 const PlacesPage = () => {
@@ -9,31 +10,31 @@ const PlacesPage = () => {
             name: "Palacio Real",
             category: "Monumento",
             desc: "Residencia oficial de la Familia Real, aunque solo para actos de Estado.",
-            image: "https://images.unsplash.com/photo-1543783232-af9942f4a47d?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1543783232-af9942f4a47d?q=80&w=1200&auto=format&fit=crop"
         },
         {
             name: "Museo del Prado",
             category: "Arte",
             desc: "Nuestra pinacoteca más importante. Goya, Velázquez y El Greco nos esperan.",
-            image: "https://images.unsplash.com/photo-1542151624-945768565251?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1542151624-945768565251?q=80&w=1200&auto=format&fit=crop"
         },
         {
             name: "Parque del Retiro",
             category: "Naturaleza",
             desc: "El pulmón de Madrid. Paseo en barca obligado y visita al Palacio de Cristal.",
-            image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1200&auto=format&fit=crop"
         },
         {
             name: "Gran Vía",
             category: "Ocio",
             desc: "El Broadway madrileño. Luces, teatros y la mejor arquitectura del siglo XX.",
-            image: "https://images.unsplash.com/photo-1512753360424-aa830768e82a?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1512753360424-aa830768e82a?q=80&w=1200&auto=format&fit=crop"
         },
         {
             name: "Templo de Debod",
             category: "Historia",
             desc: "Un regalo de Egipto. El mejor atardecer de todo Madrid sin ninguna duda.",
-            image: "https://images.unsplash.com/photo-1568289463259-245c48b26500?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1568289463259-245c48b26500?q=80&w=1200&auto=format&fit=crop"
         }
 
 
@@ -47,7 +48,7 @@ const PlacesPage = () => {
     const handleAdd = (e: React.FormEvent) => {
         e.preventDefault();
         if (newItem.name && newItem.desc) {
-            const img = newItem.image || "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=600&q=80";
+            const img = newItem.image || "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=600&auto=format&fit=crop";
             setPlaces([...places, { ...newItem, image: img }]);
             setNewItem({ name: '', category: 'Visita', desc: '', image: '' });
             setShowForm(false);
@@ -111,7 +112,13 @@ const PlacesPage = () => {
                         {places.map((place, index) => (
                             <div key={index} className={styles.card}>
                                 <div className={styles.imageBox}>
-                                    <img src={place.image} alt={place.name} />
+                                    <Image
+                                        src={place.image}
+                                        alt={place.name}
+                                        width={600}
+                                        height={400}
+                                        className={styles.image}
+                                    />
                                     <span className={styles.category}>{place.category}</span>
                                 </div>
                                 <div className={styles.cardContent}>
