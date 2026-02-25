@@ -1,66 +1,45 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Countdown from '@/components/Countdown';
+import Image from 'next/image';
+import { Sparkles } from 'lucide-react';
+import styles from './page.module.css';
 
-export default function Home() {
+
+const HomePage = () => {
+  const tripStartDate = "2026-03-26T00:00:00";
+
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className={styles.hero}>
+      <div className={`${styles.heroContent} glass`}>
+        <Countdown targetDate={tripStartDate} />
+
+        <div className={styles.logoWrapper}>
+          <Image
+            src="/logo.png"
+            alt="Los Lozano Madrid 2026"
+            width={500}
+            height={250}
+            className={styles.logoImage}
+            priority
+          />
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+
+        <h1 className={styles.title}>VILLA Y CORTE</h1>
+        <p className={styles.dates}>26 MAR — 06 ABR 2026</p>
+
+        <div className={styles.ctaGroup}>
+          <a href="/chat" className="btn-primary">
+            <Sparkles size={20} />
+            Consultar Guía IA
           </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          <a href="/calendar" className={styles.btnSecondary}>Ver Itinerario</a>
         </div>
-      </main>
+      </div>
+
+      <div className={styles.heroPattern}></div>
     </div>
+
   );
-}
+};
+
+export default HomePage;

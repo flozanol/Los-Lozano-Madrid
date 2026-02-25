@@ -1,0 +1,101 @@
+.socialPage {
+    padding: 6rem 0;
+    min-height: 100vh;
+    background: var(--madrid-soft-gray);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.header h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+}
+
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.inputCard {
+    padding: 2.5rem;
+    border-radius: 25px;
+    margin-bottom: 4rem;
+    border: 1px solid var(--glass-border);
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+    border: 1px solid #eee;
+}
+
+.icon {
+    color: var(--madrid-palace-gold);
+}
+
+.input,
+.textarea {
+    border: none;
+    width: 100%;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.input:focus,
+.textarea:focus {
+    outline: none;
+}
+
+.textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.messagesList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.messageCard {
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+}
+
+.messageHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.userName {
+    font-weight: 700;
+    color: var(--madrid-crimson);
+}
+
+.date {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.messageBody {
+    line-height: 1.6;
+    color: #444;
+}

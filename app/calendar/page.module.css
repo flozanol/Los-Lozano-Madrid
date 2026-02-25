@@ -1,0 +1,152 @@
+.calendarPage {
+    padding: 5rem 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.title {
+    font-size: 3.5rem;
+}
+
+.addForm {
+    background: var(--madrid-gray);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    align-items: flex-end;
+    border: 1px solid #ddd;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroup label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--madrid-black);
+}
+
+.formGroup input,
+.formGroup select {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+
+.dayCard {
+    background: #fff;
+    border-radius: 12px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+    border: 1px solid #eee;
+}
+
+.dayCard:hover {
+    transform: translateX(5px);
+    border-color: var(--madrid-gold);
+}
+
+.dateSide {
+    background: var(--madrid-black);
+    color: #fff;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+}
+
+.dayNum {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.monthName {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--madrid-gold);
+}
+
+.eventSide {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.eventSide h3 {
+    font-size: 1.1rem;
+    color: var(--madrid-black);
+}
+
+.badge {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+/* Status Colors */
+.reservado .badge {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.reservado .dateSide {
+    background: #1976d2;
+}
+
+.pendiente .badge {
+    background: #fff8e1;
+    color: #f57f17;
+}
+
+.pendiente .dateSide {
+    background: #f57f17;
+}
+
+.libre .badge {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.libre .dateSide {
+    background: #2e7d32;
+}
+
+.confirmado .badge {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.confirmado .dateSide {
+    background: #c2185b;
+}

@@ -1,0 +1,39 @@
+.mapPage {
+    padding: 5rem 0;
+}
+
+.title {
+    text-align: center;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    text-align: center;
+    margin-bottom: 4rem;
+    color: #666;
+}
+
+.mapWrapper {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border: 5px solid white;
+}
+
+.loading {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-family: var(--font-heading);
+}
+
+.popup {
+    font-family: var(--font-body);
+}
+
+.popup strong {
+    color: var(--madrid-red);
+}
