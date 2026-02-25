@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
 import { Camera, Upload, Image as ImageIcon, Loader2 } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
@@ -20,6 +19,7 @@ const GalleryPage = () => {
     const [inputUser, setInputUser] = useState('');
     const [isUploading, setIsUploading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     useEffect(() => {
         fetchPhotos();
@@ -38,14 +38,59 @@ const GalleryPage = () => {
         setIsLoading(false);
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setSelectedFile(e.target.files[0]);
+        }
+    };
+
     const handleUpload = async () => {
-        if (!inputCaption || !inputUser) {
-            alert('Por favor, indica tu nombre y un pie de foto.');
+        if (!inputCaption || !inputUser || !selectedFile) {
+            alert('Por favor, selecciona una foto, indica tu nombre y un pie de foto.');
             return;
         }
 
-        // This is a placeholder for real Supabase Storage integration
-        alert('Conexión con Supabase establecida. Para subir fotos reales, configura el bucket en Supabase Dashboard.');
+        setIsUploading(true);
+        try {
+            const fileExt = selectedFile.name.split('.').pop();
+            const fileName = `${Math.random()}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            // 1. Upload to Supabase Storage (Bucket name: gallery)
+            const { error: uploadError } = await supabase.storage
+                .from('gallery')
+                .upload(filePath, selectedFile);
+
+            if (uploadError) throw uploadError;
+
+            // 2. Get Public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('gallery')
+                .getPublicUrl(filePath);
+
+            // 3. Save reference to database
+            const { error: dbError } = await supabase
+                .from('photos')
+                .insert([
+                    {
+                        url: publicUrl,
+                        caption: inputCaption,
+                        user_name: inputUser
+                    }
+                ]);
+
+            if (dbError) throw dbError;
+
+            alert('¡Foto subida con éxito!');
+            setInputCaption('');
+            setSelectedFile(null);
+            fetchPhotos();
+        } catch (error: any) {
+            console.error('Error:', error);
+            alert(`Error al subir: ${error.message || 'Verifica la configuración del bucket'}`);
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     return (
@@ -55,7 +100,6 @@ const GalleryPage = () => {
                 style={{ backgroundImage: 'url(/madrid_movida_80s.png)' }}
             ></div>
             <div className={`content-wrapper ${styles.galleryPage}`}>
-
                 <div className="container">
                     <header className={styles.header}>
                         <h1>Galería <span className="text-gold">Familiar</span></h1>
@@ -80,13 +124,20 @@ const GalleryPage = () => {
                                     className={styles.input}
                                 />
                             </div>
-                            <div className={styles.dropzone}>
-                                <Camera size={48} className="text-gold" />
-                                <p>Haz clic para seleccionar una foto</p>
+                            <div className={styles.dropzone} onClick={() => document.getElementById('file-input')?.click()}>
+                                <input
+                                    type="file"
+                                    id="file-input"
+                                    hidden
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                />
+                                <Camera size={48} className={selectedFile ? "text-success" : "text-gold"} />
+                                <p>{selectedFile ? `Foto seleccionada: ${selectedFile.name}` : "Pulsa aquí para elegir una foto"}</p>
                             </div>
                             <button className="btn-primary" onClick={handleUpload} disabled={isUploading}>
-                                {isUploading ? <Loader2 className="animate-spin" /> : <Upload size={20} />}
-                                Subir Foto
+                                {isUploading ? <Loader2 className="animate-spin" size={20} /> : <Upload size={20} />}
+                                {isUploading ? 'Subiendo...' : 'Publicar en Galería'}
                             </button>
                         </div>
                     </section>
