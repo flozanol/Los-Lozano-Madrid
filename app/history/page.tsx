@@ -1,70 +1,163 @@
+'use client';
+
+import {
+    Users,
+    Map,
+    Compass,
+    Crown,
+    ShieldAlert,
+    Palette,
+    Zap,
+    CheckCircle2,
+    Trophy,
+    History as HistoryIcon
+} from 'lucide-react';
 import styles from './page.module.css';
 
 const HistoryPage = () => {
-    const sections = [
+    const stats = [
+        { icon: <Users size={24} />, label: "Habitantes Ciudad", value: "3.3 Millones", detail: "La más poblada de España" },
+        { icon: <Map size={24} />, label: "Comunidad Madrid", value: "6.8 Millones", detail: "El motor económico del país" },
+        { icon: <Compass size={24} />, label: "Altitud", value: "657 Metros", detail: "Una de las capitales más altas de Europa" },
+        { icon: <CheckCircle2 size={24} />, label: "Fundación", value: "Año 865", detail: "Por el Emir Muhammad I" }
+    ];
+
+    const timeline = [
         {
-            title: "Mayrit: Los Orígenes Árabes (S. IX)",
-            text: "Madrid fue fundada por el emir Muhammad I de Córdoba como una atalaya militar para defender Toledo. El nombre original, 'Mayrit', significa 'lugar de abundantes aguas', en referencia a los arroyos que cruzaban la zona. Todavía se pueden ver restos de la muralla árabe cerca de la Cuesta de la Vega.",
-            image: "/madrid_mayrit_arabic.png"
+            year: "865 - 1083",
+            title: "Mayrit: El Origen Musulmán",
+            subtitle: "La Atalaya del Agua",
+            text: "Madrid no nació como una ciudad, sino como una fortaleza militar (alcazaba) construida por los árabes para vigilar los pasos de la Sierra y proteger Toledo. El nombre viene de 'Mayrit', que significa 'lugar de abundantes aguas'. ¡Bajo el Palacio Real todavía quedan restos de esta historia!",
+            image: "/madrid_mayrit_arabic.png",
+            icon: <ShieldAlert className="text-gold" />
         },
         {
-            title: "El Madrid de los Austrias y la Capitalidad (1561)",
-            text: "Felipe II tomó la decisión trascendental de trasladar la Corte a Madrid en 1561. Durante el reinado de los Habsburgo, la ciudad creció con calles estrechas y conventos. Es la época de la Plaza Mayor, el Ayuntamiento y el Madrid que Cervantes y Lope de Vega recorrieron en el Siglo de Oro.",
-            image: "/madrid_austrias_habsburg.png"
+            year: "1561",
+            title: "La Capital del Imperio",
+            subtitle: "Donde nunca se ponía el sol",
+            text: "Felipe II elige Madrid como capital del Imperio Español. En esta época, España controlaba gran parte de América, Italia y Filipinas. La ciudad se llenó de artistas como Cervantes (escribió el Quijote aquí) y Velázquez. La Plaza Mayor era el centro de todo: juicios, fiestas y hasta corridas de toros.",
+            image: "/madrid_austrias_habsburg.png",
+            icon: <Crown className="text-gold" />
         },
         {
-            title: "La Ilustración de los Borbones (S. XVIII)",
-            text: "Con la llegada del primer Borbón, Felipe V, y especialmente con Carlos III (conocido como 'el mejor alcalde de Madrid'), la ciudad vivió una gran transformación. Se diseñaron el Paseo del Prado, la Puerta de Alcalá y se construyó el Palacio Real tras el incendio del Antiguo Alcázar.",
-            image: "/madrid_royalty_borbones.png"
+            year: "1759 - 1788",
+            title: "Carlos III: El Mejor Alcalde",
+            subtitle: "Luces y Museos",
+            text: "El rey Carlos III odiaba que Madrid fuera sucia y oscura. La transformó totalmente: puso alcantarillas, alumbrado público y construyó monumentos como la Puerta de Alcalá, la Fuente de Cibeles y el edificio que hoy es el Museo del Prado.",
+            image: "/madrid_royalty_borbones.png",
+            icon: <Palette className="text-gold" />
         },
         {
-            title: "El Siglo XIX: Ensanchas y Ferrocarriles",
-            text: "Madrid se moderniza. Se derriban las antiguas murallas para dar paso al Plan Castro, creando el elegante Barrio de Salamanca. Aparece la iluminación eléctrica, el tranvía y el ferrocarril, conectando a Madrid con el resto de Europa mientras la ciudad late con la bohemia de sus cafés.",
-            image: "/madrid_xix_century.png"
-        },
-        {
-            title: "La Movida y el Madrid del Siglo XXI",
-            text: "Tras la transición, Madrid estalló en 'La Movida': un movimiento cultural de libertad, arte y noche. Hoy, Madrid es una metrópolis global que combina su herencia imperial con una modernidad cosmopolita, siendo un referente mundial de gastronomía, arte y alegría de vivir.",
-            image: "/madrid_movida_80s.png"
+            year: "1975 - 1985",
+            title: "La Movida Madrileña",
+            subtitle: "Explosión de Libertad",
+            text: "Tras años de dictadura, con la llegada de la democracia, Madrid se convirtió en la ciudad más libre y fiestera del mundo. Cineastas como Almodóvar y músicos inundaron Malasaña. Fue una revolución cultural que todavía define el espíritu alegre y nocturno de la ciudad.",
+            image: "/madrid_movida_80s.png",
+            icon: <Zap className="text-gold" />
         }
     ];
 
-
+    const facts = [
+        { title: "El Oso y el Madroño", text: "Es el símbolo de Madrid. ¿Por qué? Porque antiguamente había muchísimos osos en los bosques que rodeaban la ciudad." },
+        { title: "Km 0", text: "En la Puerta del Sol está el origen de todas las carreteras de España. Si te pones encima, ¡estás en el centro de la 'estrella' española!" },
+        { title: "El Restaurante más viejo", text: "Casa Botín (cerca de Plaza Mayor) tiene el récord Guinness del restaurante más antiguo del mundo abierto sin pausa desde 1725." },
+        { title: "Ciudad de Fútbol", text: "Madrid es la única ciudad con dos equipos (Real Madrid y Atlético) que han jugado tres finales de Champions entre ellos." }
+    ];
 
     return (
-        <>
-            <div
-                className="section-bg"
-                style={{ backgroundImage: 'url(/madrid_mayrit_arabic.png)' }}
-            ></div>
-            <div className="content-wrapper">
-                <div className={styles.historyPage}>
+        <div className={styles.container}>
+            <div className="section-bg" style={{ backgroundImage: 'url(/madrid_xix_century.png)', opacity: 0.2 }}></div>
 
-                    <header className={styles.header}>
-                        <div className="container">
-                            <h1 className={styles.mainTitle}>Historia de <span className="text-gold">Madrid</span></h1>
-                            <p className={styles.subtitle}>Un recorrido por los siglos en la Villa y Corte.</p>
-                        </div>
-                    </header>
-
+            <div className={`content-wrapper ${styles.historyView}`}>
+                {/* HERO SECTION */}
+                <header className={styles.hero}>
                     <div className="container">
-                        <div className={styles.timeline}>
-                            {sections.map((section, index) => (
-                                <div key={index} className={styles.section}>
-                                    <div className={styles.content}>
-                                        <h2>{section.title}</h2>
-                                        <p>{section.text}</p>
-                                    </div>
-                                    <div className={styles.imageWrapper}>
-                                        <img src={section.image} alt={section.title} className={styles.image} />
+                        <div className={styles.badge}>
+                            <HistoryIcon size={16} />
+                            <span>Crónica de la Villa y Corte</span>
+                        </div>
+                        <h1 className={styles.title}>España & <span className="text-gold">Madrid</span></h1>
+                        <p className={styles.lead}>
+                            De una pequeña torre árabe a ser el corazón de un Imperio Global.
+                            Descubre los secretos de la ciudad que nunca duerme.
+                        </p>
+                    </div>
+                </header>
+
+                {/* QUICK STATS */}
+                <section className={styles.statsGrid}>
+                    <div className="container">
+                        <div className={styles.statsWrapper}>
+                            {stats.map((stat, i) => (
+                                <div key={i} className={`${styles.statCard} glass`}>
+                                    <div className={styles.statIcon}>{stat.icon}</div>
+                                    <div className={styles.statInfo}>
+                                        <span className={styles.statLabel}>{stat.label}</span>
+                                        <span className={styles.statValue}>{stat.value}</span>
+                                        <p className={styles.statDetail}>{stat.detail}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
-                </div>
+                </section>
+
+                {/* TIMELINE SECTION */}
+                <section className={styles.timelineSection}>
+                    <div className="container">
+                        <h2 className={styles.sectionTitle}>La Línea del <span className="text-gold">Tiempo</span></h2>
+                        <div className={styles.timelineContainer}>
+                            {timeline.map((item, i) => (
+                                <div key={i} className={styles.timelineItem}>
+                                    <div className={styles.timelineYear}>
+                                        <div className={styles.yearCircle}>{item.icon}</div>
+                                        <span>{item.year}</span>
+                                    </div>
+                                    <div className={`${styles.timelineContent} glass`}>
+                                        <div className={styles.imgBox}>
+                                            <img src={item.image} alt={item.title} />
+                                        </div>
+                                        <div className={styles.textBox}>
+                                            <span className={styles.subtitle}>{item.subtitle}</span>
+                                            <h3>{item.title}</h3>
+                                            <p>{item.text}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* FUN FACTS CROSS SECTION */}
+                <section className={styles.factsSection}>
+                    <div className="container">
+                        <div className={`${styles.factsGrid} glass`}>
+                            <div className={styles.factsHeader}>
+                                <Trophy className="text-gold" size={40} />
+                                <h2>¿Sabías que...?</h2>
+                                <p>Cosas curiosas para contarle a tus amigos cuando vuelvas.</p>
+                            </div>
+                            <div className={styles.factsList}>
+                                {facts.map((fact, i) => (
+                                    <div key={i} className={styles.factItem}>
+                                        <h4>{fact.title}</h4>
+                                        <p>{fact.text}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* FOOTER CALL TO ACTION */}
+                <footer className={styles.historyFooter}>
+                    <div className="container text-center">
+                        <p>Y hoy en 2026, ¡vosotros formáis parte de esta historia!</p>
+                    </div>
+                </footer>
             </div>
-        </>
+        </div>
     );
 };
 
