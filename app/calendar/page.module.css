@@ -45,146 +45,107 @@
     font-family: inherit;
 }
 
-.calendarGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1.5rem;
+.calendarContainer {
+    margin-top: 2rem;
+    overflow-x: auto;
 }
 
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    min-width: 900px;
+}
 
-.dayC.card {
+.dayHeader {
+    text-align: center;
+    padding: 1rem;
+    font-family: var(--font-heading);
+    color: var(--madrid-palace-gold);
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+.calendarDay {
+    min-height: 180px;
+    padding: 0.8rem;
     display: flex;
-    align-items: center;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    border: 1px solid var(--glass-border);
+    flex-direction: column;
+    gap: 8px;
     transition: var(--transition-smooth);
 }
 
-.card:hover {
-    transform: translateX(10px);
-    border-color: var(--madrid-palace-gold);
+.calendarDay:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-.deleteBtn {
+.dayNumber {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--madrid-luxury-black);
+    margin-bottom: 0.5rem;
+}
+
+.eventCard {
+    background: var(--madrid-crimson);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(161, 17, 22, 0.2);
+    transition: var(--transition-smooth);
+}
+
+.eventCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(161, 17, 22, 0.3);
+}
+
+.eventTime {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    opacity: 0.8;
+    margin-bottom: 2px;
+}
+
+.eventTitle {
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.miniDeleteBtn {
     position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 2px;
+    right: 5px;
     background: none;
     border: none;
-    color: var(--madrid-crimson);
-    font-size: 2rem;
+    color: white;
+    font-size: 1.2rem;
     cursor: pointer;
     opacity: 0;
     transition: var(--transition-smooth);
 }
 
-.card:hover .deleteBtn {
+.eventCard:hover .miniDeleteBtn {
     opacity: 1;
 }
 
-.deleteBtn:hover {
-    color: red;
-    transform: translateY(-50%) scale(1.2);
+.miniDeleteBtn:hover {
+    transform: scale(1.3);
+    color: var(--madrid-palace-gold);
 }
 
-.dayCard {
-    background: #fff;
-    border-radius: 12px;
-    display: flex;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transition: var(--transition);
-    border: 1px solid #eee;
-}
+@media (max-width: 1000px) {
+    .calendarGrid {
+        grid-template-columns: repeat(1, 1fr);
+        min-width: 100%;
+    }
 
-.dayCard:hover {
-    transform: translateX(5px);
-    border-color: var(--madrid-gold);
-}
-
-.dateSide {
-    background: var(--madrid-black);
-    color: #fff;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 90px;
-}
-
-.dayNum {
-    font-size: 2rem;
-    font-weight: 900;
-    line-height: 1;
-}
-
-.monthName {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--madrid-gold);
-}
-
-.eventSide {
-    padding: 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.eventSide h3 {
-    font-size: 1.1rem;
-    color: var(--madrid-black);
-}
-
-.badge {
-    font-size: 0.7rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    width: fit-content;
-}
-
-/* Status Colors */
-.reservado .badge {
-    background: #e3f2fd;
-    color: #1976d2;
-}
-
-.reservado .dateSide {
-    background: #1976d2;
-}
-
-.pendiente .badge {
-    background: #fff8e1;
-    color: #f57f17;
-}
-
-.pendiente .dateSide {
-    background: #f57f17;
-}
-
-.libre .badge {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-.libre .dateSide {
-    background: #2e7d32;
-}
-
-.confirmado .badge {
-    background: #fce4ec;
-    color: #c2185b;
-}
-
-.confirmado .dateSide {
-    background: #c2185b;
+    .calendarDay {
+        min-height: auto;
+    }
 }

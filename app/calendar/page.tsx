@@ -99,22 +99,35 @@ const CalendarPage = () => {
                     </form>
                 )}
 
-                <div className={styles.calendarGrid}>
-                    {itinerary.map((item, index) => (
-                        <div key={index} className={`${styles.card} glass`}>
-                            <div className={styles.dateInfo}>
-                                <span className={styles.date}>{item.date}</span>
-                                <span className={styles.time}>{item.time}</span>
+                <div className={styles.calendarContainer}>
+                    <div className={styles.calendarGrid}>
+                        {/* Weekly Header */}
+                        {['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM'].map(day => (
+                            <div key={day} className={styles.dayHeader}>{day}</div>
+                        ))}
+
+                        {/* Calendar Days */}
+                        {itinerary.map((item, index) => (
+                            <div key={index} className={`${styles.calendarDay} glass`}>
+                                <div className={styles.dayNumber}>
+                                    <span>{item.date}</span>
+                                </div>
+                                <div className={styles.eventCard}>
+                                    <span className={styles.eventTime}>{item.time}</span>
+                                    <p className={styles.eventTitle}>{item.event}</p>
+                                    <button
+                                        className={styles.miniDeleteBtn}
+                                        onClick={() => deleteItem(index)}
+                                        title="Eliminar"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
                             </div>
-                            <div className={styles.eventInfo}>
-                                <h3>{item.event}</h3>
-                            </div>
-                            <button className={styles.deleteBtn} onClick={() => deleteItem(index)} aria-label="Eliminar">
-                                ×
-                            </button>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+
             </div>
         </>
     );

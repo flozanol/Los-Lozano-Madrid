@@ -24,12 +24,6 @@ const PlacesPage = () => {
             image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1200&q=80"
         },
         {
-            name: "Plaza de Cibeles",
-            category: "Monumento",
-            desc: "Icono de la ciudad. Donde se celebran los triunfos y late el corazón de Madrid.",
-            image: "/madrid_hero_cibeles.png"
-        },
-        {
             name: "Gran Vía",
             category: "Ocio",
             desc: "El Broadway madrileño. Luces, teatros y la mejor arquitectura del siglo XX.",
@@ -41,6 +35,7 @@ const PlacesPage = () => {
             desc: "Un regalo de Egipto. El mejor atardecer de todo Madrid sin ninguna duda.",
             image: "https://images.unsplash.com/photo-1568289463259-245c48b26500?auto=format&fit=crop&w=1200&q=80"
         }
+
 
     ]);
 

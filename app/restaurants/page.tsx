@@ -24,8 +24,9 @@ const RestaurantsPage = () => {
             specialty: "Chocolate con Churros",
             desc: "Perfecto para después de una caminata o para empezar el día con energía.",
             rating: "⭐⭐⭐⭐⭐",
-            image: "https://images.unsplash.com/photo-1514516348920-f319999a5e5a?auto=format&fit=crop&w=1200&q=80"
+            image: "https://images.unsplash.com/photo-1514361892635-6b07eaf1aa5a?auto=format&fit=crop&w=1200&q=80"
         }
+
 
     ]);
 
