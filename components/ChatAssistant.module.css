@@ -6,7 +6,7 @@
 }
 
 .floatingButton {
-    background: var(--madrid-crimson);
+    background: var(--madrid-city-blue);
     color: white;
     border: none;
     padding: 12px 24px;
@@ -17,14 +17,14 @@
     gap: 10px;
     font-size: 1.1rem;
     font-weight: 700;
-    box-shadow: 0 10px 25px rgba(161, 17, 22, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 69, 153, 0.3);
     transition: var(--transition-smooth);
-    border: 2px solid var(--madrid-palace-gold);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .floatingButton:hover {
     transform: scale(1.05) translateY(-5px);
-    background: var(--madrid-accent-gold);
+    background: var(--madrid-sky-blue);
 }
 
 .floatingButton.hidden {
@@ -62,7 +62,7 @@
 
 .chatHeader {
     padding: 20px;
-    background: var(--madrid-crimson);
+    background: var(--madrid-city-blue);
     color: white;
     display: flex;
     justify-content: space-between;
@@ -131,7 +131,7 @@
 }
 
 .user .messageContent {
-    background: var(--madrid-crimson);
+    background: var(--madrid-city-blue);
     color: white;
     border-bottom-right-radius: 4px;
 }
@@ -164,7 +164,7 @@
 }
 
 .chatInput button {
-    background: var(--madrid-crimson);
+    background: var(--madrid-city-blue);
     color: white;
     border: none;
     width: 40px;

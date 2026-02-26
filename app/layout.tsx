@@ -7,9 +7,9 @@ export const metadata: Metadata = {
   title: "Los Lozano en Madrid 2026",
   description: "App de viaje para la familia Lozano en Madrid",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/logo-lozano-clean.png",
+    shortcut: "/logo-lozano-clean.png",
+    apple: "/logo-lozano-clean.png",
   },
 };
 

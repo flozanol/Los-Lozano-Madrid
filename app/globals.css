@@ -1,14 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap');
 
 :root {
-  /* Madrid Royal Palette */
+  /* Madrid Royal Palette (Legacy) */
   --madrid-crimson: #A11116;
   --madrid-palace-gold: #D4AF37;
   --madrid-luxury-black: #121212;
   --madrid-pure-white: #FFFFFF;
   --madrid-soft-gray: #F8F9FA;
   --madrid-accent-gold: #B8860B;
+
+  /* NEW: Madrid Institutional Palette */
+  --madrid-city-blue: #004599;
+  --madrid-sky-blue: #0076CE;
+  --madrid-deep-navy: #002D62;
+
   --gold: var(--madrid-palace-gold);
+  --blue: var(--madrid-city-blue);
 
   --background: var(--madrid-pure-white);
   --foreground: var(--madrid-luxury-black);
@@ -18,10 +25,11 @@
 
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 69, 153, 0.1);
 
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --border-radius: 16px;
+  --border-radius-pill: 50px;
 }
 
 [data-theme='dark'] {
@@ -29,6 +37,7 @@
   --foreground: var(--madrid-pure-white);
   --glass-bg: rgba(18, 18, 18, 0.7);
   --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -72,7 +81,7 @@ h6 {
 }
 
 .btn-primary {
-  background: var(--madrid-crimson);
+  background: var(--madrid-city-blue);
   color: white;
   padding: 1rem 2rem;
   border-radius: var(--border-radius);
@@ -104,6 +113,59 @@ h6 {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.text-madrid-gradient {
+  background: linear-gradient(135deg, #FFFFFF 0%, #0076CE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.btn-primary-blue {
+  background: var(--madrid-city-blue);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: var(--border-radius-pill);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0, 69, 153, 0.4);
+}
+
+.btn-primary-blue:hover {
+  background: var(--madrid-sky-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 118, 206, 0.4);
+}
+
+.btn-secondary-outline {
+  background: transparent;
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: var(--border-radius-pill);
+  font-weight: 700;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-secondary-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  transform: translateY(-3px);
 }
 
 .premium-card {

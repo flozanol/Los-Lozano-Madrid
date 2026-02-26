@@ -49,6 +49,26 @@
     object-fit: contain;
 }
 
+.navInstitutional {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: 2rem;
+}
+
+.navCityLogo {
+    height: 35px;
+    width: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+    .navInstitutional {
+        display: none;
+    }
+}
+
 .navLinks {
     display: flex;
     list-style: none;
@@ -65,7 +85,7 @@
 }
 
 .navLinks a:hover {
-    color: var(--madrid-crimson);
+    color: var(--madrid-city-blue);
 }
 
 .mobileToggle {
@@ -120,7 +140,7 @@
     /* Burger Animation when active */
     .bar1 {
         transform: rotate(-45deg) translate(-5px, 6px);
-        background: var(--madrid-crimson);
+        background: var(--madrid-city-blue);
     }
 
     .bar2 {
@@ -129,6 +149,6 @@
 
     .bar3 {
         transform: rotate(45deg) translate(-6px, -7px);
-        background: var(--madrid-crimson);
+        background: var(--madrid-city-blue);
     }
 }

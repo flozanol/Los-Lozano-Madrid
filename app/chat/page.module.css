@@ -11,7 +11,7 @@
 .iconWrapper {
     width: 60px;
     height: 60px;
-    background: var(--madrid-crimson);
+    background: var(--madrid-city-blue);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -66,7 +66,7 @@
 }
 
 .user .avatar {
-    background: var(--madrid-crimson);
+    background: var(--madrid-city-blue);
     color: white;
 }
 
@@ -78,7 +78,7 @@
 }
 
 .user .messageContent {
-    background: var(--madrid-crimson);
+    background: var(--madrid-city-blue);
     color: white;
     border-top-right-radius: 4px;
 }
@@ -107,14 +107,14 @@
 }
 
 .inputArea input:focus {
-    border-color: var(--madrid-crimson);
+    border-color: var(--madrid-city-blue);
 }
 
 .inputArea button {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background: var(--madrid-crimson);
+    background: var(--madrid-city-blue);
     color: white;
     border: none;
     cursor: pointer;

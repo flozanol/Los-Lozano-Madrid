@@ -15,12 +15,23 @@ const Navbar = () => {
     <nav className={styles.nav}>
       <div className={`${styles.navContainer} container`}>
         <Link href="/" className={styles.logo}>
-          <Image src="/logo.png" alt="Logo" width={50} height={40} className={styles.logoImg} />
+          <Image src="/logo-lozano-clean.png" alt="Logo" width={55} height={45} className={styles.logoImg} />
           <div className={styles.logoBrand}>
             <span className={styles.logoText}>LOZANO</span>
-            <span className={styles.logoYear}>2026</span>
+            <span className={styles.logoYear}>MADRID 2026</span>
           </div>
         </Link>
+
+        {/* Institutional Mark for every page */}
+        <div className={styles.navInstitutional}>
+          <Image
+            src="/madrid-city-logo-v2.jpg"
+            alt="Ayuntamiento de Madrid"
+            width={120}
+            height={60}
+            className={styles.navCityLogo}
+          />
+        </div>
 
 
         <button className={styles.mobileToggle} onClick={toggleMenu} aria-label="Toggle Navigation">
