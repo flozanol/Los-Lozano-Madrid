@@ -48,26 +48,32 @@ const MapPage = () => {
     }, [fetchAllData]);
 
     return (
-        <div className={styles.mapPage}>
-            <div className="container">
-                <header className={styles.header}>
-                    <h1 className={styles.title}>Mapa de <span className="text-gold">Experiencias</span></h1>
-                    <p className={styles.subtitle}>
-                        Toca cualquier punto del mapa para guardar un lugar.
-                        Comparte restaurantes, monumentos y rincones favoritos con todos.
-                    </p>
-                </header>
+        <>
+            <div
+                className="section-bg"
+                style={{ backgroundImage: 'url(/madrid_map_bg.png)' }}
+            ></div>
+            <div className={`content-wrapper ${styles.mapPage}`}>
+                <div className="container">
+                    <header className={styles.header}>
+                        <h1 className={styles.title}>Mapa de <span className="text-gold">Experiencias</span></h1>
+                        <p className={styles.subtitle}>
+                            Toca cualquier punto del mapa para guardar un lugar.
+                            Comparte restaurantes, monumentos y rincones favoritos con todos.
+                        </p>
+                    </header>
 
-                <div className={styles.mapWrapper}>
-                    <InteractiveMap
-                        pins={pins}
-                        places={places}
-                        restaurants={restaurants}
-                        onDataUpdate={fetchAllData}
-                    />
+                    <div className={styles.mapWrapper}>
+                        <InteractiveMap
+                            pins={pins}
+                            places={places}
+                            restaurants={restaurants}
+                            onDataUpdate={fetchAllData}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

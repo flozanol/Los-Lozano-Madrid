@@ -1,17 +1,17 @@
 .mapPage {
-    min-height: 100vh;
-    padding-top: 120px;
     color: white;
 }
 
 .header {
     text-align: center;
+    margin-top: 2rem;
     margin-bottom: 3rem;
 }
 
 .title {
     font-size: clamp(2.5rem, 8vw, 4rem);
     font-weight: 800;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .subtitle {
