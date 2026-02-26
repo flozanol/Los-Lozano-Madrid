@@ -1,9 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2, User, Users, Pencil } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2, User, Users, Pencil, CheckCircle } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
+
+const PARTICIPANTS = [
+    'Abuela Rosy', 'Fede', 'Marimar', 'Ale', 'Majo', 'Alo', 'Veros',
+    'Mariela', 'Rafa', 'Ceci', 'Andrés', 'Luis', 'Elvira'
+];
 
 interface ItineraryItem {
     id: string;
@@ -12,6 +17,7 @@ interface ItineraryItem {
     event_time: string;
     created_by: string;
     participants: string;
+    confirmed_participants?: string; // Comma separated list
     created_at: string;
 }
 
@@ -154,6 +160,30 @@ const CalendarPage = () => {
         }
     };
 
+    const toggleConfirmation = async (item: ItineraryItem, name: string) => {
+        const confirmed = item.confirmed_participants ? item.confirmed_participants.split(',').filter(n => n.trim() !== '') : [];
+        let newConfirmed;
+
+        if (confirmed.includes(name)) {
+            newConfirmed = confirmed.filter(n => n !== name);
+        } else {
+            newConfirmed = [...confirmed, name];
+        }
+
+        const { error } = await supabase
+            .from('itinerary')
+            .update({ confirmed_participants: newConfirmed.join(',') })
+            .eq('id', item.id);
+
+        if (!error) {
+            // Optimistic update
+            setItinerary(prev => prev.map(it => it.id === item.id ? { ...it, confirmed_participants: newConfirmed.join(',') } : it));
+        } else {
+            console.error(error);
+            alert('Error: Asegúrate de añadir la columna "confirmed_participants" (tipo texto) en la tabla "itinerary" de Supabase.');
+        }
+    };
+
     return (
         <>
             <div
@@ -277,6 +307,24 @@ const CalendarPage = () => {
                                                         <div className={styles.participants}>
                                                             <Users size={14} />
                                                             <span>Van: <strong>{item.participants || 'Toda la familia'}</strong></span>
+                                                        </div>
+                                                    </div>
+                                                    <div className={styles.confirmationSection}>
+                                                        <p className={styles.confTitle}>Confirmados:</p>
+                                                        <div className={styles.participantList}>
+                                                            {PARTICIPANTS.map(name => {
+                                                                const isConfirmed = item.confirmed_participants?.split(',').includes(name);
+                                                                return (
+                                                                    <button
+                                                                        key={name}
+                                                                        className={`${styles.confBadge} ${isConfirmed ? styles.confirmed : ''}`}
+                                                                        onClick={() => toggleConfirmation(item, name)}
+                                                                    >
+                                                                        {isConfirmed && <CheckCircle size={10} />}
+                                                                        {name}
+                                                                    </button>
+                                                                );
+                                                            })}
                                                         </div>
                                                     </div>
                                                 </div>
