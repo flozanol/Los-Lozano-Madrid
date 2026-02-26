@@ -37,12 +37,30 @@ const CalendarPage = () => {
         setIsLoading(true);
         const { data, error } = await supabase
             .from('itinerary')
-            .select('*')
-            .order('date_str', { ascending: true }) // Useful but created_at is safer for multi-month
-            .order('created_at', { ascending: true });
+            .select('*');
 
         if (!error && data) {
-            setItinerary(data);
+            const monthMap: Record<string, number> = {
+                'ENE': 0, 'FEB': 1, 'MAR': 2, 'ABR': 3, 'MAY': 4, 'JUN': 5,
+                'JUL': 6, 'AGO': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DIC': 11
+            };
+
+            const sorted = (data as ItineraryItem[]).sort((a, b) => {
+                const [dayA, monA] = a.date_str.split(' ');
+                const [dayB, monB] = b.date_str.split(' ');
+
+                const monthA = monthMap[monA] ?? 0;
+                const monthB = monthMap[monB] ?? 0;
+
+                if (monthA !== monthB) return monthA - monthB;
+
+                const dA = parseInt(dayA);
+                const dB = parseInt(dayB);
+                if (dA !== dB) return dA - dB;
+
+                return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+            });
+            setItinerary(sorted);
         }
         setIsLoading(false);
     };
@@ -183,38 +201,54 @@ const CalendarPage = () => {
                         </div>
                     ) : (
                         <div className={styles.itineraryList}>
-                            {itinerary.map((item) => (
-                                <div key={item.id} className={`${styles.itineraryCard} glass`}>
-                                    <div className={styles.dateBadge}>
-                                        <CalendarIcon size={16} />
-                                        <span>{item.date_str}</span>
-                                    </div>
-                                    <div className={styles.eventInfo}>
-                                        <div className={styles.eventHeader}>
-                                            <h3>{item.event_name}</h3>
-                                            <div className={styles.timeTag}>
-                                                <Clock size={14} />
-                                                <span>{item.event_time}</span>
-                                            </div>
-                                        </div>
-                                        <div className={styles.cardFooter}>
-                                            <div className={styles.author}>
-                                                <User size={14} />
-                                                <span>Propone: <strong>{item.created_by || 'Lozano'}</strong></span>
-                                            </div>
-                                            <div className={styles.participants}>
-                                                <Users size={14} />
-                                                <span>Van: <strong>{item.participants || 'Toda la familia'}</strong></span>
-                                            </div>
+                            {itinerary.reduce((acc: { date: string, items: ItineraryItem[] }[], item) => {
+                                const lastGroup = acc[acc.length - 1];
+                                if (lastGroup && lastGroup.date === item.date_str) {
+                                    lastGroup.items.push(item);
+                                } else {
+                                    acc.push({ date: item.date_str, items: [item] });
+                                }
+                                return acc;
+                            }, []).map((group) => (
+                                <div key={group.date} className={styles.daySection}>
+                                    <div className={styles.dayHeader}>
+                                        <div className={styles.dayLabel}>
+                                            <CalendarIcon size={18} />
+                                            <span>{group.date}</span>
                                         </div>
                                     </div>
-                                    <button
-                                        className={styles.deleteBtn}
-                                        onClick={() => deleteItem(item.id)}
-                                        title="Eliminar"
-                                    >
-                                        <Trash2 size={18} />
-                                    </button>
+                                    <div className={styles.dayItems}>
+                                        {group.items.map((item) => (
+                                            <div key={item.id} className={`${styles.itineraryCard} glass`}>
+                                                <div className={styles.eventInfo}>
+                                                    <div className={styles.eventHeader}>
+                                                        <h3>{item.event_name}</h3>
+                                                        <div className={styles.timeTag}>
+                                                            <Clock size={14} />
+                                                            <span>{item.event_time}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className={styles.cardFooter}>
+                                                        <div className={styles.author}>
+                                                            <User size={14} />
+                                                            <span>Propone: <strong>{item.created_by || 'Lozano'}</strong></span>
+                                                        </div>
+                                                        <div className={styles.participants}>
+                                                            <Users size={14} />
+                                                            <span>Van: <strong>{item.participants || 'Toda la familia'}</strong></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    className={styles.deleteBtn}
+                                                    onClick={() => deleteItem(item.id)}
+                                                    title="Eliminar"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             ))}
                             {itinerary.length === 0 && (

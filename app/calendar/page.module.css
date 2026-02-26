@@ -67,6 +67,40 @@
     margin: 0 auto 5rem;
 }
 
+.daySection {
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.dayHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-left: 0.5rem;
+}
+
+.dayLabel {
+    background: var(--gold);
+    color: black;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 800;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.dayItems {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding-left: 2rem;
+    border-left: 2px solid rgba(212, 175, 55, 0.2);
+    margin-left: 1.5rem;
+}
+
 .itineraryCard {
     display: flex;
     align-items: center;
@@ -75,24 +109,24 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     gap: 2rem;
     transition: all 0.3s ease;
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .itineraryCard:hover {
     border-color: var(--gold);
     transform: translateX(10px);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
 }
 
-.dateBadge {
-    background: var(--gold);
-    color: black;
-    padding: 0.8rem 1.2rem;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 80px;
-    font-weight: 800;
+.itineraryCard::before {
+    content: '';
+    position: absolute;
+    left: -2.1rem;
+    top: 50%;
+    width: 1rem;
+    height: 2px;
+    background: rgba(212, 175, 55, 0.4);
 }
 
 .eventInfo {
@@ -156,16 +190,26 @@
 }
 
 @media (max-width: 768px) {
+    .dayItems {
+        padding-left: 0;
+        border-left: none;
+        margin-left: 0;
+    }
+
+    .itineraryCard::before {
+        display: none;
+    }
+
     .itineraryCard {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 1.5rem;
+        padding: 1.5rem;
     }
 
-    .dateBadge {
-        flex-direction: row;
-        gap: 0.5rem;
-        min-width: auto;
+    .dayHeader {
+        justify-content: center;
+        padding-left: 0;
     }
 
     .eventHeader {
