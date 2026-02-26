@@ -87,27 +87,119 @@
     text-transform: uppercase;
 }
 
-.deleteBtn {
+.adminButtons {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: rgba(220, 38, 38, 0.8);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.editBtn,
+.deleteBtn {
+    background: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
     border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.2rem;
+    height: 2.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 10;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.editBtn:hover {
+    background: var(--gold);
+    color: black;
 }
 
 .deleteBtn:hover {
     background: #ef4444;
-    transform: scale(1.1);
+}
+
+.editing {
+    border-color: var(--gold) !important;
+}
+
+.editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.editForm input,
+.editForm textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.8rem;
+    color: white;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.coordInputs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.editActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btnSave,
+.btnCancelEdit {
+    flex: 1;
+    padding: 0.7rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.btnSave {
+    background: var(--gold);
+    color: black;
+    border: none;
+    font-weight: 700;
+}
+
+.btnCancelEdit {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.mapBadge {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: var(--gold);
+    color: black;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coordenadas {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.6;
 }
 
 .cardContent {
@@ -129,5 +221,9 @@
 @media (max-width: 768px) {
     .addForm {
         padding: 1.5rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
     }
 }

@@ -203,10 +203,26 @@
 }
 
 @media (max-width: 768px) {
+    .chatWrapper {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .floatingButton {
+        padding: 10px 18px;
+        font-size: 1rem;
+    }
+
     .chatWindow {
         width: calc(100vw - 40px);
-        height: 80vh;
-        right: -10px;
-        bottom: -10px;
+        max-width: 400px;
+        height: 70vh;
+        bottom: 0;
+        right: 0;
+    }
+
+    .messagesList {
+        background: rgba(255, 255, 255, 0.9);
+        /* More opaque background for readability on mobile */
     }
 }
