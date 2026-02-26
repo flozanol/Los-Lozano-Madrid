@@ -90,6 +90,7 @@ const RestaurantsPage = () => {
             setEditingId(null);
             fetchRestaurants();
         } else {
+            console.error(error);
             alert('Error al actualizar');
         }
         setIsSaving(false);
@@ -271,7 +272,7 @@ const RestaurantsPage = () => {
                                                 </div>
                                                 <div className={styles.editActions}>
                                                     <button onClick={() => handleUpdate(rest.id)} className={styles.btnSave} disabled={isSaving}>
-                                                        {isSaving ? <Loader2 className="animate-spin" size={16} /> : <><Check size={16} /> Guardar</>}
+                                                        {isSaving ? <Loader2 className="animate-spin" size={16} /> : <><Check size={16} /> Guardar Cambios</>}
                                                     </button>
                                                     <button onClick={() => setEditingId(null)} className={styles.btnCancelEdit}><X size={16} /> Cancelar</button>
                                                 </div>
