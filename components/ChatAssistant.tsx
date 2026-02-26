@@ -35,8 +35,12 @@ const ChatAssistant = () => {
             });
 
             const data = await response.json();
-            if (data.choices && data.choices[0]) {
+
+            if (data.choices && data.choices[0]?.message?.content) {
                 setMessages(prev => [...prev, data.choices[0].message]);
+            } else {
+                const errorMessage = data.error || '¡Vaya! Parece que Chulapo se ha quedado sin palabras. Inténtalo de nuevo en un momento.';
+                setMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
             }
         } catch (error) {
             console.error('Error in chat:', error);

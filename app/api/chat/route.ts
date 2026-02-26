@@ -11,12 +11,13 @@ export async function POST(req: Request) {
 
         // List of free fallback models provided by the user + current one
         const models = [
-            "liquid/lfm-2.5-1.2b-thinking:free",   // High quality thinking model
-            "google/gemma-3-27b-it:free",           // Current model
-            "arcee-ai/trinity-large-preview:free", // Large preview
-            "liquid/lfm-2.5-1.2b-instruct:free",   // Fast instruct model
-            "nvidia/nemotron-3-nano-30b-a3b:free",  // Reliable fallback
-            "arcee-ai/trinity-mini:free"           // Lightweight fallback
+            "google/gemma-3-27b-it:free",           // Reliable, high quality
+            "nvidia/nemotron-3-nano-30b-a3b:free",  // Very reliable fallback
+            "liquid/lfm-2.5-1.2b-thinking:free",    // Thinking model (slower, moved down)
+            "arcee-ai/trinity-large-preview:free",  // Large preview
+            "qwen/qwen-2.5-72b-instruct:free",      // Strong alternative
+            "mistralai/pixtral-12b:free",           // Good instruction following
+            "google/gemini-2.0-flash-exp:free"      // Fast fallback
         ];
 
         const systemPersona = "INSTRUCCIONES DE IDENTIDAD: Eres 'Chulapo', el asistente virtual de la familia Lozano en su viaje a Madrid 2026. Eres un experto en Madrid, conoces todos los rincones, historias y los mejores sitios para comer (especialmente Casa Lucio y San Ginés). Tu tono es alegre, servicial, un poco castizo pero muy educado. Siempre ayudas a la familia Lozano a que su viaje sea inolvidable. RESPONDE SIEMPRE EN ESPAÑOL Y DE FORMA CONCISA.";
@@ -51,12 +52,12 @@ export async function POST(req: Request) {
 
                 const data = await response.json();
 
-                if (response.ok && data.choices && data.choices[0]) {
-                    // Success! Return the response with the model name for debugging if needed
+                if (response.ok && data.choices && data.choices[0]?.message?.content?.trim()) {
+                    // Success! Return the response
                     return NextResponse.json(data);
                 } else {
-                    console.warn(`Model ${model} failed:`, data.error || 'Unknown error');
-                    lastError = data.error?.message || `Error with model ${model}`;
+                    console.warn(`Model ${model} failed or returned empty content:`, data.error || 'Empty content');
+                    lastError = data.error?.message || `El modelo ${model} devolvió una respuesta vacía.`;
                 }
             } catch (err) {
                 console.error(`Fetch error for model ${model}:`, err);
