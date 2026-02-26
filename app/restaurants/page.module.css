@@ -25,7 +25,7 @@
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
     border-radius: 20px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid rgba(0, 69, 153, 0.4);
 }
 
 .formGrid {
@@ -64,7 +64,7 @@
 
 .item:hover {
     transform: scale(1.01);
-    border-color: var(--gold);
+    border-color: var(--madrid-sky-blue);
 }
 
 .itemImageWrapper {
@@ -105,8 +105,8 @@
 }
 
 .editBtn:hover {
-    background: var(--gold);
-    color: black;
+    background: var(--madrid-city-blue);
+    color: white;
     transform: scale(1.1);
 }
 
@@ -123,7 +123,7 @@
 }
 
 .editing {
-    border-color: var(--gold) !important;
+    border-color: var(--madrid-city-blue) !important;
     grid-template-columns: 350px 1fr !important;
 }
 
@@ -170,7 +170,7 @@
     left: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--gold);
+    color: var(--madrid-sky-blue);
 }
 
 .inputWithIcon input {
@@ -199,15 +199,16 @@
 }
 
 .btnSave {
-    background: var(--gold);
-    color: black;
+    background: var(--madrid-city-blue);
+    color: white;
     border: none;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 69, 153, 0.4);
 }
 
 .btnSave:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    background: var(--madrid-sky-blue);
+    box-shadow: 0 6px 20px rgba(0, 118, 206, 0.4);
 }
 
 .btnCancelEdit {
@@ -225,7 +226,7 @@
 
 .itemNameWrapper h3 {
     font-size: 1.8rem;
-    color: var(--gold);
+    color: var(--madrid-sky-blue);
 }
 
 .specialty {
@@ -234,7 +235,7 @@
 }
 
 .specialty strong {
-    color: var(--gold);
+    color: var(--madrid-sky-blue);
 }
 
 .description {
@@ -249,12 +250,12 @@
     gap: 0.6rem;
     font-size: 0.9rem;
     opacity: 0.9;
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(0, 69, 153, 0.1);
     padding: 0.6rem 1.2rem;
     border-radius: 50px;
     width: fit-content;
-    color: var(--gold);
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    color: var(--madrid-sky-blue);
+    border: 1px solid rgba(0, 69, 153, 0.2);
 }
 
 .itemActions {
@@ -267,8 +268,8 @@
 
 .btnVote {
     background: none;
-    border: 1px solid var(--gold);
-    color: var(--gold);
+    border: 1px solid var(--madrid-city-blue);
+    color: var(--madrid-sky-blue);
     padding: 0.8rem 1.5rem;
     border-radius: 50px;
     cursor: pointer;
@@ -280,8 +281,8 @@
 }
 
 .btnVote:hover {
-    background: var(--gold);
-    color: black;
+    background: var(--madrid-city-blue);
+    color: white;
 }
 
 @media (max-width: 992px) {

@@ -23,7 +23,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid rgba(0, 69, 153, 0.4);
 }
 
 .formGrid {
@@ -60,7 +60,7 @@
 
 .card:hover {
     transform: translateY(-10px);
-    border-color: var(--gold);
+    border-color: var(--madrid-sky-blue);
 }
 
 .imageBox {
@@ -78,8 +78,8 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background: var(--gold);
-    color: black;
+    background: var(--madrid-city-blue);
+    color: white;
     padding: 0.4rem 1rem;
     border-radius: 50px;
     font-size: 0.8rem;
@@ -114,8 +114,8 @@
 }
 
 .editBtn:hover {
-    background: var(--gold);
-    color: black;
+    background: var(--madrid-city-blue);
+    color: white;
 }
 
 .deleteBtn:hover {
@@ -123,7 +123,7 @@
 }
 
 .editing {
-    border-color: var(--gold) !important;
+    border-color: var(--madrid-city-blue) !important;
 }
 
 .editForm {
@@ -167,8 +167,8 @@
 }
 
 .btnSave {
-    background: var(--gold);
-    color: black;
+    background: var(--madrid-city-blue);
+    color: white;
     border: none;
     font-weight: 700;
 }
@@ -183,8 +183,8 @@
     position: absolute;
     bottom: 1rem;
     right: 1rem;
-    background: var(--gold);
-    color: black;
+    background: var(--madrid-sky-blue);
+    color: white;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -209,7 +209,7 @@
 .cardContent h3 {
     font-size: 1.5rem;
     margin-bottom: 0.8rem;
-    color: var(--gold);
+    color: var(--madrid-sky-blue);
 }
 
 .cardContent p {

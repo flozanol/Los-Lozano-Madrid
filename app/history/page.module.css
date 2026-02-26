@@ -16,8 +16,8 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(212, 175, 55, 0.1);
-    color: var(--gold);
+    background: rgba(0, 69, 153, 0.1);
+    color: var(--madrid-city-blue);
     padding: 0.5rem 1.2rem;
     border-radius: 50px;
     font-size: 0.8rem;
@@ -25,7 +25,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 2rem;
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    border: 1px solid rgba(0, 69, 153, 0.2);
 }
 
 .title {
@@ -66,12 +66,12 @@
 
 .statCard:hover {
     transform: translateY(-5px);
-    border-color: var(--gold);
+    border-color: var(--madrid-city-blue);
 }
 
 .statIcon {
-    background: var(--gold);
-    color: black;
+    background: var(--madrid-city-blue);
+    color: white;
     padding: 1rem;
     border-radius: 12px;
 }
@@ -125,7 +125,7 @@
     top: 20px;
     bottom: 20px;
     width: 2px;
-    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    background: linear-gradient(to bottom, transparent, var(--madrid-city-blue), transparent);
 }
 
 .timelineItem {
@@ -146,20 +146,20 @@
     width: 50px;
     height: 50px;
     background: #111;
-    border: 2px solid var(--gold);
+    border: 2px solid var(--madrid-city-blue);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 20px rgba(0, 69, 153, 0.3);
 }
 
 .timelineYear span {
     font-weight: 800;
     font-size: 0.8rem;
     text-align: center;
-    color: var(--gold);
+    color: var(--madrid-city-blue);
 }
 
 .timelineContent {
@@ -187,7 +187,7 @@
 
 .subtitle {
     display: block;
-    color: var(--gold);
+    color: var(--madrid-city-blue);
     font-weight: 700;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
@@ -215,7 +215,7 @@
     padding: 4rem;
     border-radius: 40px;
     gap: 4rem;
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    border: 1px solid rgba(0, 69, 153, 0.2);
 }
 
 .factsHeader h2 {
@@ -236,7 +236,7 @@
 
 .factItem h4 {
     font-size: 1.2rem;
-    color: var(--gold);
+    color: var(--madrid-city-blue);
     margin-bottom: 0.8rem;
 }
 

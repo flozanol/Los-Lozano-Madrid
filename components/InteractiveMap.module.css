@@ -20,7 +20,7 @@
     background: rgba(15, 15, 15, 0.95);
     backdrop-filter: blur(20px);
     border-radius: 20px;
-    border: 1px solid rgba(197, 165, 114, 0.3);
+    border: 1px solid rgba(0, 69, 153, 0.4);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
@@ -33,7 +33,7 @@
 
 .formHeader h3 {
     margin: 0;
-    color: var(--gold);
+    color: var(--madrid-sky-blue);
     font-size: 1.1rem;
 }
 
@@ -79,7 +79,7 @@
 .pinForm input:focus,
 .pinForm select:focus,
 .pinForm textarea:focus {
-    border-color: var(--gold);
+    border-color: var(--madrid-city-blue);
 }
 
 /* POPUP STYLING */

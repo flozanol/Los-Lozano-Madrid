@@ -54,7 +54,7 @@
 }
 
 .input:focus {
-    border-color: var(--madrid-palace-gold);
+    border-color: var(--madrid-city-blue);
     outline: none;
 }
 
@@ -69,8 +69,8 @@
 }
 
 .dropzone:hover {
-    border-color: var(--madrid-palace-gold);
-    background: rgba(212, 175, 55, 0.05);
+    border-color: var(--madrid-city-blue);
+    background: rgba(0, 69, 153, 0.05);
 }
 
 .dropzone p {
