@@ -27,13 +27,13 @@ const HomePage = () => {
           <Countdown targetDate={tripStartDate} />
         </div>
 
-        {/* Clean Family Trip Logo */}
+        {/* Original Family Trip Logo */}
         <div className={styles.logoWrapper}>
           <Image
-            src="/logo-lozano-clean.png"
+            src="/logo.png"
             alt="Los Lozano Madrid 2026"
-            width={450}
-            height={300}
+            width={500}
+            height={250}
             className={styles.logoImage}
             priority
           />

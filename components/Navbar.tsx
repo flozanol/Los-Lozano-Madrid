@@ -15,7 +15,7 @@ const Navbar = () => {
     <nav className={styles.nav}>
       <div className={`${styles.navContainer} container`}>
         <Link href="/" className={styles.logo}>
-          <Image src="/logo-lozano-clean.png" alt="Logo" width={55} height={45} className={styles.logoImg} />
+          <Image src="/logo.png" alt="Logo" width={50} height={40} className={styles.logoImg} />
           <div className={styles.logoBrand}>
             <span className={styles.logoText}>LOZANO</span>
             <span className={styles.logoYear}>MADRID 2026</span>
