@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2, User, Users } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2, User, Users, Pencil } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -28,6 +28,7 @@ const CalendarPage = () => {
         participants: 'Toda la familia'
     });
     const [isSaving, setIsSaving] = useState(false);
+    const [editingId, setEditingId] = useState<string | null>(null);
 
     useEffect(() => {
         fetchItinerary();
@@ -65,22 +66,61 @@ const CalendarPage = () => {
         setIsLoading(false);
     };
 
+    const startEditing = (item: ItineraryItem) => {
+        const [day, month] = item.date_str.split(' ');
+        setNewEvent({
+            day: day,
+            month: month,
+            event: item.event_name,
+            time: item.event_time,
+            created_by: item.created_by,
+            participants: item.participants
+        });
+        setEditingId(item.id);
+        setShowForm(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const cancelForm = () => {
+        setShowForm(false);
+        setEditingId(null);
+        setNewEvent({
+            day: '',
+            month: 'MAR',
+            event: '',
+            time: 'Libre',
+            created_by: '',
+            participants: 'Toda la familia'
+        });
+    };
+
     const handleAddEvent = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newEvent.day || !newEvent.event) return;
 
         setIsSaving(true);
-        const { error } = await supabase
-            .from('itinerary')
-            .insert([
-                {
-                    date_str: `${newEvent.day} ${newEvent.month}`,
-                    event_name: newEvent.event,
-                    event_time: newEvent.time,
-                    created_by: newEvent.created_by,
-                    participants: newEvent.participants
-                }
-            ]);
+
+        const payload = {
+            date_str: `${newEvent.day} ${newEvent.month}`,
+            event_name: newEvent.event,
+            event_time: newEvent.time,
+            created_by: newEvent.created_by,
+            participants: newEvent.participants
+        };
+
+        let error;
+        if (editingId) {
+            const { error: updateError } = await supabase
+                .from('itinerary')
+                .update(payload)
+                .eq('id', editingId);
+            error = updateError;
+        } else {
+            const { error: insertError } = await supabase
+                .from('itinerary')
+                .insert([payload]);
+            error = insertError;
+        }
 
         if (!error) {
             setNewEvent({
@@ -92,6 +132,7 @@ const CalendarPage = () => {
                 participants: 'Toda la familia'
             });
             setShowForm(false);
+            setEditingId(null);
             fetchItinerary();
         } else {
             console.error(error);
@@ -124,7 +165,7 @@ const CalendarPage = () => {
                     <header className={styles.header}>
                         <h1>Itinerario <span className="text-gold">Familiar</span></h1>
                         <p>Día a día en nuestro viaje a Madrid.</p>
-                        <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
+                        <button className="btn-primary" onClick={editingId ? cancelForm : () => setShowForm(!showForm)}>
                             {showForm ? 'Cancelar' : <><Plus size={20} /> Añadir al Plan</>}
                         </button>
                     </header>
@@ -189,7 +230,7 @@ const CalendarPage = () => {
                             </div>
                         </div>
                         <button type="submit" className="btn-primary" disabled={isSaving}>
-                            {isSaving ? <Loader2 className="animate-spin" /> : 'Confirmar Evento'}
+                            {isSaving ? <Loader2 className="animate-spin" /> : (editingId ? 'Actualizar Evento' : 'Confirmar Evento')}
                         </button>
                     </form>
                 )}
@@ -239,13 +280,22 @@ const CalendarPage = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button
-                                                    className={styles.deleteBtn}
-                                                    onClick={() => deleteItem(item.id)}
-                                                    title="Eliminar"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
+                                                <div className={styles.cardActions}>
+                                                    <button
+                                                        className={styles.editBtn}
+                                                        onClick={() => startEditing(item)}
+                                                        title="Editar"
+                                                    >
+                                                        <Pencil size={18} />
+                                                    </button>
+                                                    <button
+                                                        className={styles.deleteBtn}
+                                                        onClick={() => deleteItem(item.id)}
+                                                        title="Eliminar"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

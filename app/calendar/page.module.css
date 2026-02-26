@@ -175,18 +175,37 @@
     color: var(--gold);
 }
 
+.cardActions {
+    display: flex;
+    gap: 0.5rem;
+    align-self: flex-start;
+}
+
+.editBtn,
 .deleteBtn {
     background: none;
     border: none;
-    color: rgba(220, 38, 38, 0.6);
     cursor: pointer;
     padding: 0.5rem;
     transition: all 0.2s ease;
 }
 
+.editBtn {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.editBtn:hover {
+    color: var(--gold);
+    transform: scale(1.1);
+}
+
+.deleteBtn {
+    color: rgba(220, 38, 38, 0.6);
+}
+
 .deleteBtn:hover {
     color: #ef4444;
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
