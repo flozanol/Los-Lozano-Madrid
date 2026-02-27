@@ -1,71 +1,79 @@
 .placesPage {
     min-height: 100vh;
-    padding-top: 120px;
-    color: white;
+    padding-bottom: 5rem;
 }
 
 .header {
     text-align: center;
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
 }
 
-.title {
+.header h1 {
     font-size: clamp(2.5rem, 8vw, 4rem);
+    color: var(--graphite-gray);
     margin-bottom: 1rem;
-    font-weight: 800;
-    letter-spacing: -1px;
 }
 
 .addForm {
     max-width: 800px;
-    margin: -3rem auto 5rem;
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    border: 1px solid rgba(0, 69, 153, 0.4);
+    margin: 0 auto 5rem;
+    padding: 2rem;
+    background: white;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--soft-gray);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
 }
 
 .formGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
 }
 
 .addForm input,
 .addForm select {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1rem;
-    color: white;
-    border-radius: 8px;
-    font-size: 1rem;
+    background: var(--bone-white);
+    border: 1px solid var(--soft-gray);
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    color: var(--graphite-gray);
+    font-family: var(--font-body);
+}
+
+.helpText {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+    color: var(--madrid-red);
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2.5rem;
-    padding-bottom: 4rem;
+    gap: 2rem;
 }
 
 .card {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
+    background: white;
+    border-radius: var(--border-radius-xl);
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    border: 1px solid var(--soft-gray);
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
-    transform: translateY(-10px);
-    border-color: var(--madrid-sky-blue);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    border-color: var(--madrid-red);
 }
 
 .imageBox {
     position: relative;
-    height: 250px;
+    height: 220px;
+    width: 100%;
 }
 
 .image {
@@ -78,13 +86,15 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background: var(--madrid-city-blue);
+    background: rgba(44, 46, 49, 0.8);
+    backdrop-filter: blur(8px);
     color: white;
     padding: 0.4rem 1rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 700;
+    border-radius: var(--border-radius-pill);
+    font-size: 0.7rem;
+    font-weight: 800;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .adminButtons {
@@ -93,59 +103,82 @@
     right: 1rem;
     display: flex;
     gap: 0.5rem;
-    z-index: 10;
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.card:hover .adminButtons {
+    opacity: 1;
 }
 
 .editBtn,
 .deleteBtn {
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
+    background: white;
     border: none;
+    padding: 0.6rem;
     border-radius: 50%;
-    width: 2.2rem;
-    height: 2.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.editBtn:hover {
-    background: var(--madrid-city-blue);
-    color: white;
+.editBtn {
+    color: var(--graphite-gray);
 }
 
-.deleteBtn:hover {
-    background: #ef4444;
+.deleteBtn {
+    color: var(--madrid-red);
 }
 
-.editing {
-    border-color: var(--madrid-city-blue) !important;
-}
-
-.editForm {
+.cardContent {
+    padding: 1.8rem;
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
 }
 
-.editForm input,
-.editForm textarea {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.8rem;
-    color: white;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    width: 100%;
+.cardContent h3 {
+    font-size: 1.5rem;
+    color: var(--graphite-gray);
+    line-height: 1.2;
 }
 
-.coordInputs {
+.cardContent p {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+.coordenadas {
+    margin-top: auto;
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--madrid-red);
+    background: var(--bone-white);
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.editForm input,
+.editForm textarea {
+    background: var(--bone-white);
+    border: 1px solid var(--soft-gray);
+    padding: 0.8rem;
+    border-radius: 8px;
+    width: 100%;
 }
 
 .editActions {
@@ -153,76 +186,27 @@
     gap: 0.5rem;
 }
 
-.btnSave,
-.btnCancelEdit {
-    flex: 1;
-    padding: 0.7rem;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-}
-
 .btnSave {
-    background: var(--madrid-city-blue);
+    background: var(--madrid-red);
     color: white;
     border: none;
-    font-weight: 700;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    flex: 1;
 }
 
 .btnCancelEdit {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.mapBadge {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    background: var(--madrid-sky-blue);
-    color: white;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.coordenadas {
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    opacity: 0.6;
-}
-
-.cardContent {
-    padding: 2rem;
-}
-
-.cardContent h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.8rem;
-    color: var(--madrid-sky-blue);
-}
-
-.cardContent p {
-    line-height: 1.6;
-    opacity: 0.9;
-    font-size: 1rem;
+    background: var(--soft-gray);
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
 @media (max-width: 768px) {
-    .addForm {
-        padding: 1.5rem;
-    }
-
     .grid {
         grid-template-columns: 1fr;
     }

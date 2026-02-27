@@ -4,33 +4,48 @@
 
 .header {
     text-align: center;
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
+}
+
+.header h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: var(--graphite-gray);
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 3rem;
+    gap: 2.5rem;
     margin-bottom: 4rem;
 }
 
 .card {
+    background: white;
+    border-radius: var(--border-radius-xl);
     overflow: hidden;
+    border: 1px solid var(--soft-gray);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: var(--transition-smooth);
     display: flex;
     flex-direction: column;
-    border-radius: 24px;
-    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: var(--madrid-red);
 }
 
 .imageBox {
     position: relative;
     height: 220px;
     width: 100%;
+    overflow: hidden;
 }
 
 .image {
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card:hover .image {
@@ -42,8 +57,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 }
 
 .tags {
@@ -53,12 +68,14 @@
 }
 
 .tag {
-    background: var(--madrid-city-blue);
+    background: var(--madrid-red);
     color: white;
-    padding: 0.2rem 0.8rem;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 700;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--border-radius-pill);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .content {
@@ -76,8 +93,9 @@
 }
 
 .titleRow h3 {
-    font-size: 1.5rem;
-    color: var(--madrid-sky-blue);
+    font-size: 1.6rem;
+    color: var(--graphite-gray);
+    font-family: var(--font-heading);
 }
 
 .rating {
@@ -85,13 +103,14 @@
     align-items: center;
     gap: 0.4rem;
     color: #f59e0b;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .description {
-    opacity: 0.8;
+    opacity: 0.7;
     line-height: 1.6;
     margin-bottom: 2rem;
+    font-size: 0.95rem;
     flex: 1;
 }
 
@@ -104,9 +123,11 @@
 .address {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    color: var(--graphite-gray);
     opacity: 0.6;
     font-size: 0.85rem;
+    font-weight: 600;
 }
 
 .infoCard {
@@ -114,27 +135,33 @@
     align-items: center;
     gap: 2rem;
     padding: 2.5rem;
-    margin-top: 5rem;
+    background: white;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--soft-gray);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .infoIcon {
-    width: 70px;
-    height: 70px;
-    background: rgba(0, 118, 206, 0.2);
+    width: 64px;
+    height: 64px;
+    background: #E81E2B15;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--madrid-sky-blue);
+    color: var(--madrid-red);
     flex-shrink: 0;
 }
 
 .infoText h3 {
+    font-size: 1.4rem;
     margin-bottom: 0.5rem;
+    color: var(--graphite-gray);
 }
 
 .infoText p {
-    opacity: 0.8;
+    opacity: 0.7;
+    font-size: 1rem;
 }
 
 @media (max-width: 600px) {

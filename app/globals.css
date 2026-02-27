@@ -1,43 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800;900&display=swap');
 
 :root {
-  /* Madrid Royal Palette (Legacy) */
-  --madrid-crimson: #A11116;
-  --madrid-palace-gold: #D4AF37;
-  --madrid-luxury-black: #121212;
-  --madrid-pure-white: #FFFFFF;
-  --madrid-soft-gray: #F8F9FA;
-  --madrid-accent-gold: #B8860B;
+  /* Madrid Moderno Palette */
+  --madrid-red: #E81E2B;
+  --madrid-red-hover: #C61924;
+  --bone-white: #F9F7F2;
+  --graphite-gray: #2C2E31;
+  --soft-gray: #E5E7EB;
 
-  /* NEW: Madrid Institutional Palette */
-  --madrid-city-blue: #004599;
-  --madrid-sky-blue: #0076CE;
-  --madrid-deep-navy: #002D62;
-
-  --gold: var(--madrid-palace-gold);
-  --blue: var(--madrid-city-blue);
-
-  --background: var(--madrid-pure-white);
-  --foreground: var(--madrid-luxury-black);
+  /* Brand Tokens */
+  --primary: var(--madrid-red);
+  --background: var(--bone-white);
+  --foreground: var(--graphite-gray);
 
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
 
-  --glass-bg: rgba(255, 255, 255, 0.15);
+  /* Glassmorphism Refined */
+  --glass-bg: rgba(255, 255, 255, 0.4);
   --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 69, 153, 0.1);
+  --glass-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
 
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --border-radius: 16px;
+  --border-radius-xl: 24px;
+  --border-radius-lg: 16px;
   --border-radius-pill: 50px;
 }
 
 [data-theme='dark'] {
-  --background: var(--madrid-luxury-black);
-  --foreground: var(--madrid-pure-white);
-  --glass-bg: rgba(18, 18, 18, 0.7);
+  --background: #121212;
+  --foreground: var(--bone-white);
+  --glass-bg: rgba(30, 30, 30, 0.6);
   --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --glass-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -52,6 +47,7 @@ body {
   font-family: var(--font-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 h1,
@@ -62,143 +58,77 @@ h5,
 h6 {
   font-family: var(--font-heading);
   letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2.5rem;
+  padding: 0 1.5rem;
 }
 
-/* Glassmorphism Classes */
+/* Base Glass Utility */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-lg);
 }
 
+/* Premium Buttons */
 .btn-primary {
-  background: var(--madrid-city-blue);
+  background: var(--madrid-red);
   color: white;
-  padding: 1rem 2rem;
-  border-radius: var(--border-radius);
+  padding: 0.8rem 1.8rem;
+  border-radius: var(--border-radius-pill);
   font-weight: 600;
   border: none;
   cursor: pointer;
   transition: var(--transition-smooth);
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.editForm {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-bottom: 1rem;
+  gap: 0.6rem;
+  font-family: var(--font-heading);
+  box-shadow: 0 4px 15px rgba(232, 30, 43, 0.2);
 }
 
 .btn-primary:hover {
-  background: var(--madrid-accent-gold);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
-}
-
-.text-gold {
-  color: var(--madrid-palace-gold);
-  background: linear-gradient(135deg, var(--madrid-palace-gold), var(--madrid-accent-gold));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.text-madrid-gradient {
-  background: linear-gradient(135deg, #FFFFFF 0%, #0076CE 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-.btn-primary-blue {
-  background: var(--madrid-city-blue);
-  color: white;
-  padding: 1rem 2.5rem;
-  border-radius: var(--border-radius-pill);
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(0, 69, 153, 0.4);
-}
-
-.btn-primary-blue:hover {
-  background: var(--madrid-sky-blue);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 118, 206, 0.4);
+  background: var(--madrid-red-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(232, 30, 43, 0.3);
 }
 
 .btn-secondary-outline {
-  background: transparent;
-  color: white;
-  padding: 1rem 2.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: var(--foreground);
+  padding: 0.8rem 1.8rem;
   border-radius: var(--border-radius-pill);
-  font-weight: 700;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  border: 1px solid var(--glass-border);
   cursor: pointer;
   transition: var(--transition-smooth);
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  gap: 0.6rem;
 }
 
 .btn-secondary-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: white;
-  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
-.premium-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  border-radius: var(--border-radius);
-  padding: 2.5rem;
-  transition: var(--transition-smooth);
+/* Utility for Madrid Gradient */
+.text-madrid-gradient {
+  background: linear-gradient(135deg, var(--madrid-red) 0%, #A11116 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-
-.premium-card:hover {
-  transform: scale(1.02);
-  border-color: var(--madrid-palace-gold);
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--madrid-soft-gray);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--madrid-palace-gold);
-  border-radius: 4px;
-}
-
+/* Layout Wrappers */
 .section-bg {
   position: fixed;
   top: 0;
@@ -208,7 +138,6 @@ h6 {
   z-index: -1;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
 }
 
 .section-bg::after {
@@ -218,17 +147,27 @@ h6 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  /* Dark overlay */
-  backdrop-filter: blur(4px);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+  backdrop-filter: blur(2px);
 }
-
-
 
 .content-wrapper {
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  padding-top: 80px;
-  /* Offset for navbar */
+  padding-top: 2rem;
+  padding-bottom: 6rem;
+  /* Space for BottomNav */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.2rem;
+  }
+}
+
+/* Hide legacy elements or adjust them */
+.text-gold {
+  color: var(--madrid-red) !important;
 }

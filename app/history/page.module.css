@@ -1,14 +1,9 @@
-.container {
-    padding: 0;
-}
-
 .historyView {
-    padding-top: 100px;
+    padding-bottom: 5rem;
 }
 
-/* HERO */
 .hero {
-    padding: 6rem 0 3rem;
+    padding: 4rem 0 3rem;
     text-align: center;
 }
 
@@ -16,82 +11,84 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(0, 69, 153, 0.1);
-    color: var(--madrid-city-blue);
+    background: #E81E2B15;
+    color: var(--madrid-red);
     padding: 0.5rem 1.2rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 700;
+    border-radius: var(--border-radius-pill);
+    font-size: 0.75rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 2rem;
-    border: 1px solid rgba(0, 69, 153, 0.2);
+    border: 1px solid rgba(232, 30, 43, 0.2);
 }
 
 .title {
     font-size: clamp(3rem, 10vw, 5rem);
-    font-weight: 800;
+    font-weight: 900;
     margin-bottom: 1.5rem;
     line-height: 1;
+    color: var(--graphite-gray);
 }
 
 .lead {
-    font-size: 1.25rem;
-    max-width: 700px;
+    font-size: 1.2rem;
+    max-width: 650px;
     margin: 0 auto;
-    opacity: 0.8;
+    opacity: 0.7;
     line-height: 1.6;
 }
 
-/* STATS */
 .statsGrid {
-    padding: 3rem 0;
+    padding-bottom: 4rem;
 }
 
 .statsWrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
 }
 
 .statCard {
     padding: 2rem;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.5rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform 0.3s ease;
+    background: white;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--soft-gray);
+    transition: var(--transition-smooth);
 }
 
 .statCard:hover {
     transform: translateY(-5px);
-    border-color: var(--madrid-city-blue);
+    border-color: var(--madrid-red);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .statIcon {
-    background: var(--madrid-city-blue);
+    background: var(--madrid-red);
     color: white;
     padding: 1rem;
-    border-radius: 12px;
-}
-
-.statInfo {
+    border-radius: 14px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .statLabel {
-    font-size: 0.8rem;
-    font-weight: 700;
-    opacity: 0.6;
+    font-size: 0.75rem;
+    font-weight: 800;
+    opacity: 0.5;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .statValue {
-    font-size: 1.6rem;
-    font-weight: 800;
+    font-size: 1.8rem;
+    font-weight: 900;
     margin: 0.2rem 0;
+    color: var(--graphite-gray);
 }
 
 .statDetail {
@@ -99,16 +96,16 @@
     opacity: 0.6;
 }
 
-/* TIMELINE */
 .timelineSection {
     padding: 6rem 0;
 }
 
 .sectionTitle {
     font-size: 2.5rem;
-    font-weight: 800;
+    font-weight: 900;
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 5rem;
+    color: var(--graphite-gray);
 }
 
 .timelineContainer {
@@ -116,21 +113,24 @@
     flex-direction: column;
     gap: 4rem;
     position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .timelineContainer::before {
     content: '';
     position: absolute;
     left: 40px;
-    top: 20px;
-    bottom: 20px;
+    top: 0;
+    bottom: 0;
     width: 2px;
-    background: linear-gradient(to bottom, transparent, var(--madrid-city-blue), transparent);
+    background: linear-gradient(to bottom, transparent, var(--soft-gray), transparent);
 }
 
 .timelineItem {
     display: flex;
     gap: 3rem;
+    position: relative;
 }
 
 .timelineYear {
@@ -140,35 +140,44 @@
     width: 80px;
     position: relative;
     z-index: 2;
+    background: var(--bone-white);
 }
 
 .yearCircle {
     width: 50px;
     height: 50px;
-    background: #111;
-    border: 2px solid var(--madrid-city-blue);
+    background: white;
+    border: 3px solid var(--madrid-red);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1rem;
-    box-shadow: 0 0 20px rgba(0, 69, 153, 0.3);
+    margin-bottom: 0.8rem;
+    box-shadow: 0 4px 15px rgba(232, 30, 43, 0.2);
 }
 
 .timelineYear span {
-    font-weight: 800;
+    font-weight: 900;
     font-size: 0.8rem;
+    color: var(--madrid-red);
     text-align: center;
-    color: var(--madrid-city-blue);
 }
 
 .timelineContent {
     flex: 1;
     display: grid;
-    grid-template-columns: 300px 1fr;
-    border-radius: 24px;
+    grid-template-columns: 320px 1fr;
+    background: white;
+    border-radius: var(--border-radius-xl);
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--soft-gray);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    transition: var(--transition-smooth);
+}
+
+.timelineContent:hover {
+    transform: translateX(10px);
+    border-color: var(--madrid-red);
 }
 
 .imgBox {
@@ -187,127 +196,93 @@
 
 .subtitle {
     display: block;
-    color: var(--madrid-city-blue);
-    font-weight: 700;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    color: var(--madrid-red);
+    font-weight: 800;
+    font-size: 0.8rem;
+    margin-bottom: 0.8rem;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .textBox h3 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
+    color: var(--graphite-gray);
 }
 
 .textBox p {
     line-height: 1.7;
-    opacity: 0.8;
+    opacity: 0.7;
+    font-size: 1rem;
 }
 
-/* FACTS SECTION */
 .factsSection {
-    padding: 4rem 0 8rem;
+    padding: 6rem 0 8rem;
 }
 
 .factsGrid {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 1fr 2fr;
     padding: 4rem;
+    background: white;
     border-radius: 40px;
     gap: 4rem;
-    border: 1px solid rgba(0, 69, 153, 0.2);
+    border: 1px solid var(--soft-gray);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
 }
 
 .factsHeader h2 {
-    font-size: 2rem;
-    margin-top: 1rem;
+    font-size: 2.2rem;
+    color: var(--graphite-gray);
 }
 
 .factsHeader p {
-    opacity: 0.7;
-    margin-top: 1rem;
-}
-
-.factsList {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
+    opacity: 0.6;
+    margin-top: 1.5rem;
 }
 
 .factItem h4 {
-    font-size: 1.2rem;
-    color: var(--madrid-city-blue);
+    font-size: 1.3rem;
+    color: var(--madrid-red);
     margin-bottom: 0.8rem;
 }
 
 .factItem p {
     font-size: 0.95rem;
-    line-height: 1.5;
-    opacity: 0.8;
+    line-height: 1.6;
+    opacity: 0.7;
 }
 
-/* FOOTER */
-.historyFooter {
-    padding: 4rem 0;
-    opacity: 0.4;
-}
-
-/* MOBILE */
 @media (max-width: 992px) {
     .timelineContent {
         grid-template-columns: 1fr;
     }
 
     .imgBox {
-        height: 200px;
+        height: 250px;
     }
 
     .factsGrid {
         grid-template-columns: 1fr;
-        padding: 2.5rem;
-        gap: 2.5rem;
+        padding: 2rem;
     }
 }
 
 @media (max-width: 768px) {
     .timelineContainer::before {
-        display: none;
+        left: 25px;
     }
 
     .timelineItem {
-        flex-direction: column;
         gap: 1.5rem;
     }
 
     .timelineYear {
-        width: 100%;
-        flex-direction: row;
-        gap: 1rem;
-        justify-content: flex-start;
+        width: 50px;
     }
 
     .yearCircle {
-        margin-bottom: 0;
+        width: 40px;
+        height: 40px;
     }
-
-    .hero {
-        padding-top: 3rem;
-    }
-}
-
-.watermarkBg {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    height: 60%;
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Coat_of_Arms_of_Madrid.svg/1200px-Coat_of_Arms_of_Madrid.svg.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    opacity: 0.03;
-    filter: grayscale(1);
-    pointer-events: none;
-    z-index: -1;
 }

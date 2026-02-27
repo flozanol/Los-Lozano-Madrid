@@ -130,7 +130,7 @@ const PlacesPage = () => {
             <div className={`content-wrapper ${styles.placesPage}`}>
 
                 <div className={`${styles.header} container`}>
-                    <h1 className={styles.title}>Qué <span className="text-gold">Visitar</span></h1>
+                    <h1 className={styles.title}>Qué <span className="text-madrid-gradient">Visitar</span></h1>
                     <p>Lugares que no nos podemos perder en esta aventura.</p>
                     <button
                         className="btn-primary"

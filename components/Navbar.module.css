@@ -1,10 +1,13 @@
 .nav {
-    height: 80px;
-    background: var(--madrid-pure-white);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
+    width: 100%;
     z-index: 1000;
+    background: rgba(249, 247, 242, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    height: 70px;
     display: flex;
     align-items: center;
 }
@@ -13,142 +16,72 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    height: 100%;
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.8rem;
     text-decoration: none;
-    transition: var(--transition-smooth);
-}
-
-.logoBrand {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
+    color: var(--graphite-gray);
 }
 
 .logoText {
     font-family: var(--font-heading);
-    font-size: 1.4rem;
     font-weight: 900;
+    font-size: 1.1rem;
     letter-spacing: 2px;
-    color: var(--madrid-luxury-black);
 }
 
-.logoYear {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--madrid-palace-gold);
-    letter-spacing: 4px;
+.desktopLinks {
+    display: none;
+    gap: 2rem;
 }
 
-.logoImg {
-    object-fit: contain;
+.desktopLinks a {
+    text-decoration: none;
+    color: var(--graphite-gray);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition-smooth);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.desktopLinks a:hover {
+    color: var(--madrid-red);
 }
 
 .navInstitutional {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: 2rem;
 }
 
 .navCityLogo {
-    height: 35px;
+    height: 40px;
     width: auto;
-    object-fit: contain;
+    filter: grayscale(1) opacity(0.8);
+    transition: var(--transition-smooth);
 }
 
-@media (max-width: 1024px) {
-    .navInstitutional {
+.navCityLogo:hover {
+    filter: grayscale(0) opacity(1);
+}
+
+@media (min-width: 1024px) {
+    .desktopLinks {
+        display: flex;
+    }
+
+    .nav {
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logoText {
         display: none;
-    }
-}
-
-.navLinks {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-}
-
-.navLinks a {
-    font-weight: 600;
-    color: var(--madrid-luxury-black);
-    font-family: var(--font-heading);
-    text-decoration: none;
-    font-size: 1rem;
-    transition: var(--transition-smooth);
-}
-
-.navLinks a:hover {
-    color: var(--madrid-city-blue);
-}
-
-.mobileToggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    z-index: 1100;
-}
-
-.bar {
-    width: 28px;
-    height: 3px;
-    background: var(--madrid-luxury-black);
-    margin: 5px 0;
-    transition: var(--transition-smooth);
-    border-radius: 2px;
-}
-
-@media (max-width: 768px) {
-    .mobileToggle {
-        display: block;
-    }
-
-    .navLinks {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100vh;
-        background: var(--madrid-pure-white);
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        gap: 2.5rem;
-        transform: translateX(100%);
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        z-index: 1000;
-    }
-
-    .navLinks.active {
-        transform: translateX(0);
-    }
-
-    .navLinks a {
-        font-size: 1.8rem;
-        color: var(--madrid-luxury-black);
-    }
-
-    /* Burger Animation when active */
-    .bar1 {
-        transform: rotate(-45deg) translate(-5px, 6px);
-        background: var(--madrid-city-blue);
-    }
-
-    .bar2 {
-        opacity: 0;
-    }
-
-    .bar3 {
-        transform: rotate(45deg) translate(-6px, -7px);
-        background: var(--madrid-city-blue);
     }
 }
