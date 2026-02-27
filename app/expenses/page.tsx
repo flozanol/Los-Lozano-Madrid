@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Wallet, Plus, Trash2, Receipt, TrendingUp, Calculator, Loader2 } from 'lucide-react';
+import { Wallet, Plus, Trash2, Receipt, TrendingUp, Calculator, Loader2, Users } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
 import FamilyLock from '@/components/FamilyLock';
