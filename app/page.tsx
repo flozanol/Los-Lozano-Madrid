@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Countdown from '@/components/Countdown';
 import Image from 'next/image';
 import { MapPin, Sparkles } from 'lucide-react';
+import WeatherWidget from '@/components/WeatherWidget';
 
 import styles from './page.module.css';
 
@@ -22,9 +23,10 @@ const HomePage = () => {
           />
         </div>
 
-        {/* Restore Countdown */}
-        <div className={styles.countdownWrapper}>
+        {/* Restore Countdown and Weather */}
+        <div className={styles.topWidgets}>
           <Countdown targetDate={tripStartDate} />
+          <WeatherWidget />
         </div>
 
         {/* Original Family Trip Logo */}
