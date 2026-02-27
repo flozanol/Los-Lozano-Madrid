@@ -123,7 +123,7 @@ const RestaurantsPage = () => {
             <div className={`content-wrapper ${styles.restaurantsPage}`}>
 
                 <div className={`${styles.header} container`}>
-                    <h1 className={styles.title}>Dónde <span className="text-gold">Comer</span></h1>
+                    <h1 className={styles.title}>Dónde <span className="text-madrid-gradient">Comer</span></h1>
                     <p>Selección de templos gastronómicos para disfrutar en familia.</p>
                     <button
                         className="btn-primary"
@@ -195,7 +195,7 @@ const RestaurantsPage = () => {
 
                     {isLoading ? (
                         <div className="text-center py-20">
-                            <Loader2 className="animate-spin mx-auto text-gold" size={40} />
+                            <Loader2 className="animate-spin mx-auto text-madrid-red" size={40} />
                         </div>
                     ) : (
                         <div className={styles.list}>
@@ -287,7 +287,7 @@ const RestaurantsPage = () => {
                                                 <p className={styles.description}>{rest.description}</p>
                                                 {rest.latitude && (
                                                     <div className={styles.coordenadas}>
-                                                        <MapPin size={14} className="text-gold" />
+                                                        <MapPin size={14} className="text-madrid-red" />
                                                         <span>{rest.latitude}, {rest.longitude}</span>
                                                     </div>
                                                 )}

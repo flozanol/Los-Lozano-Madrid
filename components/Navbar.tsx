@@ -14,25 +14,6 @@ const Navbar = () => {
             <span className={styles.logoText}>LOZANO</span>
           </div>
         </Link>
-
-        <div className={styles.desktopLinks}>
-          <Link href="/history">Historia</Link>
-          <Link href="/places">Lugares</Link>
-          <Link href="/restaurants">Restaurantes</Link>
-          <Link href="/gallery">Galería</Link>
-          <Link href="/social">Recados</Link>
-        </div>
-
-        <div className={styles.navInstitutional}>
-          <Image
-            src="/madrid-city-logo-v2.jpg"
-            alt="Ayuntamiento de Madrid"
-            width={100}
-            height={50}
-            className={styles.navCityLogo}
-            priority
-          />
-        </div>
       </div>
     </nav>
   );

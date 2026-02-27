@@ -67,7 +67,7 @@ const HistoryPage = () => {
     return (
         <div className={styles.container}>
             <div className={styles.watermarkBg}></div>
-            <div className="section-bg" style={{ backgroundImage: 'url(/madrid_hero_cibeles.png)', opacity: 0.1 }}></div>
+            <div className="section-bg" style={{ backgroundImage: 'url(/madrid_royalty_borbones.png)' }}></div>
 
             <div className={`content-wrapper ${styles.historyView}`}>
                 {/* HERO SECTION */}
@@ -77,7 +77,7 @@ const HistoryPage = () => {
                             <HistoryIcon size={16} />
                             <span>Crónica de la Villa y Corte</span>
                         </div>
-                        <h1 className={styles.title}>España & <span className="text-gold">Madrid</span></h1>
+                        <h1 className={styles.title}>España & <span className="text-madrid-gradient">Madrid</span></h1>
                         <p className={styles.lead}>
                             De una pequeña torre árabe a ser el corazón de un Imperio Global.
                             Descubre los secretos de la ciudad que nunca duerme.
@@ -106,7 +106,7 @@ const HistoryPage = () => {
                 {/* TIMELINE SECTION */}
                 <section className={styles.timelineSection}>
                     <div className="container">
-                        <h2 className={styles.sectionTitle}>La Línea del <span className="text-gold">Tiempo</span></h2>
+                        <h2 className={styles.sectionTitle}>La Línea del <span className="text-madrid-gradient">Tiempo</span></h2>
                         <div className={styles.timelineContainer}>
                             {timeline.map((item, i) => (
                                 <div key={i} className={styles.timelineItem}>
@@ -135,7 +135,7 @@ const HistoryPage = () => {
                     <div className="container">
                         <div className={`${styles.factsGrid} glass`}>
                             <div className={styles.factsHeader}>
-                                <Trophy className="text-gold" size={40} />
+                                <Trophy className="text-madrid-red" size={40} />
                                 <h2>¿Sabías que...?</h2>
                                 <p>Cosas curiosas para contarle a tus amigos cuando vuelvas.</p>
                             </div>

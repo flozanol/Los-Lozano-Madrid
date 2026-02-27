@@ -4,9 +4,9 @@
   /* Madrid Moderno Palette */
   --madrid-red: #E81E2B;
   --madrid-red-hover: #C61924;
-  --bone-white: #F9F7F2;
-  --graphite-gray: #2C2E31;
-  --soft-gray: #E5E7EB;
+  --bone-white: #FBF9F5;
+  --graphite-gray: #1A1C1E;
+  --soft-gray: #E8EAEB;
 
   /* Brand Tokens */
   --primary: var(--madrid-red);
@@ -17,22 +17,14 @@
   --font-body: 'Inter', sans-serif;
 
   /* Glassmorphism Refined */
-  --glass-bg: rgba(255, 255, 255, 0.4);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.15);
 
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --border-radius-xl: 24px;
-  --border-radius-lg: 16px;
-  --border-radius-pill: 50px;
-}
-
-[data-theme='dark'] {
-  --background: #121212;
-  --foreground: var(--bone-white);
-  --glass-bg: rgba(30, 30, 30, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  --border-radius-xl: 32px;
+  --border-radius-lg: 20px;
+  --border-radius-pill: 100px;
 }
 
 * {
@@ -47,7 +39,10 @@ body {
   font-family: var(--font-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  background-image:
+    radial-gradient(circle at 100% 0%, rgba(232, 30, 43, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(232, 30, 43, 0.02) 0%, transparent 50%);
+  background-attachment: fixed;
 }
 
 h1,
@@ -57,8 +52,8 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .container {
@@ -67,75 +62,53 @@ h6 {
   padding: 0 1.5rem;
 }
 
-/* Base Glass Utility */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   border-radius: var(--border-radius-lg);
 }
 
-/* Premium Buttons */
 .btn-primary {
   background: var(--madrid-red);
   color: white;
-  padding: 0.8rem 1.8rem;
+  padding: 1rem 2rem;
   border-radius: var(--border-radius-pill);
-  font-weight: 600;
+  font-weight: 700;
   border: none;
   cursor: pointer;
   transition: var(--transition-smooth);
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.8rem;
   font-family: var(--font-heading);
-  box-shadow: 0 4px 15px rgba(232, 30, 43, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 10px 30px rgba(232, 30, 43, 0.3);
 }
 
 .btn-primary:hover {
   background: var(--madrid-red-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(232, 30, 43, 0.3);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(232, 30, 43, 0.4);
 }
 
-.btn-secondary-outline {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  color: var(--foreground);
-  padding: 0.8rem 1.8rem;
-  border-radius: var(--border-radius-pill);
-  font-weight: 600;
-  border: 1px solid var(--glass-border);
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.btn-secondary-outline:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Utility for Madrid Gradient */
 .text-madrid-gradient {
-  background: linear-gradient(135deg, var(--madrid-red) 0%, #A11116 100%);
+  background: linear-gradient(135deg, var(--madrid-red) 0%, #7A0B10 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Layout Wrappers */
 .section-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: -2;
   background-size: cover;
   background-position: center;
 }
@@ -147,27 +120,13 @@ h6 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
-  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
 }
 
 .content-wrapper {
   position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  padding-top: 2rem;
-  padding-bottom: 6rem;
-  /* Space for BottomNav */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1.2rem;
-  }
-}
-
-/* Hide legacy elements or adjust them */
-.text-gold {
-  color: var(--madrid-red) !important;
+  z-index: 10;
+  padding-top: 100px;
+  padding-bottom: 120px;
 }
