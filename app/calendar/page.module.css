@@ -119,6 +119,31 @@
     background: rgba(255, 255, 255, 0.08);
 }
 
+.blockTag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--madrid-sky-blue);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.transitTag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--madrid-palace-gold);
+    margin: 0.8rem 0;
+    padding: 0.4rem 0.8rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 8px;
+    width: fit-content;
+}
+
 .itineraryCard::before {
     content: '';
     position: absolute;

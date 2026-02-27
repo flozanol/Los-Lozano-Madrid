@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2, User, Users, Pencil, CheckCircle } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2, User, Users, Pencil, CheckCircle, Coffee, Sun, Moon, Car } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -15,9 +15,11 @@ interface ItineraryItem {
     date_str: string;
     event_name: string;
     event_time: string;
+    time_block?: string; // Mañana, Tarde, Noche
+    transit_time?: string; // Ej. 15 min
     created_by: string;
     participants: string;
-    confirmed_participants?: string; // Comma separated list
+    confirmed_participants?: string;
     created_at: string;
 }
 
@@ -29,7 +31,9 @@ const CalendarPage = () => {
         day: '',
         month: 'MAR',
         event: '',
+        time_block: 'Mañana',
         time: 'Libre',
+        transit: '',
         created_by: '',
         participants: 'Toda la familia'
     });
@@ -51,6 +55,9 @@ const CalendarPage = () => {
                 'ENE': 0, 'FEB': 1, 'MAR': 2, 'ABR': 3, 'MAY': 4, 'JUN': 5,
                 'JUL': 6, 'AGO': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DIC': 11
             };
+            const blockMap: Record<string, number> = {
+                'Mañana': 1, 'Tarde': 2, 'Noche': 3
+            };
 
             const sorted = (data as ItineraryItem[]).sort((a, b) => {
                 const [dayA, monA] = a.date_str.split(' ');
@@ -58,12 +65,15 @@ const CalendarPage = () => {
 
                 const monthA = monthMap[monA] ?? 0;
                 const monthB = monthMap[monB] ?? 0;
-
                 if (monthA !== monthB) return monthA - monthB;
 
                 const dA = parseInt(dayA);
                 const dB = parseInt(dayB);
                 if (dA !== dB) return dA - dB;
+
+                const blockA = blockMap[a.time_block || ''] ?? 99;
+                const blockB = blockMap[b.time_block || ''] ?? 99;
+                if (blockA !== blockB) return blockA - blockB;
 
                 return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
             });
@@ -78,7 +88,9 @@ const CalendarPage = () => {
             day: day,
             month: month,
             event: item.event_name,
+            time_block: item.time_block || 'Mañana',
             time: item.event_time,
+            transit: item.transit_time || '',
             created_by: item.created_by,
             participants: item.participants
         });
@@ -94,7 +106,9 @@ const CalendarPage = () => {
             day: '',
             month: 'MAR',
             event: '',
+            time_block: 'Mañana',
             time: 'Libre',
+            transit: '',
             created_by: '',
             participants: 'Toda la familia'
         });
@@ -110,6 +124,8 @@ const CalendarPage = () => {
             date_str: `${newEvent.day} ${newEvent.month}`,
             event_name: newEvent.event,
             event_time: newEvent.time,
+            time_block: newEvent.time_block,
+            transit_time: newEvent.transit,
             created_by: newEvent.created_by,
             participants: newEvent.participants
         };
@@ -133,7 +149,9 @@ const CalendarPage = () => {
                 day: '',
                 month: 'MAR',
                 event: '',
+                time_block: 'Mañana',
                 time: 'Libre',
+                transit: '',
                 created_by: '',
                 participants: 'Toda la familia'
             });
@@ -142,7 +160,7 @@ const CalendarPage = () => {
             fetchItinerary();
         } else {
             console.error(error);
-            alert('Error al guardar: Asegúrate de actualizar la tabla "itinerary" en Supabase.');
+            alert('Error al guardar: Asegúrate de añadir las columnas "time_block" (text) y "transit_time" (text) en la tabla "itinerary" de Supabase.');
         }
         setIsSaving(false);
     };
@@ -232,12 +250,29 @@ const CalendarPage = () => {
                                 />
                             </div>
                             <div className={styles.formGroup}>
-                                <label>Hora / Estado</label>
+                                <label>Bloque del Día</label>
+                                <select value={newEvent.time_block} onChange={e => setNewEvent({ ...newEvent, time_block: e.target.value })}>
+                                    <option value="Mañana">Mañana (Desayuno/Visitas)</option>
+                                    <option value="Tarde">Tarde (Comida/Paseos)</option>
+                                    <option value="Noche">Noche (Cena/Copas)</option>
+                                </select>
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Hora Específica</label>
                                 <input
                                     type="text"
-                                    placeholder="Ej. 20:30 o Libre"
+                                    placeholder="Ej. 10:30 o Todo el día"
                                     value={newEvent.time}
                                     onChange={e => setNewEvent({ ...newEvent, time: e.target.value })}
+                                />
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Traslado (Fijo)</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ej. 20 min caminando"
+                                    value={newEvent.transit}
+                                    onChange={e => setNewEvent({ ...newEvent, transit: e.target.value })}
                                 />
                             </div>
                             <div className={styles.formGroup}>
@@ -292,6 +327,12 @@ const CalendarPage = () => {
                                         {group.items.map((item) => (
                                             <div key={item.id} className={`${styles.itineraryCard} glass`}>
                                                 <div className={styles.eventInfo}>
+                                                    <div className={styles.blockTag}>
+                                                        {item.time_block === 'Mañana' && <Coffee size={14} />}
+                                                        {item.time_block === 'Tarde' && <Sun size={14} />}
+                                                        {item.time_block === 'Noche' && <Moon size={14} />}
+                                                        <span>{item.time_block || 'Plan'}</span>
+                                                    </div>
                                                     <div className={styles.eventHeader}>
                                                         <h3>{item.event_name}</h3>
                                                         <div className={styles.timeTag}>
@@ -299,6 +340,12 @@ const CalendarPage = () => {
                                                             <span>{item.event_time}</span>
                                                         </div>
                                                     </div>
+                                                    {item.transit_time && (
+                                                        <div className={styles.transitTag}>
+                                                            <Car size={14} />
+                                                            <span>Traslado: {item.transit_time}</span>
+                                                        </div>
+                                                    )}
                                                     <div className={styles.cardFooter}>
                                                         <div className={styles.author}>
                                                             <User size={14} />

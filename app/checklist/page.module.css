@@ -1,0 +1,65 @@
+.checklistPage {
+    padding-bottom: 5rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.docsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.docSection {
+    padding: 2.5rem;
+}
+
+.docHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.docIcon {
+    color: var(--madrid-sky-blue);
+}
+
+.peopleGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem;
+}
+
+.personCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    color: white;
+}
+
+.personCard:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--madrid-sky-blue);
+}
+
+.done {
+    background: rgba(34, 197, 94, 0.1) !important;
+    border-color: #22c55e !important;
+    color: #22c55e !important;
+}
+
+.done span {
+    font-weight: 700;
+}

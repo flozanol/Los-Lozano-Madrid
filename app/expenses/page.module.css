@@ -1,0 +1,171 @@
+.expensesPage {
+    padding-bottom: 5rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.statCard {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+.statIcon {
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 118, 206, 0.1);
+    color: var(--madrid-sky-blue);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.statInfo span {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+}
+
+.statInfo h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.mainGrid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 3rem;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sectionHeader h2 {
+    font-size: 1.2rem;
+    color: var(--madrid-sky-blue);
+    flex: 1;
+}
+
+.balanceList {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.balanceItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.personName {
+    font-weight: 700;
+}
+
+.amountInfo {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.paidLabel {
+    font-size: 0.75rem;
+    opacity: 0.5;
+}
+
+.balanceValue {
+    font-weight: 800;
+}
+
+.positive {
+    color: #22c55e;
+}
+
+.negative {
+    color: #ef4444;
+}
+
+.addForm {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.addForm select,
+.addForm input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    color: white;
+    border-radius: 12px;
+}
+
+.expensesList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.expenseCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+}
+
+.expenseMain h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+
+.expenseMeta {
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+.expenseRight {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.expenseAmount {
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.btnDelete {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.btnDelete:hover {
+    color: #ef4444;
+}
+
+@media (max-width: 992px) {
+    .mainGrid {
+        grid-template-columns: 1fr;
+    }
+}

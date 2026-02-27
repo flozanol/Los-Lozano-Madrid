@@ -44,10 +44,13 @@ const Navbar = () => {
           <li><Link href="/history" onClick={() => setIsOpen(false)}>Historia</Link></li>
           <li><Link href="/places" onClick={() => setIsOpen(false)}>Lugares</Link></li>
           <li><Link href="/restaurants" onClick={() => setIsOpen(false)}>Restaurantes</Link></li>
+          <li><Link href="/tapas" onClick={() => setIsOpen(false)}>Tapeo</Link></li>
           <li><Link href="/calendar" onClick={() => setIsOpen(false)}>Calendario</Link></li>
           <li><Link href="/gallery" onClick={() => setIsOpen(false)}>Galería</Link></li>
           <li><Link href="/map" onClick={() => setIsOpen(false)}>Mapa</Link></li>
-
+          <li><Link href="/expenses" onClick={() => setIsOpen(false)}>Gastos</Link></li>
+          <li><Link href="/checklist" onClick={() => setIsOpen(false)}>Docs</Link></li>
+          <li><Link href="/safety" onClick={() => setIsOpen(false)}>⚠️ Pánico</Link></li>
           <li><Link href="/social" onClick={() => setIsOpen(false)}>Recados</Link></li>
         </ul>
 

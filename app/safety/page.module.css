@@ -1,0 +1,112 @@
+.safetyPage {
+    padding-bottom: 5rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.card {
+    padding: 2.5rem;
+    height: fit-content;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.headerIcon {
+    color: var(--madrid-sky-blue);
+}
+
+.numbersGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.numberItem {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    text-decoration: none;
+    color: white;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+}
+
+.numberItem:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--madrid-sky-blue);
+    transform: translateX(10px);
+}
+
+.itemIcon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.itemInfo h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+}
+
+.itemInfo span {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hotelsList {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.hotelItem h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: var(--madrid-sky-blue);
+}
+
+.address {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    opacity: 0.8;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+}
+
+.hotelActions {
+    display: flex;
+    gap: 1rem;
+}
+
+@media (max-width: 600px) {
+    .hotelActions {
+        flex-direction: column;
+    }
+}
