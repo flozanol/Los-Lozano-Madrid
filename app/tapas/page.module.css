@@ -170,3 +170,111 @@
         text-align: center;
     }
 }
+
+/* Management Styles */
+.adminActions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.addForm,
+.editForm {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--soft-gray);
+    margin-bottom: 3rem;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.formGrid input,
+.formGrid select,
+.formGrid textarea,
+.editForm input,
+.editForm textarea {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--soft-gray);
+    border-radius: 12px;
+    background: var(--bone-white);
+    font-size: 0.95rem;
+}
+
+.editForm textarea {
+    min-height: 100px;
+    margin-bottom: 1.5rem;
+}
+
+.cardButtons {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.editBtn,
+.deleteBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.editBtn {
+    background: white;
+    color: var(--graphite-gray);
+}
+
+.deleteBtn {
+    background: var(--madrid-red);
+    color: white;
+}
+
+.editBtn:hover,
+.deleteBtn:hover {
+    transform: scale(1.1);
+}
+
+.editActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btnSave {
+    background: var(--madrid-red);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius-pill);
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btnCancel {
+    background: var(--soft-gray);
+    color: var(--graphite-gray);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius-pill);
+    font-weight: 700;
+    cursor: pointer;
+}
