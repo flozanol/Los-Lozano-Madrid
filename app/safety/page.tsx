@@ -13,6 +13,12 @@ interface EmergencyContact {
     color: string;
 }
 
+interface FamilyContact {
+    id: string;
+    name: string;
+    number: string;
+}
+
 interface Accommodation {
     id: string;
     name: string;
@@ -23,6 +29,7 @@ interface Accommodation {
 
 export default function SafetyPage() {
     const [contacts, setContacts] = useState<EmergencyContact[]>([]);
+    const [familyContacts, setFamilyContacts] = useState<FamilyContact[]>([]);
     const [hotels, setHotels] = useState<Accommodation[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
@@ -30,6 +37,7 @@ export default function SafetyPage() {
     // Form states
     const [showManage, setShowManage] = useState(false);
     const [newContact, setNewContact] = useState({ name: '', number: '', color: '#E81E2B' });
+    const [newFamilyContact, setNewFamilyContact] = useState({ name: '', number: '' });
     const [newHotel, setNewHotel] = useState({ name: '', address: '', phone: '', map_link: '' });
 
     useEffect(() => {
@@ -44,12 +52,18 @@ export default function SafetyPage() {
             .select('*')
             .order('created_at', { ascending: true });
 
+        const { data: familyData } = await supabase
+            .from('family_contacts')
+            .select('*')
+            .order('created_at', { ascending: true });
+
         const { data: hotelsData } = await supabase
             .from('family_accommodations')
             .select('*')
             .order('created_at', { ascending: true });
 
         if (contactsData) setContacts(contactsData);
+        if (familyData) setFamilyContacts(familyData);
         if (hotelsData) setHotels(hotelsData);
 
         setIsLoading(false);
@@ -61,6 +75,17 @@ export default function SafetyPage() {
         const { error } = await supabase.from('emergency_contacts').insert([newContact]);
         if (!error) {
             setNewContact({ name: '', number: '', color: '#E81E2B' });
+            fetchSafetyData();
+        }
+        setIsSaving(false);
+    };
+
+    const handleAddFamilyContact = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSaving(true);
+        const { error } = await supabase.from('family_contacts').insert([newFamilyContact]);
+        if (!error) {
+            setNewFamilyContact({ name: '', number: '' });
             fetchSafetyData();
         }
         setIsSaving(false);
@@ -126,6 +151,29 @@ export default function SafetyPage() {
                                 <div className={styles.protectedSection}>
                                     <div className={`${styles.card} glass`}>
                                         <div className={styles.cardHeader}>
+                                            <ShieldCheck className={styles.headerIcon} />
+                                            <h2>Contactos de Confianza</h2>
+                                        </div>
+                                        <div className={styles.numbersGrid}>
+                                            {familyContacts.map((item) => (
+                                                <a key={item.id} href={`tel:${item.number}`} className={styles.numberItem}>
+                                                    <div className={styles.itemIcon} style={{ background: 'var(--soft-gray)', color: 'white' }}>
+                                                        <Phone size={24} />
+                                                    </div>
+                                                    <div className={styles.itemInfo}>
+                                                        <h3>{item.number}</h3>
+                                                        <span>{item.name}</span>
+                                                    </div>
+                                                </a>
+                                            ))}
+                                            {familyContacts.length === 0 && (
+                                                <p className="text-center opacity-50 py-4">Aún no hay contactos privados.</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className={`${styles.card} glass`}>
+                                        <div className={styles.cardHeader}>
                                             <Building2 className={styles.headerIcon} />
                                             <h2>Alojamientos</h2>
                                         </div>
@@ -188,6 +236,35 @@ export default function SafetyPage() {
                                                         <div key={c.id} className={styles.miniItem}>
                                                             <span>{c.name}: {c.number}</span>
                                                             <button onClick={() => handleDelete('emergency_contacts', c.id)}><Trash2 size={16} /></button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className={`${styles.card} glass`}>
+                                                <h3>Contactos de Confianza</h3>
+                                                <form onSubmit={handleAddFamilyContact} className={styles.form}>
+                                                    <input
+                                                        placeholder="Nombre (ej: Papá)"
+                                                        value={newFamilyContact.name}
+                                                        onChange={e => setNewFamilyContact({ ...newFamilyContact, name: e.target.value })}
+                                                        required
+                                                    />
+                                                    <input
+                                                        placeholder="Número"
+                                                        value={newFamilyContact.number}
+                                                        onChange={e => setNewFamilyContact({ ...newFamilyContact, number: e.target.value })}
+                                                        required
+                                                    />
+                                                    <button type="submit" className="btn-primary" disabled={isSaving}>
+                                                        {isSaving ? <Loader2 className="animate-spin" /> : <Plus size={18} />}
+                                                    </button>
+                                                </form>
+                                                <div className={styles.miniList}>
+                                                    {familyContacts.map(c => (
+                                                        <div key={c.id} className={styles.miniItem}>
+                                                            <span>{c.name}: {c.number}</span>
+                                                            <button onClick={() => handleDelete('family_contacts', c.id)}><Trash2 size={16} /></button>
                                                         </div>
                                                     ))}
                                                 </div>
