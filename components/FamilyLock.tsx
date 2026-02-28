@@ -8,12 +8,12 @@ interface FamilyLockProps {
     children: React.ReactNode;
 }
 
-const FAMILY_PASSWORD = '1234'; // Default simple password, can be changed later
-
 export default function FamilyLock({ children }: FamilyLockProps) {
     const [password, setPassword] = useState('');
     const [isUnlocked, setIsUnlocked] = useState(false);
     const [error, setError] = useState(false);
+
+    const FAMILY_PASSWORD = process.env.NEXT_PUBLIC_FAMILY_PASSWORD || '1234';
 
     const handleUnlock = (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,9 +33,9 @@ export default function FamilyLock({ children }: FamilyLockProps) {
     return (
         <div className={`${styles.lockContainer} glass`}>
             <div className={styles.iconWrapper}>
-                <Lock size={48} className={styles.lockIcon} />
+                <Lock size={40} className={styles.lockIcon} />
             </div>
-            <h2>Sección Protegida</h2>
+            <h2 className="text-madrid-gradient">Sección Protegida</h2>
             <p>Introduce la clave familiar para acceder a esta información.</p>
 
             <form onSubmit={handleUnlock} className={styles.form}>
@@ -52,7 +52,7 @@ export default function FamilyLock({ children }: FamilyLockProps) {
                         <span>Clave incorrecta</span>
                     </div>
                 )}
-                <button type="submit" className="btn-primary-blue">
+                <button type="submit" className="btn-primary">
                     <Unlock size={18} />
                     Desbloquear
                 </button>
