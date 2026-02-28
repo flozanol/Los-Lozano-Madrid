@@ -204,25 +204,28 @@
 
 @media (max-width: 768px) {
     .chatWrapper {
-        bottom: 20px;
+        bottom: 110px;
+        /* Elevated to avoid overlap with BottomNav */
         right: 20px;
     }
 
     .floatingButton {
-        padding: 10px 18px;
-        font-size: 1rem;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        gap: 8px;
+        border-radius: 20px;
+        /* More compact shape */
     }
 
     .chatWindow {
         width: calc(100vw - 40px);
         max-width: 400px;
-        height: 70vh;
+        height: 65vh;
         bottom: 0;
         right: 0;
     }
 
     .messagesList {
-        background: rgba(255, 255, 255, 0.9);
-        /* More opaque background for readability on mobile */
+        background: rgba(255, 255, 255, 0.95);
     }
 }
