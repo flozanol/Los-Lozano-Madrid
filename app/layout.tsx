@@ -9,9 +9,9 @@ export const metadata: Metadata = {
   description: "App de viaje para la familia Lozano en Madrid",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/logo-lozano-madrid-2026.png",
+    shortcut: "/logo-lozano-madrid-2026.png",
+    apple: "/logo-lozano-madrid-2026.png",
   },
 };
 

@@ -48,7 +48,7 @@ const HomePage = () => {
       <div className={styles.heroContent}>
         <div className={styles.logoWrapper}>
           <Image
-            src="/logo.png"
+            src="/logo-lozano-madrid-2026.png"
             alt="Los Lozano Madrid 2026"
             width={300}
             height={150}

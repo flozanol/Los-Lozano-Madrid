@@ -9,7 +9,7 @@ const Navbar = () => {
     <nav className={styles.nav}>
       <div className={`${styles.navContainer} container`}>
         <Link href="/" className={styles.logo}>
-          <Image src="/logo.png" alt="Logo" width={40} height={32} className={styles.logoImg} />
+          <Image src="/logo-lozano-madrid-2026.png" alt="Logo" width={40} height={32} className={styles.logoImg} />
           <div className={styles.logoBrand}>
             <span className={styles.logoText}>LOZANO</span>
           </div>
