@@ -1,7 +1,15 @@
-import { headers } from "next/headers";
+'use client';
 
-export const dynamic = "force-dynamic";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Coffee, Sun, Moon, Map as MapIcon, Shield, ChevronRight } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import Countdown from '@/components/Countdown';
+import WeatherWidget from '@/components/WeatherWidget';
+import styles from './page.module.css';
 
+// Types for Notion-sourced data
 type Spot = {
   id: string;
   nombre: string;
@@ -25,20 +33,7 @@ type ItItem = {
   notas: string;
 };
 
-async function getBaseUrl() {
-  const h = await headers();
-  const host = h.get("host") ?? "localhost:3000";
-  const proto = process.env.VERCEL ? "https" : "http";
-  return `${proto}://${host}`;
-}
-
-async function getJSON<T>(path: string): Promise<T> {
-  const base = await getBaseUrl();
-  const res = await fetch(`${base}${path}`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Error en ${path}`);
-  return res.json();
-}
-
+// Formatting helpers
 function formatDia(iso: string | null) {
   if (!iso) return "Sin fecha";
   const [y, m, d] = iso.split("-").map(Number);
@@ -76,7 +71,7 @@ function Tag({ children }: { children: React.ReactNode }) {
   );
 }
 
-const card: React.CSSProperties = {
+const cardStyle: React.CSSProperties = {
   border: "1px solid #e5e7eb",
   borderRadius: 18,
   padding: 16,
@@ -86,91 +81,180 @@ const card: React.CSSProperties = {
 
 const subtle: React.CSSProperties = { color: "#6b7280" };
 
-export default async function Home() {
-  const spotsRes = await getJSON<{ items: Spot[] }>("/api/spots").catch(() => ({ items: [] as Spot[] }));
-  const secretRes = await getJSON<{ items: Spot[] }>("/api/secret-spots").catch(() => ({ items: [] as Spot[] }));
-  const itinRes = await getJSON<{ items: ItItem[] }>("/api/itinerary").catch(() => ({ items: [] as ItItem[] }));
+const HomePage = () => {
+  const tripStartDate = "2026-03-26T00:00:00";
+  const [todayEvents, setTodayEvents] = useState<any[]>([]);
+  const [isTripActive, setIsTripActive] = useState(false);
 
-  const spots = spotsRes.items ?? [];
-  const secretSpots = secretRes.items ?? [];
-  const itinerary = itinRes.items ?? [];
+  // Notion data states
+  const [spots, setSpots] = useState<Spot[]>([]);
+  const [secretSpots, setSecretSpots] = useState<Spot[]>([]);
+  const [itinerary, setItinerary] = useState<ItItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkTripStatus = () => {
+      const start = new Date(tripStartDate);
+      const now = new Date();
+      setIsTripActive(now >= start);
+
+      if (now >= start) {
+        fetchTodayEvents();
+      }
+    };
+
+    const fetchTodayEvents = async () => {
+      const { data } = await supabase
+        .from('itinerary')
+        .select('*')
+        .eq('date_str', getTodayStr());
+
+      if (data) setTodayEvents(data);
+    };
+
+    const getTodayStr = () => {
+      const now = new Date();
+      const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+      return `${now.getDate()} ${months[now.getMonth()]}`;
+    };
+
+    const fetchNotionData = async () => {
+      try {
+        const [sRes, secRes, iRes] = await Promise.all([
+          fetch("/api/spots").then(r => r.json()),
+          fetch("/api/secret-spots").then(r => r.json()),
+          fetch("/api/itinerary").then(r => r.json())
+        ]);
+        setSpots(sRes.items || []);
+        setSecretSpots(secRes.items || []);
+        setItinerary(iRes.items || []);
+      } catch (e) {
+        console.error("Error fetching Notion data", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkTripStatus();
+    fetchNotionData();
+  }, []);
 
   const spotById = new Map([...spots, ...secretSpots].map((s) => [s.id, s]));
   const days = groupByDay(itinerary);
 
   return (
-    <main
-      style={{
-        fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Arial",
-        background: "linear-gradient(180deg, #fff7ed 0%, #ffffff 45%)",
-        minHeight: "100vh",
-      }}
-    >
-      <div style={{ maxWidth: 1140, margin: "0 auto", padding: "28px 18px 40px" }}>
-        <header style={{ marginBottom: 18 }}>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-            <h1 style={{ fontSize: 36, margin: 0, letterSpacing: -0.5 }}>Los Lozano en Madrid 🇪🇸</h1>
-            <span style={{ ...subtle, fontSize: 14 }}>26 Mar → 6 Abr</span>
-          </div>
-          <p style={{ margin: "8px 0 0", ...subtle }}>
-            Lo editan en Notion (toda la familia) y aquí se ve como “mini-sitio” para disfrutar el viaje desde hoy.
-          </p>
-        </header>
+    <div className={styles.hero}>
+      <div className={styles.backgroundOverlay}></div>
 
-        {(spots.length === 0 || itinerary.length === 0) && (
-          <div style={{ ...card, background: "#fffbeb", borderColor: "#fcd34d", marginBottom: 14 }}>
-            <b>Ojo:</b>{" "}
-            {spots.length === 0 && itinerary.length === 0
-              ? "No pude cargar Spots ni Itinerario desde la página. Si tus /api sí funcionan, esto ya debería resolverse con este build."
-              : spots.length === 0
-                ? "No pude cargar Spots."
-                : "No pude cargar Itinerario."}
-            <div style={{ marginTop: 6, fontSize: 13, ...subtle }}>
-              Tip: prueba también <code>/api/spots</code> y <code>/api/itinerary</code>.
+      <div className={styles.heroContent}>
+        <div className={styles.logoWrapper}>
+          <Image
+            src="/logo-lozano-madrid-2026.png"
+            alt="Los Lozano Madrid 2026"
+            width={300}
+            height={150}
+            className={styles.logoImage}
+            priority
+          />
+        </div>
+
+        <h1 className={styles.title}>
+          LOS LOZANO <br />
+          <span className="text-madrid-gradient">EN MADRID</span>
+        </h1>
+
+        <div className={styles.dashboardGrid}>
+          {/* TODAY SECTION / COUNTDOWN */}
+          <div className={`${styles.todayCard} glass`}>
+            <div className={styles.cardHeader}>
+              <span className={styles.cardTag}>
+                {isTripActive ? 'Sucediedo Hoy' : 'Cuenta Regresiva'}
+              </span>
+              {!isTripActive && <span className={styles.dateLabel}>26 MAR — 06 ABR</span>}
             </div>
-          </div>
-        )}
 
-        <div style={{ display: "grid", gap: 16, gridTemplateColumns: "1fr 1fr" }}>
-          <section style={card}>
-            <h2 style={{ margin: 0, fontSize: 18 }}>📅 Itinerario</h2>
-            <p style={{ marginTop: 6, ...subtle, fontSize: 13 }}>
-              Por día. Agrega “Lugar” (relación), “Hora”, “Grupo” y “Plan” en Notion.
+            {isTripActive ? (
+              <div className={styles.todayInfo}>
+                <h2>Agenda de Hoy</h2>
+                <div className={styles.dayBlocks}>
+                  <div className={styles.block}>
+                    <div className={styles.blockLabel}><Coffee size={14} /> Mañana</div>
+                    <div className={styles.blockContent}>
+                      {todayEvents.find(e => e.time_block === 'Mañana')?.event_name || 'Libre'}
+                    </div>
+                  </div>
+                  <div className={styles.block}>
+                    <div className={styles.blockLabel}><Sun size={14} /> Tarde</div>
+                    <div className={styles.blockContent}>
+                      {todayEvents.find(e => e.time_block === 'Tarde')?.event_name || 'Libre'}
+                    </div>
+                  </div>
+                  <div className={styles.block}>
+                    <div className={styles.blockLabel}><Moon size={14} /> Noche</div>
+                    <div className={styles.blockContent}>
+                      {todayEvents.find(e => e.time_block === 'Noche')?.event_name || 'Cena'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className={styles.todayInfo}>
+                <Countdown targetDate={tripStartDate} />
+              </div>
+            )}
+            <Link href="/calendar" className={styles.fullItineryBtn}>
+              Ver Itinerario Completo <ChevronRight size={16} />
+            </Link>
+          </div>
+
+          {/* SMART WIDGETS */}
+          <div className={styles.sideWidgets}>
+            <div className={`${styles.smallCard} glass`}>
+              <WeatherWidget />
+            </div>
+            <Link href="/map" className={`${styles.smallCard} glass ${styles.mapCard}`}>
+              <MapIcon size={24} className={styles.iconRed} />
+              <span>Ver Mapa de Experiencias</span>
+            </Link>
+            <Link href="/safety" className={`${styles.smallCard} glass ${styles.safetyCard}`}>
+              <Shield size={24} className={styles.iconRed} />
+              <span>Centro de Seguridad</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* NOTION CONTENT SECTION */}
+        <div style={{ marginTop: 40, display: "grid", gap: 24, gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))" }}>
+
+          {/* ITINERARIO */}
+          <section className="glass" style={{ padding: 24 }}>
+            <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800 }}>📅 Itinerario (Notion)</h2>
+            <p style={{ marginTop: 8, ...subtle, fontSize: 14 }}>
+              Basado en Notion. Sincronización automática.
             </p>
 
-            {itinerary.length === 0 ? (
-              <div style={{ marginTop: 12, ...subtle }}>Aún no hay planes (o no se cargaron).</div>
+            {loading ? (
+              <div style={{ marginTop: 20, ...subtle }}>Cargando itinerario...</div>
+            ) : itinerary.length === 0 ? (
+              <div style={{ marginTop: 20, ...subtle }}>No hay planes cargados en Notion.</div>
             ) : (
-              <div style={{ display: "grid", gap: 12, marginTop: 10 }}>
+              <div style={{ display: "grid", gap: 16, marginTop: 20 }}>
                 {days.map(([dia, items]) => (
-                  <div key={dia} style={{ borderTop: "1px solid #f3f4f6", paddingTop: 10 }}>
-                    <div style={{ fontWeight: 900, textTransform: "capitalize" }}>{formatDia(dia === "Sin fecha" ? null : dia)}</div>
-
-                    <div style={{ display: "grid", gap: 8, marginTop: 8 }}>
+                  <div key={dia} style={{ borderTop: "1px solid rgba(0,0,0,0.05)", paddingTop: 16 }}>
+                    <div style={{ fontWeight: 900, textTransform: "capitalize", fontSize: 18 }}>{formatDia(dia === "Sin fecha" ? null : dia)}</div>
+                    <div style={{ display: "grid", gap: 12, marginTop: 12 }}>
                       {items.map((it) => {
-                        const lugares = it.lugarIds
-                          .map((id) => spotById.get(id))
-                          .filter(Boolean) as Spot[];
-
+                        const lugares = it.lugarIds.map((id) => spotById.get(id)).filter(Boolean) as Spot[];
                         return (
-                          <div
-                            key={it.id}
-                            style={{
-                              border: "1px solid #f3f4f6",
-                              borderRadius: 14,
-                              padding: 12,
-                              background: "#fafafa",
-                            }}
-                          >
+                          <div key={it.id} style={{ border: "1px solid rgba(0,0,0,0.05)", borderRadius: 16, padding: 16, background: "rgba(255,255,255,0.5)" }}>
                             <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-                              <div style={{ fontWeight: 800 }}>{it.hora ? `⏰ ${it.hora}` : "⏰ (hora por definir)"}</div>
-                              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                              <div style={{ fontWeight: 800 }}>{it.hora ? `⏰ ${it.hora}` : "⏰ (por definir)"}</div>
+                              <div style={{ display: "flex", gap: 8 }}>
                                 {it.grupo && <Tag>👨‍👩‍👧‍👦 {it.grupo}</Tag>}
                                 {it.plan && <Tag>🗓️ {it.plan}</Tag>}
                               </div>
                             </div>
-
-                            <div style={{ marginTop: 8 }}>
+                            <div style={{ marginTop: 10 }}>
                               <b>Lugar:</b>{" "}
                               {lugares.length ? (
                                 <span>
@@ -178,33 +262,13 @@ export default async function Home() {
                                     <span key={s.id}>
                                       {idx ? ", " : ""}
                                       <span style={{ fontWeight: 700 }}>{s.nombre}</span>
-                                      {s.tipo ? <span style={subtle}> ({s.tipo})</span> : null}
-                                      {s.mapa ? (
-                                        <span style={{ marginLeft: 8 }}>
-                                          <a href={s.mapa} target="_blank" rel="noreferrer" style={{ fontSize: 13 }}>
-                                            Ver mapa →
-                                          </a>
-                                        </span>
-                                      ) : null}
+                                      {s.tipo && <span style={subtle}> ({s.tipo})</span>}
                                     </span>
                                   ))}
                                 </span>
-                              ) : (
-                                <span style={subtle}>— (por decidir)</span>
-                              )}
+                              ) : <span style={subtle}>—</span>}
                             </div>
-
-                            {lugares.length === 1 && lugares[0].historia ? (
-                              <div style={{ marginTop: 8, fontSize: 13, ...subtle }}>
-                                <b>Historia:</b> {lugares[0].historia}
-                              </div>
-                            ) : null}
-
-                            {it.notas ? (
-                              <div style={{ marginTop: 8, fontSize: 13, ...subtle }}>
-                                <b>Notas:</b> {it.notas}
-                              </div>
-                            ) : null}
+                            {it.notas && <div style={{ marginTop: 10, fontSize: 13, ...subtle }}><b>Notas:</b> {it.notas}</div>}
                           </div>
                         );
                       })}
@@ -215,109 +279,52 @@ export default async function Home() {
             )}
           </section>
 
-          <div style={{ display: "grid", gap: 16 }}>
-            <section style={card}>
-              <h2 style={{ margin: 0, fontSize: 18 }}>📍 Lugares y restaurantes</h2>
-              <p style={{ marginTop: 6, ...subtle, fontSize: 13 }}>
-                Historia, si es apto para abuela/niños, caminata y mapa.
-              </p>
-
-              {spots.length === 0 ? (
-                <div style={{ marginTop: 12, ...subtle }}>Aún no hay lugares (o no se cargaron).</div>
-              ) : (
-                <div style={{ display: "grid", gap: 10, marginTop: 10 }}>
-                  {spots.map((s) => (
-                    <div
-                      key={s.id}
-                      style={{
-                        border: "1px solid #f3f4f6",
-                        borderRadius: 16,
-                        padding: 12,
-                        background: "#fafafa",
-                      }}
-                    >
-                      <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
-                        <div style={{ fontWeight: 900 }}>{s.nombre}</div>
-                        <div style={{ fontSize: 12, ...subtle }}>{s.tipo ?? "—"}</div>
+          <div style={{ display: "grid", gap: 24 }}>
+            {/* LUGARES */}
+            <section className="glass" style={{ padding: 24 }}>
+              <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800 }}>📍 Lugares</h2>
+              <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
+                {spots.length === 0 ? <div style={subtle}>No hay lugares cargados.</div> : (
+                  spots.slice(0, 5).map(s => (
+                    <div key={s.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
+                      <div>
+                        <div style={{ fontWeight: 700 }}>{s.nombre}</div>
+                        <div style={{ fontSize: 12, ...subtle }}>{s.tipo}</div>
                       </div>
-
-                      {s.historia ? (
-                        <div style={{ marginTop: 8, fontSize: 13, ...subtle }}>
-                          <b>Historia:</b> {s.historia}
-                        </div>
-                      ) : (
-                        <div style={{ marginTop: 8, fontSize: 13, ...subtle }}>
-                          <b>Historia:</b> (pendiente) — escribe 2–3 líneas en Notion en “Historia Corta”.
-                        </div>
-                      )}
-
-                      <div style={{ marginTop: 10, display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                        {s.aptoAbuela && <Tag>🧓 Apto abuela</Tag>}
-                        {s.paraNinos && <Tag>👶 Niños</Tag>}
-                        {s.caminar && <Tag>🚶 {s.caminar}</Tag>}
-                        {s.votos != null && <Tag>⭐ {s.votos}</Tag>}
-                        {s.mapa && (
-                          <a href={s.mapa} target="_blank" rel="noreferrer" style={{ fontSize: 13 }}>
-                            Abrir en Maps →
-                          </a>
-                        )}
-                      </div>
+                      {s.mapa && <a href={s.mapa} target="_blank" style={{ fontSize: 12, color: "var(--madrid-red)" }}>Mapa →</a>}
                     </div>
-                  ))}
-                </div>
-              )}
+                  ))
+                )}
+                <Link href="/map" style={{ marginTop: 10, fontSize: 14, fontWeight: 600, color: "var(--madrid-red)" }}>Ver todos los lugares →</Link>
+              </div>
             </section>
 
-            <section style={{ ...card, background: "linear-gradient(135deg, #fffbeb 0%, #ffffff 100%)", borderColor: "#fef3c7" }}>
-              <h2 style={{ margin: 0, fontSize: 18 }}>🕵️‍♂️ Lugares Secretos</h2>
-              <p style={{ marginTop: 6, ...subtle, fontSize: 13 }}>
-                Gemas ocultas de Madrid: Naturaleza, Miradores, Historia, Bares, Cultura y Experiencias raras.
-              </p>
-
-              {secretSpots.length === 0 ? (
-                <div style={{ marginTop: 12, ...subtle }}>Aún no hay lugares secretos (o no se cargaron). Asegúrate de configurar <code>SECRET_SPOTS_DB_ID</code>.</div>
-              ) : (
-                <div style={{ display: "grid", gap: 10, marginTop: 10 }}>
-                  {secretSpots.map((s) => (
-                    <div
-                      key={s.id}
-                      style={{
-                        border: "1px solid #fef3c7",
-                        borderRadius: 16,
-                        padding: 12,
-                        background: "#ffffff",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
-                      }}
-                    >
-                      <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
-                        <div style={{ fontWeight: 900, color: "#92400e" }}>{s.nombre}</div>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: "#b45309" }}>{s.tipo ?? "—"}</div>
-                      </div>
-
-                      {s.historia && (
-                        <div style={{ marginTop: 8, fontSize: 13, color: "#4b5563" }}>
-                          {s.historia}
-                        </div>
-                      )}
-
-                      <div style={{ marginTop: 10, display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                        {s.votos != null && <Tag>⭐ {s.votos}</Tag>}
-                        {s.mapa && (
-                          <a href={s.mapa} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: "#0ea5e9", fontWeight: 500 }}>
-                            Ver secreto →
-                          </a>
-                        )}
-                      </div>
+            {/* LUGARES SECRETOS */}
+            <section className="glass" style={{ padding: 24, background: "linear-gradient(135deg, rgba(232,30,43,0.05) 0%, rgba(255,255,255,0.7) 100%)" }}>
+              <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800 }}>🕵️‍♂️ Lugares Secretos</h2>
+              <p style={{ marginTop: 4, ...subtle, fontSize: 13 }}>Gemas ocultas de Madrid.</p>
+              <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
+                {secretSpots.length === 0 ? <div style={subtle}>Aún no hay secretos...</div> : (
+                  secretSpots.map(s => (
+                    <div key={s.id} style={{ padding: 16, borderRadius: 16, border: "1px solid rgba(232,30,43,0.1)", background: "white" }}>
+                      <div style={{ fontWeight: 800, color: "var(--madrid-red)" }}>{s.nombre}</div>
+                      <div style={{ fontSize: 12, fontWeight: 600, color: "#b45309", marginTop: 4 }}>{s.tipo}</div>
+                      {s.historia && <div style={{ marginTop: 8, fontSize: 13, color: "#4b5563" }}>{s.historia}</div>}
                     </div>
-                  ))}
-                </div>
-              )}
+                  ))
+                )}
+              </div>
             </section>
           </div>
+
         </div>
 
-        <footer style={{ marginTop: 18, ...subtle, fontSize: 12 }}>Tip: editen en Notion y recarguen esta página 🙂</footer>
+        <footer style={{ marginTop: 40, textAlign: "center", ...subtle, fontSize: 14 }}>
+          Actualizado desde Notion • Los Lozano en Madrid 2026
+        </footer>
       </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default HomePage;

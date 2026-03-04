@@ -1,0 +1,280 @@
+.tapasPage {
+    padding-bottom: 5rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.header h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: var(--graphite-gray);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+}
+
+.card {
+    background: white;
+    border-radius: var(--border-radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--soft-gray);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: var(--madrid-red);
+}
+
+.imageBox {
+    position: relative;
+    height: 220px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.image {
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .image {
+    transform: scale(1.1);
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background: var(--madrid-red);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--border-radius-pill);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.content {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.titleRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.titleRow h3 {
+    font-size: 1.6rem;
+    color: var(--graphite-gray);
+    font-family: var(--font-heading);
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #f59e0b;
+    font-weight: 800;
+}
+
+.description {
+    opacity: 0.7;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    flex: 1;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.address {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--graphite-gray);
+    opacity: 0.6;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.infoCard {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2.5rem;
+    background: white;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--soft-gray);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.infoIcon {
+    width: 64px;
+    height: 64px;
+    background: #E81E2B15;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--madrid-red);
+    flex-shrink: 0;
+}
+
+.infoText h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--graphite-gray);
+}
+
+.infoText p {
+    opacity: 0.7;
+    font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+    .infoCard {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Management Styles */
+.adminActions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.addForm,
+.editForm {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--soft-gray);
+    margin-bottom: 3rem;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.formGrid input,
+.formGrid select,
+.formGrid textarea,
+.editForm input,
+.editForm textarea {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--soft-gray);
+    border-radius: 12px;
+    background: var(--bone-white);
+    font-size: 0.95rem;
+}
+
+.editForm textarea {
+    min-height: 100px;
+    margin-bottom: 1.5rem;
+}
+
+.cardButtons {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.editBtn,
+.deleteBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.editBtn {
+    background: white;
+    color: var(--graphite-gray);
+}
+
+.deleteBtn {
+    background: var(--madrid-red);
+    color: white;
+}
+
+.editBtn:hover,
+.deleteBtn:hover {
+    transform: scale(1.1);
+}
+
+.editActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btnSave {
+    background: var(--madrid-red);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius-pill);
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btnCancel {
+    background: var(--soft-gray);
+    color: var(--graphite-gray);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius-pill);
+    font-weight: 700;
+    cursor: pointer;
+}

@@ -1,0 +1,193 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 6rem 1rem 8rem;
+  background-image: url('/madrid_hero_cibeles.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.backgroundOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(26, 28, 30, 0.9) 0%, rgba(26, 28, 30, 0.6) 100%);
+  z-index: 1;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1100px;
+  text-align: center;
+}
+
+.logoWrapper {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.logoImage {
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+}
+
+.title {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 0.95;
+  margin-bottom: 3rem;
+  color: white;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1.5rem;
+  text-align: left;
+}
+
+.todayCard {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 350px;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.cardTag {
+  background: var(--madrid-red);
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--border-radius-pill);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.dateLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.todayInfo h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dayBlocks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.block {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.2rem;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.blockLabel {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.blockContent {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.fullItineryBtn {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--madrid-red);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.sideWidgets {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.smallCard {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: white;
+  transition: var(--transition-smooth);
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.smallCard:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: translateX(10px);
+}
+
+.smallCard span {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.iconRed {
+  color: var(--madrid-red);
+}
+
+@media (max-width: 900px) {
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .todayCard {
+    min-height: auto;
+  }
+
+  .dayBlocks {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 3rem;
+  }
+
+  .todayCard {
+    padding: 1.5rem;
+  }
+}

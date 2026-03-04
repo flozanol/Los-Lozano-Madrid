@@ -1,0 +1,140 @@
+.mapPage {
+    color: white;
+}
+
+.header {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 800;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+    opacity: 0.7;
+    max-width: 600px;
+    margin: 1rem auto 0;
+}
+
+.mapWrapper {
+    height: 650px;
+    position: relative;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.map {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.pinForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    width: 350px;
+    padding: 2.5rem;
+    background: rgba(15, 15, 15, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid var(--madrid-city-blue);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+.pinForm h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--madrid-sky-blue);
+}
+
+.pinForm form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.pinForm input,
+.pinForm select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    color: white;
+    border-radius: 12px;
+}
+
+.formButtons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btnCancel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.loading {
+    position: fixed;
+    inset: 0;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    gap: 1.5rem;
+}
+
+/* POPUP STYLING */
+.popup {
+    color: #1a1a1a;
+    min-width: 150px;
+}
+
+.popupHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.popupCategory {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.popupDetail {
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    border-top: 1px solid #eee;
+    padding-top: 0.4rem;
+}
+
+.stars {
+    color: #f59e0b;
+    font-size: 0.75rem;
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 768px) {
+    .mapWrapper {
+        height: 500px;
+    }
+}

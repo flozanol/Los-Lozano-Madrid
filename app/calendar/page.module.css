@@ -1,0 +1,256 @@
+.calendarPage {
+    min-height: 100vh;
+    padding-bottom: 5rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.header h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: var(--graphite-gray);
+}
+
+.addForm {
+    max-width: 800px;
+    margin: 0 auto 5rem;
+    padding: 2.5rem;
+    background: white;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--soft-gray);
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroup label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--madrid-red);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.addForm input,
+.addForm select {
+    background: var(--bone-white);
+    border: 1px solid var(--soft-gray);
+    padding: 0.8rem 1rem;
+    color: var(--graphite-gray);
+    border-radius: 12px;
+    font-family: var(--font-body);
+}
+
+.itineraryList {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.daySection {
+    margin-bottom: 4rem;
+}
+
+.dayHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.dayLabel {
+    background: var(--madrid-red);
+    color: white;
+    padding: 0.8rem 1.8rem;
+    border-radius: var(--border-radius-pill);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 900;
+    font-size: 1.2rem;
+    box-shadow: 0 10px 20px rgba(232, 30, 43, 0.2);
+    font-family: var(--font-heading);
+}
+
+.dayItems {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.itineraryCard {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--soft-gray);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: var(--transition-smooth);
+    display: flex;
+    gap: 2rem;
+}
+
+.itineraryCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    border-color: var(--madrid-red);
+}
+
+.blockTag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--madrid-red);
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.transitTag {
+    background: var(--bone-white);
+    padding: 0.6rem 1rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: var(--graphite-gray);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    width: fit-content;
+}
+
+.eventInfo {
+    flex: 1;
+}
+
+.eventHeader h3 {
+    font-size: 1.8rem;
+    color: var(--graphite-gray);
+    line-height: 1.2;
+}
+
+.timeTag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    opacity: 0.6;
+    margin-top: 0.5rem;
+}
+
+.cardFooter {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--soft-gray);
+}
+
+.author,
+.participants {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+}
+
+.author strong,
+.participants strong {
+    color: var(--madrid-red);
+}
+
+.cardActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.editBtn,
+.deleteBtn {
+    background: var(--bone-white);
+    border: 1px solid var(--soft-gray);
+    padding: 0.8rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editBtn:hover {
+    background: var(--soft-gray);
+    color: var(--madrid-red);
+}
+
+.deleteBtn:hover {
+    background: #FFEBEE;
+    color: #f44336;
+    border-color: #FFCDD2;
+}
+
+.confirmationSection {
+    margin-top: 2rem;
+}
+
+.confTitle {
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    opacity: 0.4;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.participantList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.confBadge {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-pill);
+    border: 1px solid var(--soft-gray);
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: white;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.confBadge.confirmed {
+    background: #E81E2B15;
+    border-color: var(--madrid-red);
+    color: var(--madrid-red);
+}
+
+@media (max-width: 768px) {
+    .itineraryCard {
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    .cardActions {
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

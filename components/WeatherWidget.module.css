@@ -1,0 +1,80 @@
+.widget {
+    padding: 1rem 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: fit-content;
+    margin: 0 auto;
+    min-width: 180px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mainInfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sun {
+    color: #f59e0b;
+}
+
+.cloud {
+    color: #94a3b8;
+}
+
+.rain {
+    color: #3b82f6;
+}
+
+.storm {
+    color: #6366f1;
+}
+
+.tempWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.temp {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.city {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detailItem {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+.loading {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    padding: 1rem;
+}
