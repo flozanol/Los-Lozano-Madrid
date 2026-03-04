@@ -125,7 +125,11 @@ const SecretPlacesPage = () => {
         <>
             <div
                 className="section-bg"
-                style={{ backgroundImage: 'url(/madrid_secret_bg.png)', backgroundSize: 'cover' }}
+                style={{
+                    backgroundImage: 'url(/madrid_secret_bg.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}
             ></div>
             <div className={`content-wrapper ${styles.placesPage}`}>
 
