@@ -25,12 +25,15 @@ type Spot = {
 
 type SecretPlace = {
   id: string;
-  name: string;
-  category: string;
-  description: string;
-  image: string;
-  latitude: number | null;
-  longitude: number | null;
+  nombre: string;
+  tipo: string | null;
+  caminar: string | null;
+  aptoAbuela: boolean;
+  paraNinos: boolean;
+  historia: string;
+  mapa: string | null;
+  votos: number | null;
+  fechaIdeal: string | null;
 };
 
 type ItItem = {
@@ -133,9 +136,13 @@ const HomePage = () => {
           id: s.id,
           nombre: s.name,
           tipo: s.category,
+          caminar: null,
+          aptoAbuela: false,
+          paraNinos: false,
           historia: s.description,
           mapa: s.latitude && s.longitude ? `https://www.google.com/maps?q=${s.latitude},${s.longitude}` : null,
-          votos: null
+          votos: null,
+          fechaIdeal: null
         })));
       }
     };

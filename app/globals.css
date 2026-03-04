@@ -1,10 +1,10 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800;900&display=swap');
+@import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  
+
   /* Madrid Moderno Palette */
   --madrid-red: #E81E2B;
   --madrid-red-hover: #C61924;
@@ -60,7 +60,12 @@ body {
   background-attachment: fixed;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   letter-spacing: -0.03em;
   line-height: 1.1;
