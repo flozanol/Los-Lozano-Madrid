@@ -16,7 +16,8 @@ import {
     History,
     Users,
     MessageSquare,
-    Beer
+    Beer,
+    Sparkles
 } from 'lucide-react';
 import styles from './BottomNav.module.css';
 
@@ -40,6 +41,7 @@ const BottomNav = () => {
         { href: '/checklist', icon: ClipboardList, label: 'Documentos' },
         { href: '/gallery', icon: Camera, label: 'Galería' },
         { href: '/social', icon: MessageSquare, label: 'Recados' },
+        { href: '/secret-places', icon: Sparkles, label: 'Secretos' },
     ];
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);

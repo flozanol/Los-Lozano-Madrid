@@ -23,6 +23,16 @@ type Spot = {
   fechaIdeal: string | null;
 };
 
+type SecretPlace = {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  image: string;
+  latitude: number | null;
+  longitude: number | null;
+};
+
 type ItItem = {
   id: string;
   dia: string | null;
@@ -112,6 +122,24 @@ const HomePage = () => {
       if (data) setTodayEvents(data);
     };
 
+    const fetchSecretPlaces = async () => {
+      const { data } = await supabase
+        .from('secret_places')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (data) {
+        setSecretSpots(data.map((s: any) => ({
+          id: s.id,
+          nombre: s.name,
+          tipo: s.category,
+          historia: s.description,
+          mapa: s.latitude && s.longitude ? `https://www.google.com/maps?q=${s.latitude},${s.longitude}` : null,
+          votos: null
+        })));
+      }
+    };
+
     const getTodayStr = () => {
       const now = new Date();
       const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
@@ -120,13 +148,11 @@ const HomePage = () => {
 
     const fetchNotionData = async () => {
       try {
-        const [sRes, secRes, iRes] = await Promise.all([
+        const [sRes, iRes] = await Promise.all([
           fetch("/api/spots").then(r => r.json()),
-          fetch("/api/secret-spots").then(r => r.json()),
           fetch("/api/itinerary").then(r => r.json())
         ]);
         setSpots(sRes.items || []);
-        setSecretSpots(secRes.items || []);
         setItinerary(iRes.items || []);
       } catch (e) {
         console.error("Error fetching Notion data", e);
@@ -137,6 +163,7 @@ const HomePage = () => {
 
     checkTripStatus();
     fetchNotionData();
+    fetchSecretPlaces();
   }, []);
 
   const spotById = new Map([...spots, ...secretSpots].map((s) => [s.id, s]));
