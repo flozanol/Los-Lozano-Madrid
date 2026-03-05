@@ -10,10 +10,12 @@ const MissionsPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [newTask, setNewTask] = useState('');
+    const [newDescription, setNewDescription] = useState('');
     const [newPoints, setNewPoints] = useState('10');
     const [isSaving, setIsSaving] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editTask, setEditTask] = useState('');
+    const [editDescription, setEditDescription] = useState('');
     const [editPoints, setEditPoints] = useState('');
 
     useEffect(() => {
@@ -47,10 +49,16 @@ const MissionsPage = () => {
         setIsSaving(true);
         const { error } = await supabase
             .from('missions')
-            .insert([{ task: newTask.trim(), points: parseInt(newPoints), completed: false }]);
+            .insert([{
+                task: newTask.trim(),
+                description: newDescription.trim(),
+                points: parseInt(newPoints),
+                completed: false
+            }]);
 
         if (!error) {
             setNewTask('');
+            setNewDescription('');
             setNewPoints('10');
             setShowForm(false);
             fetchMissions();
@@ -62,7 +70,11 @@ const MissionsPage = () => {
         setIsSaving(true);
         const { error } = await supabase
             .from('missions')
-            .update({ task: editTask, points: parseInt(editPoints) })
+            .update({
+                task: editTask,
+                description: editDescription,
+                points: parseInt(editPoints)
+            })
             .eq('id', id);
 
         if (!error) {
@@ -133,29 +145,37 @@ const MissionsPage = () => {
                     </div>
 
                     {showForm && (
-                        <form className={`${styles.addForm} glass mb-12`} onSubmit={handleAddMission}>
-                            <div className="flex flex-col md:flex-row gap-4">
-                                <div className="flex-1 relative">
-                                    <Star className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={18} />
+                        <form className={`${styles.addForm} bg-white/5 backdrop-blur-md p-8 rounded-3xl mb-12 border border-white/10`} onSubmit={handleAddMission}>
+                            <div className="flex flex-col gap-4">
+                                <div className="flex flex-col md:flex-row gap-4">
+                                    <div className="flex-1 relative">
+                                        <Star className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={18} />
+                                        <input
+                                            type="text"
+                                            placeholder="Título del reto..."
+                                            value={newTask}
+                                            onChange={e => setNewTask(e.target.value)}
+                                            className="w-full p-4 pl-12 bg-white/5 border border-white/10 rounded-xl text-white font-bold"
+                                            required
+                                        />
+                                    </div>
                                     <input
-                                        type="text"
-                                        placeholder="Descripción del reto..."
-                                        value={newTask}
-                                        onChange={e => setNewTask(e.target.value)}
-                                        className="w-full p-4 pl-12 bg-white/5 border border-white/10 rounded-xl text-white font-bold"
+                                        type="number"
+                                        value={newPoints}
+                                        onChange={e => setNewPoints(e.target.value)}
+                                        className="w-full md:w-24 p-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold text-center"
+                                        placeholder="Pts"
                                         required
                                     />
                                 </div>
-                                <input
-                                    type="number"
-                                    value={newPoints}
-                                    onChange={e => setNewPoints(e.target.value)}
-                                    className="w-full md:w-24 p-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold text-center"
-                                    placeholder="Pts"
-                                    required
+                                <textarea
+                                    placeholder="Descripción detallada (opcional)..."
+                                    value={newDescription}
+                                    onChange={e => setNewDescription(e.target.value)}
+                                    className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white font-medium min-h-[100px]"
                                 />
-                                <button type="submit" className="btn-primary py-4 px-8" disabled={isSaving}>
-                                    {isSaving ? <Loader2 className="animate-spin" /> : 'Añadir'}
+                                <button type="submit" className="btn-primary py-4 px-8 self-end" disabled={isSaving}>
+                                    {isSaving ? <Loader2 className="animate-spin" /> : 'Añadir Reto'}
                                 </button>
                             </div>
                         </form>
@@ -170,57 +190,71 @@ const MissionsPage = () => {
                             {missions.map((m) => (
                                 <div
                                     key={m.id}
-                                    className={`glass p-6 md:p-8 flex flex-col md:flex-row items-center justify-between transition-all duration-500 border border-white/5 rounded-3xl group ${m.completed ? 'opacity-50 grayscale' : 'hover:bg-white/5'
+                                    className={`bg-white/5 backdrop-blur-sm p-6 md:p-8 flex flex-col md:flex-row items-center justify-between transition-all duration-500 border border-white/10 rounded-3xl group ${m.completed ? 'opacity-40 grayscale blur-[1px]' : 'hover:bg-white/10'
                                         }`}
                                 >
-                                    <div className="flex items-center gap-6 w-full md:flex-1 mb-4 md:mb-0">
+                                    <div className="flex items-start gap-6 w-full md:flex-1 mb-4 md:mb-0">
                                         <button
                                             onClick={() => toggleMission(m.id, m.completed)}
-                                            className={`p-3 rounded-2xl transition-all shadow-xl active:scale-95 ${m.completed ? 'bg-emerald-500/20 text-emerald-500' : 'bg-white/5 text-white/20 hover:text-white hover:bg-white/10'}`}
+                                            className={`p-3 mt-1 rounded-2xl transition-all shadow-xl active:scale-95 ${m.completed ? 'bg-emerald-500/20 text-emerald-500' : 'bg-white/5 text-white/20 hover:text-white hover:bg-white/10'}`}
                                         >
                                             {m.completed ? <CheckCircle2 size={32} /> : <Circle size={32} />}
                                         </button>
 
                                         <div className="flex-1">
                                             {editingId === m.id ? (
-                                                <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-3">
                                                     <input
                                                         type="text"
                                                         value={editTask}
                                                         onChange={e => setEditTask(e.target.value)}
-                                                        className="bg-white/10 text-white p-2 rounded-lg text-sm font-bold border border-white/20 w-full"
+                                                        className="bg-white/10 text-white p-3 rounded-xl text-base font-bold border border-white/20 w-full"
+                                                        placeholder="Título"
+                                                    />
+                                                    <textarea
+                                                        value={editDescription}
+                                                        onChange={e => setEditDescription(e.target.value)}
+                                                        className="bg-white/10 text-white p-3 rounded-xl text-sm font-medium border border-white/20 w-full min-h-[80px]"
+                                                        placeholder="Descripción"
                                                     />
                                                     <div className="flex gap-2">
                                                         <input
                                                             type="number"
                                                             value={editPoints}
                                                             onChange={e => setEditPoints(e.target.value)}
-                                                            className="bg-white/10 text-white p-2 rounded-lg text-sm font-bold border border-white/20 w-20"
+                                                            className="bg-white/10 text-white p-3 rounded-xl text-sm font-bold border border-white/20 w-24"
                                                         />
-                                                        <button onClick={() => handleUpdate(m.id)} className="p-2 bg-emerald-500 text-white rounded-lg flex items-center gap-1 text-xs font-bold"><Check size={14} /> OK</button>
-                                                        <button onClick={() => setEditingId(null)} className="p-2 bg-red-500 text-white rounded-lg flex items-center gap-1 text-xs font-bold"><X size={14} /> NO</button>
+                                                        <button onClick={() => handleUpdate(m.id)} className="p-3 bg-emerald-500 text-white rounded-xl flex items-center gap-1 text-sm font-bold"><Check size={18} /> Guardar</button>
+                                                        <button onClick={() => setEditingId(null)} className="p-3 bg-red-500 text-white rounded-xl flex items-center gap-1 text-sm font-bold"><X size={18} /> Cancelar</button>
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <p className={`text-xl font-black tracking-tight ${m.completed ? 'line-through opacity-50' : 'text-white'}`}>
-                                                    {m.task}
-                                                </p>
+                                                <>
+                                                    <p className={`text-2xl font-black tracking-tight leading-tight ${m.completed ? 'line-through opacity-50' : 'text-white'}`}>
+                                                        {m.task}
+                                                    </p>
+                                                    {m.description && (
+                                                        <p className={`mt-2 text-sm font-medium leading-relaxed ${m.completed ? 'opacity-30' : 'text-white/70'}`}>
+                                                            {m.description}
+                                                        </p>
+                                                    )}
+                                                </>
                                             )}
-                                            <div className="flex items-center gap-2 mt-2">
-                                                <Star size={12} className={m.completed ? 'text-white/20' : 'text-amber-400 fill-amber-400'} />
-                                                <span className={`text-[10px] font-black uppercase tracking-widest ${m.completed ? 'text-white/20' : 'text-white/40'}`}>
-                                                    {m.points} puntos por completar
+                                            <div className="flex items-center gap-2 mt-4">
+                                                <Star size={14} className={m.completed ? 'text-white/20' : 'text-amber-400 fill-amber-400'} />
+                                                <span className={`text-[11px] font-black uppercase tracking-widest ${m.completed ? 'text-white/20' : 'text-white/40'}`}>
+                                                    {m.points} puntos
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center gap-3 w-full md:w-auto justify-end border-t md:border-t-0 border-white/5 pt-4 md:pt-0">
-                                        <button onClick={() => { setEditingId(m.id); setEditTask(m.task); setEditPoints(m.points.toString()); }} className="p-2 text-white/20 hover:text-white transition-colors">
-                                            <Edit2 size={16} />
+                                        <button onClick={() => { setEditingId(m.id); setEditTask(m.task); setEditDescription(m.description || ''); setEditPoints(m.points.toString()); }} className="p-2 text-white/20 hover:text-white transition-colors">
+                                            <Edit2 size={20} />
                                         </button>
                                         <button onClick={() => handleDelete(m.id)} className="p-2 text-white/20 hover:text-red-500 transition-colors">
-                                            <Trash2 size={16} />
+                                            <Trash2 size={20} />
                                         </button>
                                     </div>
                                 </div>

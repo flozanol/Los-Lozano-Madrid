@@ -32,10 +32,19 @@ CREATE TABLE IF NOT EXISTS diary_entries (
 CREATE TABLE IF NOT EXISTS missions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   task TEXT NOT NULL,
+  description TEXT, -- Nueva columna para detalles
   completed BOOLEAN DEFAULT FALSE,
   points INTEGER DEFAULT 10,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- snippet para actualizar si ya existe
+DO $$ 
+BEGIN 
+  BEGIN
+    ALTER TABLE missions ADD COLUMN description TEXT;
+  EXCEPTION WHEN duplicate_column THEN NULL; END;
+END $$;
 
 -- Insertar misiones iniciales
 INSERT INTO missions (task, points) VALUES 
