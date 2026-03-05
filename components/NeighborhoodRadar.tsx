@@ -26,9 +26,9 @@ const NeighborhoodRadar = () => {
                 {nearbySpots.map((spot, index) => (
                     <div
                         key={index}
-                        className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:border-madrid-red/50 transition-all group"
+                        className="p-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 hover:border-madrid-red/50 transition-all group"
                     >
-                        <div className="p-2 bg-white/10 rounded-xl w-fit mb-3 group-hover:bg-madrid-red/20 transition-colors">
+                        <div className="p-2 bg-white/5 rounded-xl w-fit mb-3 group-hover:bg-madrid-red/20 transition-colors">
                             <spot.icon size={20} className="text-white/80 group-hover:text-white" />
                         </div>
                         <p className="font-black text-sm mb-0.5 line-clamp-1 text-white">{spot.name}</p>

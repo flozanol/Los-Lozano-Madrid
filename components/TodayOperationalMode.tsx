@@ -88,7 +88,7 @@ const TodayOperationalMode = () => {
 
                             <div className="grid grid-cols-1 gap-3">
                                 {item.meeting_point && (
-                                    <div className="flex items-start gap-3 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                                    <div className="flex items-start gap-3 p-3 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
                                         <MapPin size={18} className="text-blue-400 shrink-0 mt-0.5" />
                                         <div>
                                             <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Punto de Reunión</p>
@@ -98,7 +98,7 @@ const TodayOperationalMode = () => {
                                 )}
 
                                 {item.reservation_details && (
-                                    <div className="flex items-start gap-3 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                                    <div className="flex items-start gap-3 p-3 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
                                         <ExternalLink size={18} className="text-emerald-400 shrink-0 mt-0.5" />
                                         <div>
                                             <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Reserva / Info</p>
@@ -108,7 +108,7 @@ const TodayOperationalMode = () => {
                                 )}
 
                                 {item.plan_b && (
-                                    <div className="flex items-start gap-3 p-3 bg-white/10 backdrop-blur-sm rounded-xl border-dashed border border-white/30">
+                                    <div className="flex items-start gap-3 p-3 bg-white/5 backdrop-blur-sm rounded-xl border-dashed border border-white/20">
                                         <AlertCircle size={18} className="text-amber-400 shrink-0 mt-0.5" />
                                         <div>
                                             <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Plan B (Si llueve)</p>
@@ -118,7 +118,7 @@ const TodayOperationalMode = () => {
                                 )}
 
                                 {item.accessibility_notes && (
-                                    <div className="flex items-center gap-2 mt-2 px-3 py-1.5 bg-gray-100 rounded-lg w-fit">
+                                    <div className="flex items-center gap-2 mt-2 px-3 py-1.5 bg-white/5 rounded-lg w-fit border border-white/5">
                                         <Accessibility size={14} className="text-gray-500" />
                                         <span className="text-[11px] font-medium text-gray-600">{item.accessibility_notes}</span>
                                     </div>

@@ -216,7 +216,7 @@ const HomePage = () => {
             ) : (
               <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
                 {upcomingItinerary.slice(0, 4).map((item) => (
-                  <div key={item.id} style={{ border: "1px solid rgba(0,0,0,0.05)", borderRadius: 16, padding: 16, background: "rgba(255,255,255,0.5)" }}>
+                  <div key={item.id} className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div style={{ fontWeight: 900, fontSize: 13, color: "var(--madrid-red)" }}>{item.date_str}</div>
                       <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.6 }}>{item.event_time}</div>
@@ -255,7 +255,7 @@ const HomePage = () => {
             </section>
 
             {/* LUGARES SECRETOS */}
-            <section className="glass" style={{ padding: 24, background: "linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(255,255,255,0.7) 100%)", border: "1px solid rgba(245,158,11,0.2)" }}>
+            <section className="glass" style={{ padding: 24, background: "linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(255,255,255,0.05) 100%)", border: "1px solid rgba(245,158,11,0.2)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: "#92400e" }}>🕵️‍♂️ Secretos</h2>
                 <Link href="/secret-places" style={{ fontSize: 12, color: "#d97706", fontWeight: 700 }}>EXPLORAR</Link>
@@ -266,7 +266,7 @@ const HomePage = () => {
                   <div style={{ color: "#6b7280", fontSize: 14 }}>Aún no hay secretos revelados...</div>
                 ) : (
                   secretSpots.map(s => (
-                    <div key={s.id} style={{ padding: 16, borderRadius: 16, border: "1px solid rgba(245,158,11,0.15)", background: "white", boxShadow: "0 4px 12px rgba(217,119,6,0.05)" }}>
+                    <div key={s.id} className="p-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 backdrop-blur-sm">
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
                         <div style={{ fontWeight: 800, color: "#92400e", fontSize: 15 }}>{s.nombre}</div>
                         <Sparkles size={14} className="text-amber-500" />

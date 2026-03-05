@@ -103,7 +103,7 @@ const MissionsPage = () => {
             <div className={`content-wrapper ${styles.restaurantsPage}`}>
 
                 <div className={`${styles.header} container`}>
-                    <div className="inline-flex p-4 bg-white/10 backdrop-blur-md rounded-3xl mb-6 border border-white/20">
+                    <div className="inline-flex p-4 bg-white/5 backdrop-blur-md rounded-3xl mb-6 border border-white/10">
                         <Target className="text-white" size={40} />
                     </div>
                     <h1 className={styles.title}>Misiones del <span className="text-madrid-gradient">Viaje</span></h1>
