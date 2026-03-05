@@ -7,6 +7,8 @@ import { Coffee, Sun, Moon, Map as MapIcon, Shield, ChevronRight, Sparkles, MapP
 import { supabase } from '@/lib/supabase';
 import Countdown from '@/components/Countdown';
 import WeatherWidget from '@/components/WeatherWidget';
+import TodayOperationalMode from '@/components/TodayOperationalMode';
+import NeighborhoodRadar from '@/components/NeighborhoodRadar';
 import styles from './page.module.css';
 
 // Unified types for dashboard display
@@ -129,18 +131,46 @@ const HomePage = () => {
         </h1>
 
         <div className={styles.dashboardGrid}>
-          {/* TODAY SECTION / COUNTDOWN */}
+          {/* TODAY OPERATIONAL MODE - PRIMARY FOCUS */}
+          <div className="md:col-span-2">
+            <TodayOperationalMode />
+          </div>
+
+          {/* SMART WIDGETS */}
+          <div className={styles.sideWidgets}>
+            <div className={`${styles.smallCard} glass`}>
+              <WeatherWidget />
+            </div>
+            <Link href="/map" className={`${styles.smallCard} glass ${styles.mapCard}`}>
+              <MapIcon size={24} className={styles.iconRed} />
+              <span>Ver Mapa de Experiencias</span>
+            </Link>
+            <Link href="/safety" className={`${styles.smallCard} glass ${styles.safetyCard}`}>
+              <Shield size={24} className={styles.iconRed} />
+              <span>Centro de Seguridad</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* NEIGHBORHOOD RADAR */}
+        <div style={{ marginTop: 40 }}>
+          <NeighborhoodRadar />
+        </div>
+
+        {/* COUNTDOWN / PLANNER STATUS */}
+        <div style={{ marginTop: 40 }}>
           <div className={`${styles.todayCard} glass`}>
             <div className={styles.cardHeader}>
               <span className={styles.cardTag}>
-                {isTripActive ? 'Sucediedo Hoy' : 'Cuenta Regresiva'}
+                {isTripActive ? 'Próximos Pasos' : 'Cuenta Regresiva'}
               </span>
               {!isTripActive && <span className={styles.dateLabel}>26 MAR — 06 ABR</span>}
             </div>
 
-            {isTripActive ? (
-              <div className={styles.todayInfo}>
-                <h2>Agenda de Hoy</h2>
+            <div className={styles.todayInfo}>
+              {!isTripActive ? (
+                <Countdown targetDate={tripStartDate} />
+              ) : (
                 <div className={styles.dayBlocks}>
                   <div className={styles.block}>
                     <div className={styles.blockLabel}><Coffee size={14} /> Mañana</div>
@@ -161,29 +191,10 @@ const HomePage = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className={styles.todayInfo}>
-                <Countdown targetDate={tripStartDate} />
-              </div>
-            )}
+              )}
+            </div>
             <Link href="/calendar" className={styles.fullItineryBtn}>
               Ver Itinerario Completo <ChevronRight size={16} />
-            </Link>
-          </div>
-
-          {/* SMART WIDGETS */}
-          <div className={styles.sideWidgets}>
-            <div className={`${styles.smallCard} glass`}>
-              <WeatherWidget />
-            </div>
-            <Link href="/map" className={`${styles.smallCard} glass ${styles.mapCard}`}>
-              <MapIcon size={24} className={styles.iconRed} />
-              <span>Ver Mapa de Experiencias</span>
-            </Link>
-            <Link href="/safety" className={`${styles.smallCard} glass ${styles.safetyCard}`}>
-              <Shield size={24} className={styles.iconRed} />
-              <span>Centro de Seguridad</span>
             </Link>
           </div>
         </div>

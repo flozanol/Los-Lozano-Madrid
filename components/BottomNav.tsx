@@ -17,7 +17,11 @@ import {
     Users,
     MessageSquare,
     Beer,
-    Sparkles
+    Sparkles,
+    Trophy,
+    Footprints,
+    BookOpen,
+    Target
 } from 'lucide-react';
 import styles from './BottomNav.module.css';
 
@@ -33,6 +37,11 @@ const BottomNav = () => {
     ];
 
     const extraItems = [
+        { href: '/barrios', icon: MapIcon, label: 'Barrios' },
+        { href: '/rutas', icon: Footprints, label: 'Rutas' },
+        { href: '/ranking', icon: Trophy, label: 'Ranking' },
+        { href: '/diario', icon: BookOpen, label: 'Diario' },
+        { href: '/misiones', icon: Target, label: 'Misiones' },
         { href: '/history', icon: History, label: 'Historia' },
         { href: '/places', icon: Camera, label: 'Lugares' },
         { href: '/restaurants', icon: Utensils, label: 'Restaurantes' },
