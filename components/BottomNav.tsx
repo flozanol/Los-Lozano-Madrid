@@ -21,7 +21,8 @@ import {
     Trophy,
     Footprints,
     BookOpen,
-    Target
+    Target,
+    UtensilsCrossed
 } from 'lucide-react';
 import styles from './BottomNav.module.css';
 
@@ -38,6 +39,7 @@ const BottomNav = () => {
 
     const extraItems = [
         { href: '/barrios', icon: MapIcon, label: 'Barrios' },
+        { href: '/rincon-gato', icon: UtensilsCrossed, label: 'Rincón Gato' },
         { href: '/rutas', icon: Footprints, label: 'Rutas' },
         { href: '/ranking', icon: Trophy, label: 'Ranking' },
         { href: '/diario', icon: BookOpen, label: 'Diario' },
