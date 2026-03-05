@@ -26,15 +26,15 @@ const NeighborhoodRadar = () => {
                 {nearbySpots.map((spot, index) => (
                     <div
                         key={index}
-                        className="p-4 bg-white/50 rounded-2xl border border-white hover:border-madrid-red/30 transition-all group"
+                        className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:border-madrid-red/50 transition-all group"
                     >
-                        <div className="p-2 bg-gray-50 rounded-xl w-fit mb-3 group-hover:bg-red-50 transition-colors">
-                            <spot.icon size={20} className="text-gray-600 group-hover:text-madrid-red" />
+                        <div className="p-2 bg-white/10 rounded-xl w-fit mb-3 group-hover:bg-madrid-red/20 transition-colors">
+                            <spot.icon size={20} className="text-white/80 group-hover:text-white" />
                         </div>
-                        <p className="font-bold text-sm mb-0.5 line-clamp-1">{spot.name}</p>
+                        <p className="font-black text-sm mb-0.5 line-clamp-1 text-white">{spot.name}</p>
                         <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-medium text-gray-400 capitalize">{spot.type}</span>
-                            <span className="text-[10px] font-bold text-madrid-red">{spot.time}</span>
+                            <span className="text-[10px] font-bold text-white/50 uppercase tracking-tighter">{spot.type}</span>
+                            <span className="text-[10px] font-black text-madrid-red brightness-125">{spot.time}</span>
                         </div>
                     </div>
                 ))}

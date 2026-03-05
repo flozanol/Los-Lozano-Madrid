@@ -1,26 +1,123 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { UtensilsCrossed, Star, MapPin, ChevronRight, Info, Heart, Loader2, DollarSign } from 'lucide-react';
+import Image from 'next/image';
+import { Plus, Loader2, UtensilsCrossed, Trash2, Edit2, Check, X, MapPin, DollarSign, Heart } from 'lucide-react';
+import styles from '../restaurants/page.module.css';
 import { supabase } from '@/lib/supabase';
 
+interface LocalRestaurant {
+    id: string;
+    name: string;
+    specialty: string;
+    description: string;
+    vibe: string;
+    price: string;
+    area: string;
+    image_url: string;
+    map_url: string;
+    created_at: string;
+}
+
 const RinconGatoPage = () => {
-    const [restaurants, setRestaurants] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [restaurants, setRestaurants] = useState<LocalRestaurant[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [showForm, setShowForm] = useState(false);
+    const [newItem, setNewItem] = useState({
+        name: '',
+        specialty: '',
+        description: '',
+        vibe: 'AUTÉNTICO',
+        price: '€€',
+        area: '',
+        image_url: '',
+        map_url: ''
+    });
+    const [isSaving, setIsSaving] = useState(false);
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editItem, setEditItem] = useState<Partial<LocalRestaurant>>({});
 
     useEffect(() => {
         fetchRestaurants();
     }, []);
 
     const fetchRestaurants = async () => {
-        setLoading(true);
+        setIsLoading(true);
         const { data, error } = await supabase
             .from('local_restaurants')
             .select('*')
-            .order('name', { ascending: true });
+            .order('created_at', { ascending: true });
 
-        if (!error && data) setRestaurants(data);
-        setLoading(false);
+        if (!error && data) {
+            setRestaurants(data);
+        }
+        setIsLoading(false);
+    };
+
+    const handleAdd = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newItem.name || !newItem.description) return;
+
+        setIsSaving(true);
+        const img = newItem.image_url || "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80";
+
+        const { error } = await supabase
+            .from('local_restaurants')
+            .insert([{ ...newItem, image_url: img }]);
+
+        if (!error) {
+            setNewItem({
+                name: '',
+                specialty: '',
+                description: '',
+                vibe: 'AUTÉNTICO',
+                price: '€€',
+                area: '',
+                image_url: '',
+                map_url: ''
+            });
+            setShowForm(false);
+            fetchRestaurants();
+        } else {
+            console.error(error);
+            alert('Error al guardar en local_restaurants');
+        }
+        setIsSaving(false);
+    };
+
+    const handleUpdate = async (id: string) => {
+        setIsSaving(true);
+        const { error } = await supabase
+            .from('local_restaurants')
+            .update(editItem)
+            .eq('id', id);
+
+        if (!error) {
+            setEditingId(null);
+            fetchRestaurants();
+        } else {
+            console.error(error);
+            alert('Error al actualizar');
+        }
+        setIsSaving(false);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (confirm('¿Quieres eliminar este rincón de la lista?')) {
+            const { error } = await supabase
+                .from('local_restaurants')
+                .delete()
+                .eq('id', id);
+
+            if (!error) {
+                fetchRestaurants();
+            }
+        }
+    };
+
+    const startEditing = (rest: LocalRestaurant) => {
+        setEditingId(rest.id);
+        setEditItem(rest);
     };
 
     return (
@@ -29,97 +126,184 @@ const RinconGatoPage = () => {
                 className="section-bg"
                 style={{ backgroundImage: 'url(/madrid_skyline.webp)', backgroundPosition: 'center' }}
             ></div>
-            <div className="content-wrapper">
-                <div className="container">
-                    <header className="mb-12 text-center text-white">
-                        <div className="inline-flex p-4 bg-white/20 backdrop-blur-md rounded-3xl mb-6 border border-white/30">
-                            <UtensilsCrossed className="text-gold" size={48} />
-                        </div>
-                        <h1 className="text-5xl font-black mb-4 tracking-tight drop-shadow-xl">RINCÓN DEL <span className="text-madrid-gradient">GATO</span></h1>
-                        <p className="text-gray-100 max-w-2xl mx-auto text-lg font-medium drop-shadow">
-                            Donde comen los madrileños (los de verdad). Olvida los menús turísticos y descubre el Madrid auténtico.
-                        </p>
-                    </header>
+            <div className={`content-wrapper ${styles.restaurantsPage}`}>
 
-                    {loading ? (
-                        <div className="text-center py-20"><Loader2 className="animate-spin mx-auto text-white" size={48} /></div>
-                    ) : restaurants.length === 0 ? (
-                        <div className="glass p-12 text-center text-white font-bold opacity-70">
-                            Todavía no hay rincones secretos. ¡Añádelos en la base de datos!
+                <div className={`${styles.header} container`}>
+                    <div className="inline-flex p-4 bg-white/10 backdrop-blur-md rounded-3xl mb-6 border border-white/20">
+                        <UtensilsCrossed className="text-white" size={40} />
+                    </div>
+                    <h1 className={styles.title}>Rincón del <span className="text-madrid-gradient">Gato</span></h1>
+                    <p className="text-lg opacity-90">Selección de templos gastronómicos locales, fuera del radar turístico.</p>
+                    <button
+                        className="btn-primary"
+                        style={{ marginTop: '2rem' }}
+                        onClick={() => setShowForm(!showForm)}
+                    >
+                        {showForm ? 'Cancelar' : <><Plus size={20} /> Añadir Rincón</>}
+                    </button>
+                </div>
+
+                <div className="container">
+                    {showForm && (
+                        <form className={`${styles.addForm} glass`} onSubmit={handleAdd}>
+                            <div className={styles.formGrid}>
+                                <input
+                                    type="text"
+                                    placeholder="Nombre del rincón"
+                                    value={newItem.name}
+                                    onChange={e => setNewItem({ ...newItem, name: e.target.value })}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Zona (Ej: La Latina)"
+                                    value={newItem.area}
+                                    onChange={e => setNewItem({ ...newItem, area: e.target.value })}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Especialidad (Ej: Tortilla)"
+                                    value={newItem.specialty}
+                                    onChange={e => setNewItem({ ...newItem, specialty: e.target.value })}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Vibe (Ej: Castizo)"
+                                    value={newItem.vibe}
+                                    onChange={e => setNewItem({ ...newItem, vibe: e.target.value })}
+                                />
+                                <select
+                                    value={newItem.price}
+                                    onChange={e => setNewItem({ ...newItem, price: e.target.value })}
+                                >
+                                    <option value="€">Barato (€)</option>
+                                    <option value="€€">Medio (€€)</option>
+                                    <option value="€€€">Caro (€€€)</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    placeholder="URL de Imagen"
+                                    value={newItem.image_url}
+                                    onChange={e => setNewItem({ ...newItem, image_url: e.target.value })}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="URL de Google Maps"
+                                    value={newItem.map_url}
+                                    onChange={e => setNewItem({ ...newItem, map_url: e.target.value })}
+                                />
+                                <textarea
+                                    placeholder="Descripción corta"
+                                    value={newItem.description}
+                                    className="md:col-span-2 p-4 bg-white/5 border border-white/10 rounded-xl text-white"
+                                    onChange={e => setNewItem({ ...newItem, description: e.target.value })}
+                                    required
+                                />
+                            </div>
+                            <button type="submit" className="btn-primary" disabled={isSaving}>
+                                {isSaving ? <Loader2 className="animate-spin" /> : 'Guardar Rincón'}
+                            </button>
+                        </form>
+                    )}
+
+                    {isLoading ? (
+                        <div className="text-center py-20">
+                            <Loader2 className="animate-spin mx-auto text-white" size={40} />
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {restaurants.map((res) => (
-                                <section key={res.id} className="glass overflow-hidden group hover:scale-[1.02] transition-all duration-500 shadow-2xl">
-                                    {/* Image Header */}
-                                    <div className="relative h-48 overflow-hidden">
-                                        {res.image_url ? (
-                                            <img src={res.image_url} alt={res.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                        ) : (
-                                            <div className="absolute inset-0 bg-gradient-to-br from-madrid-red to-amber-500"></div>
-                                        )}
-                                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all"></div>
-                                        <div className="absolute bottom-4 left-4">
-                                            <span className="px-3 py-1 bg-white/95 text-madrid-red rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
-                                                {res.vibe || 'AUTÉNTICO'}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div className="p-8 bg-white/95">
-                                        <div className="flex justify-between items-start mb-6">
-                                            <div className="flex items-center gap-3">
-                                                <div className="p-3 bg-red-50 text-madrid-red rounded-2xl group-hover:bg-madrid-red group-hover:text-white transition-colors">
-                                                    <Heart size={24} />
-                                                </div>
-                                                <div>
-                                                    <h2 className="text-2xl font-black text-gray-900">{res.name}</h2>
-                                                    <div className="flex items-center gap-2 mt-1">
-                                                        <MapPin size={12} className="text-gray-400" />
-                                                        <span className="text-xs font-bold text-gray-500 uppercase">{res.area}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex">
-                                                {[...Array(res.price?.length || 1)].map((_, i) => (
-                                                    <DollarSign key={i} size={16} className="text-emerald-600" />
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <div className="mb-6">
-                                            <p className="text-xs font-black text-madrid-red uppercase tracking-widest mb-1">Especialidad</p>
-                                            <p className="text-lg font-bold text-gray-800">{res.specialty}</p>
-                                        </div>
-
-                                        <p className="text-gray-600 leading-relaxed mb-8 italic font-medium">
-                                            "{res.description}"
-                                        </p>
-
-                                        {res.map_url && (
-                                            <a
-                                                href={res.map_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="w-full py-4 bg-gray-50 rounded-2xl font-black text-sm text-gray-500 hover:bg-madrid-red hover:text-white transition-all flex justify-between items-center px-6 no-underline"
+                        <div className={styles.list}>
+                            {restaurants.map((rest) => (
+                                <div key={rest.id} className={`${styles.item} ${editingId === rest.id ? styles.editing : ''}`}>
+                                    <div className={styles.itemImageWrapper}>
+                                        <Image
+                                            src={rest.image_url || "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80"}
+                                            alt={rest.name}
+                                            width={400}
+                                            height={300}
+                                            className={styles.itemImage}
+                                            unoptimized={true}
+                                        />
+                                        <div className={styles.adminButtons}>
+                                            <button
+                                                className={styles.editBtn}
+                                                onClick={() => startEditing(rest)}
+                                                title="Editar"
                                             >
-                                                VER MAPA
-                                                <ChevronRight size={18} />
-                                            </a>
+                                                <Edit2 size={16} />
+                                            </button>
+                                            <button
+                                                className={styles.deleteBtn}
+                                                onClick={() => handleDelete(rest.id)}
+                                                title="Eliminar"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.itemInfo}>
+                                        {editingId === rest.id ? (
+                                            <div className={styles.editForm}>
+                                                <input
+                                                    type="text"
+                                                    value={editItem.name}
+                                                    onChange={e => setEditItem({ ...editItem, name: e.target.value })}
+                                                    placeholder="Nombre"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={editItem.area}
+                                                    onChange={e => setEditItem({ ...editItem, area: e.target.value })}
+                                                    placeholder="Zona"
+                                                />
+                                                <textarea
+                                                    value={editItem.description}
+                                                    onChange={e => setEditItem({ ...editItem, description: e.target.value })}
+                                                    placeholder="Descripción"
+                                                />
+                                                <div className={styles.editActions}>
+                                                    <button onClick={() => handleUpdate(rest.id)} className={styles.btnSave} disabled={isSaving}>
+                                                        {isSaving ? <Loader2 className="animate-spin" size={16} /> : <><Check size={16} /> Guardar</>}
+                                                    </button>
+                                                    <button onClick={() => setEditingId(null)} className={styles.btnCancelEdit}><X size={16} /> Cancelar</button>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className={styles.itemNameWrapper}>
+                                                    <h3>{rest.name}</h3>
+                                                    <span className="px-3 py-1 bg-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-white/70">
+                                                        {rest.vibe}
+                                                    </span>
+                                                </div>
+                                                <p className={styles.specialty}>
+                                                    <strong>Especialidad:</strong> {rest.specialty}
+                                                    <span className="ml-4 text-emerald-400">{rest.price}</span>
+                                                </p>
+                                                <p className={styles.description}>"{rest.description}"</p>
+                                                <div className={styles.coordenadas}>
+                                                    <MapPin size={14} />
+                                                    <span>{rest.area}</span>
+                                                </div>
+                                            </>
                                         )}
                                     </div>
-                                </section>
+
+                                    <div className={styles.itemActions}>
+                                        {rest.map_url ? (
+                                            <a href={rest.map_url} target="_blank" className={styles.btnVote} style={{ textDecoration: 'none' }}>
+                                                <MapPin size={16} /> Ver en Mapa
+                                            </a>
+                                        ) : (
+                                            <button className={styles.btnVote} disabled opacity-50>
+                                                <Heart size={16} /> Auténtico
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     )}
-
-                    <footer className="mt-20 glass p-8 text-center border-dashed border-2 border-white/30">
-                        <Info className="mx-auto mb-4 text-white/50" size={32} />
-                        <p className="text-white/80 font-medium">
-                            ¿Conoces algún sitio que sea secreto de los gatos? <br />
-                            ¡Cuéntaselo a la familia en el Chat!
-                        </p>
-                    </footer>
                 </div>
             </div>
         </>
@@ -127,3 +311,4 @@ const RinconGatoPage = () => {
 };
 
 export default RinconGatoPage;
+

@@ -1,24 +1,27 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Trophy, Star, Plus, Loader2, ThumbsUp, Trash2, Edit2, Check, X, Sparkles } from 'lucide-react';
+import { Trophy, Star, Plus, Loader2, ThumbsUp, Trash2, Edit2, Check, X, Sparkles, Heart } from 'lucide-react';
+import styles from '../restaurants/page.module.css';
 import { supabase } from '@/lib/supabase';
 
 const RankingPage = () => {
     const categories = ['Tapas', 'Bares', 'Cafés', 'Experiencias'];
     const [selectedCategory, setSelectedCategory] = useState('Tapas');
     const [rankings, setRankings] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [showAddForm, setShowAddForm] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [showForm, setShowForm] = useState(false);
     const [newItemName, setNewItemName] = useState('');
     const [isSaving, setIsSaving] = useState(false);
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editName, setEditName] = useState('');
 
     useEffect(() => {
         fetchRankings();
     }, [selectedCategory]);
 
     const fetchRankings = async () => {
-        setLoading(true);
+        setIsLoading(true);
         const { data, error } = await supabase
             .from('rankings')
             .select('*')
@@ -26,7 +29,7 @@ const RankingPage = () => {
             .order('votes', { ascending: false });
 
         if (!error && data) setRankings(data);
-        setLoading(false);
+        setIsLoading(false);
     };
 
     const handleVote = async (id: string, currentVotes: number) => {
@@ -49,7 +52,21 @@ const RankingPage = () => {
 
         if (!error) {
             setNewItemName('');
-            setShowAddForm(false);
+            setShowForm(false);
+            fetchRankings();
+        }
+        setIsSaving(false);
+    };
+
+    const handleUpdate = async (id: string) => {
+        setIsSaving(true);
+        const { error } = await supabase
+            .from('rankings')
+            .update({ item_name: editName })
+            .eq('id', id);
+
+        if (!error) {
+            setEditingId(null);
             fetchRankings();
         }
         setIsSaving(false);
@@ -67,24 +84,23 @@ const RankingPage = () => {
                 className="section-bg"
                 style={{ backgroundImage: 'url(/madrid_skyline.webp)', backgroundPosition: 'center' }}
             ></div>
-            <div className="content-wrapper">
-                <div className="container">
-                    <header className="mb-12 text-center">
-                        <div className="inline-flex p-5 bg-white/20 backdrop-blur-xl rounded-full mb-6 border border-white/30 shadow-2xl">
-                            <Trophy className="text-gold animate-bounce" size={48} />
-                        </div>
-                        <h1 className="text-5xl font-black mb-4 text-white drop-shadow-2xl">RANKING <span className="text-madrid-gradient">LOZANO</span></h1>
-                        <p className="text-gray-100 max-w-xl mx-auto font-medium drop-shadow-md">La voz de la familia. Vota por lo mejor de Madrid y decidamos el ganador del viaje.</p>
-                    </header>
+            <div className={`content-wrapper ${styles.restaurantsPage}`}>
 
-                    <div className="flex flex-wrap justify-center gap-3 mb-12">
+                <div className={`${styles.header} container`}>
+                    <div className="inline-flex p-4 bg-white/10 backdrop-blur-md rounded-3xl mb-6 border border-white/20">
+                        <Trophy className="text-white" size={40} />
+                    </div>
+                    <h1 className={styles.title}>Ranking <span className="text-madrid-gradient">Lozano</span></h1>
+                    <p className="text-lg opacity-90">Vota por tus favoritos y decidamos lo mejor del viaje.</p>
+
+                    <div className="flex flex-wrap justify-center gap-3 mt-12">
                         {categories.map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`px-8 py-4 rounded-2xl font-black text-sm transition-all shadow-lg ${selectedCategory === cat
-                                        ? 'bg-madrid-red text-white scale-110'
-                                        : 'bg-white/80 text-gray-500 hover:bg-white hover:text-madrid-red'
+                                className={`px-6 py-3 rounded-2xl font-black text-xs transition-all tracking-widest ${selectedCategory === cat
+                                    ? 'bg-madrid-red text-white shadow-xl scale-105'
+                                    : 'bg-white/10 text-white/60 hover:bg-white/20 hover:text-white'
                                     }`}
                             >
                                 {cat.toUpperCase()}
@@ -92,92 +108,110 @@ const RankingPage = () => {
                         ))}
                     </div>
 
-                    <div className="max-w-3xl mx-auto">
-                        <div className="flex justify-between items-center mb-8">
-                            <h2 className="text-2xl font-black text-white drop-shadow-md flex items-center gap-3">
-                                {selectedCategory} <Sparkles size={20} className="text-gold" />
-                            </h2>
-                            <button
-                                onClick={() => setShowAddForm(!showAddForm)}
-                                className="p-3 bg-white/90 text-madrid-red rounded-xl shadow-lg hover:scale-110 transition-transform font-black text-xs flex items-center gap-2"
-                            >
-                                <Plus size={18} /> AÑADIR OPCIÓN
-                            </button>
+                    <button
+                        className="btn-primary"
+                        style={{ marginTop: '3rem' }}
+                        onClick={() => setShowForm(!showForm)}
+                    >
+                        {showForm ? 'Cancelar' : <><Plus size={20} /> Añadir Opción</>}
+                    </button>
+                </div>
+
+                <div className="container max-w-4xl">
+                    {showForm && (
+                        <form className={`${styles.addForm} glass mb-12`} onSubmit={handleAddItem}>
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <input
+                                    type="text"
+                                    placeholder={`Nombre de ${selectedCategory} (Ej: La Mallorquina)`}
+                                    value={newItemName}
+                                    onChange={e => setNewItemName(e.target.value)}
+                                    className="flex-1 p-4 bg-white/5 border border-white/10 rounded-xl text-white font-bold"
+                                    required
+                                />
+                                <button type="submit" className="btn-primary py-4 px-8" disabled={isSaving}>
+                                    {isSaving ? <Loader2 className="animate-spin" /> : 'Añadir'}
+                                </button>
+                            </div>
+                        </form>
+                    )}
+
+                    {isLoading ? (
+                        <div className="text-center py-20">
+                            <Loader2 className="animate-spin mx-auto text-white" size={40} />
                         </div>
-
-                        {showAddForm && (
-                            <form onSubmit={handleAddItem} className="glass p-6 mb-8 animate-in slide-in-from-top duration-500">
-                                <div className="flex gap-4">
-                                    <input
-                                        type="text"
-                                        value={newItemName}
-                                        onChange={(e) => setNewItemName(e.target.value)}
-                                        placeholder={`Nombre de ${selectedCategory}...`}
-                                        className="flex-1 p-4 rounded-xl border-none focus:ring-2 focus:ring-madrid-red font-bold"
-                                        autoFocus
-                                    />
-                                    <button
-                                        type="submit"
-                                        disabled={isSaving}
-                                        className="bg-madrid-red text-white px-8 rounded-xl font-black hover:bg-red-700 transition-colors disabled:opacity-50"
-                                    >
-                                        {isSaving ? <Loader2 className="animate-spin" /> : 'AÑADIR'}
-                                    </button>
-                                </div>
-                            </form>
-                        )}
-
-                        {loading ? (
-                            <div className="text-center py-10"><Loader2 className="animate-spin mx-auto text-white" size={40} /></div>
-                        ) : (
-                            <div className="space-y-4">
-                                {rankings.map((item, idx) => (
-                                    <div key={item.id} className="glass p-6 flex items-center justify-between group hover:bg-white/95 transition-all shadow-xl border-l-8 border-madrid-red">
-                                        <div className="flex items-center gap-6">
-                                            <div className={`w-12 h-12 flex items-center justify-center rounded-2xl font-black text-xl shadow-inner ${idx === 0 ? 'bg-gold/20 text-gold scale-125' :
-                                                    idx === 1 ? 'bg-silver/20 text-silver' :
-                                                        'bg-gray-100 text-gray-400'
-                                                }`}>
-                                                {idx + 1}
-                                            </div>
-                                            <div>
-                                                <h3 className="text-xl font-black text-gray-900">{item.item_name}</h3>
-                                                <div className="flex items-center gap-1 mt-1">
-                                                    {[...Array(5)].map((_, i) => (
-                                                        <Star key={i} size={10} className={i < 5 - idx ? 'text-gold fill-gold' : 'text-gray-200'} />
-                                                    ))}
-                                                </div>
-                                            </div>
+                    ) : (
+                        <div className="flex flex-col gap-4">
+                            {rankings.map((item, idx) => (
+                                <div key={item.id} className="glass p-6 flex flex-col md:flex-row items-center justify-between group hover:bg-white/10 transition-all border border-white/5 rounded-3xl">
+                                    <div className="flex items-center gap-6 w-full md:w-auto mb-4 md:mb-0">
+                                        <div className={`w-12 h-12 flex items-center justify-center rounded-2xl font-black text-xl shadow-inner ${idx === 0 ? 'bg-amber-400 text-black' :
+                                            idx === 1 ? 'bg-slate-300 text-black' :
+                                                idx === 2 ? 'bg-amber-700 text-white' :
+                                                    'bg-white/5 text-white/40'
+                                            }`}>
+                                            {idx + 1}
                                         </div>
 
-                                        <div className="flex items-center gap-4">
-                                            <div className="text-right mr-4">
-                                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Votos</p>
-                                                <p className="text-2xl font-black text-madrid-red">{item.votes}</p>
+                                        <div className="flex-1">
+                                            {editingId === item.id ? (
+                                                <div className="flex gap-2">
+                                                    <input
+                                                        type="text"
+                                                        value={editName}
+                                                        onChange={e => setEditName(e.target.value)}
+                                                        className="bg-white/10 text-white p-2 rounded-lg text-sm font-bold border border-white/20"
+                                                    />
+                                                    <button onClick={() => handleUpdate(item.id)} className="p-2 bg-emerald-500 text-white rounded-lg"><Check size={16} /></button>
+                                                    <button onClick={() => setEditingId(null)} className="p-2 bg-red-500 text-white rounded-lg"><X size={16} /></button>
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center gap-3">
+                                                    <h3 className="text-xl font-black text-white">{item.item_name}</h3>
+                                                    {idx === 0 && <Trophy className="text-amber-400" size={18} />}
+                                                </div>
+                                            )}
+                                            <div className="flex items-center gap-1 mt-1">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <Star key={i} size={10} className={i < 5 - idx ? 'text-amber-400 fill-amber-400' : 'text-white/10'} />
+                                                ))}
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/5 pt-4 md:pt-0">
+                                        <div className="text-center md:text-right mr-4">
+                                            <p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Votos de la Familia</p>
+                                            <p className="text-3xl font-black text-white drop-shadow-lg">{item.votes}</p>
+                                        </div>
+
+                                        <div className="flex items-center gap-2">
                                             <button
                                                 onClick={() => handleVote(item.id, item.votes)}
-                                                className="p-4 bg-red-50 text-madrid-red rounded-2xl hover:bg-madrid-red hover:text-white transition-all shadow-md active:scale-95"
+                                                className="p-4 bg-madrid-gradient text-white rounded-2xl hover:scale-110 transition-all shadow-xl active:scale-95"
                                             >
                                                 <ThumbsUp size={24} />
                                             </button>
-                                            <button
-                                                onClick={() => handleDelete(item.id)}
-                                                className="p-2 text-gray-300 hover:text-red-500 transition-colors"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
+
+                                            <div className="flex flex-col gap-1 ml-2">
+                                                <button onClick={() => { setEditingId(item.id); setEditName(item.item_name); }} className="p-2 text-white/30 hover:text-white transition-colors">
+                                                    <Edit2 size={16} />
+                                                </button>
+                                                <button onClick={() => handleDelete(item.id)} className="p-2 text-white/30 hover:text-red-500 transition-colors">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                ))}
-                                {rankings.length === 0 && (
-                                    <div className="glass p-12 text-center text-white/70 italic font-medium">
-                                        No hay opciones en esta categoría. ¡Sé el primero en añadir una!
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                                </div>
+                            ))}
+                            {rankings.length === 0 && (
+                                <div className="glass p-12 text-center text-white/40 font-bold border-dashed border-2 border-white/10">
+                                    Todavía no hay opciones para {selectedCategory}.
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </>
@@ -185,3 +219,4 @@ const RankingPage = () => {
 };
 
 export default RankingPage;
+

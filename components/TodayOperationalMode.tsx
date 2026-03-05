@@ -88,31 +88,31 @@ const TodayOperationalMode = () => {
 
                             <div className="grid grid-cols-1 gap-3">
                                 {item.meeting_point && (
-                                    <div className="flex items-start gap-3 p-3 bg-white/40 rounded-xl">
-                                        <MapPin size={18} className="text-blue-500 shrink-0 mt-0.5" />
+                                    <div className="flex items-start gap-3 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                                        <MapPin size={18} className="text-blue-400 shrink-0 mt-0.5" />
                                         <div>
-                                            <p className="text-[10px] font-bold opacity-60 uppercase">Punto de Reunión</p>
-                                            <p className="text-sm font-semibold">{item.meeting_point}</p>
+                                            <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Punto de Reunión</p>
+                                            <p className="text-sm font-bold text-white">{item.meeting_point}</p>
                                         </div>
                                     </div>
                                 )}
 
                                 {item.reservation_details && (
-                                    <div className="flex items-start gap-3 p-3 bg-white/40 rounded-xl">
-                                        <ExternalLink size={18} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <div className="flex items-start gap-3 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                                        <ExternalLink size={18} className="text-emerald-400 shrink-0 mt-0.5" />
                                         <div>
-                                            <p className="text-[10px] font-bold opacity-60 uppercase">Reserva / Info</p>
-                                            <p className="text-sm font-semibold">{item.reservation_details}</p>
+                                            <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Reserva / Info</p>
+                                            <p className="text-sm font-bold text-white">{item.reservation_details}</p>
                                         </div>
                                     </div>
                                 )}
 
                                 {item.plan_b && (
-                                    <div className="flex items-start gap-3 p-3 bg-white/40 rounded-xl border-dashed border-2 border-gray-200">
-                                        <AlertCircle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+                                    <div className="flex items-start gap-3 p-3 bg-white/10 backdrop-blur-sm rounded-xl border-dashed border border-white/30">
+                                        <AlertCircle size={18} className="text-amber-400 shrink-0 mt-0.5" />
                                         <div>
-                                            <p className="text-[10px] font-bold opacity-60 uppercase">Plan B (Si llueve)</p>
-                                            <p className="text-sm font-semibold">{item.plan_b}</p>
+                                            <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Plan B (Si llueve)</p>
+                                            <p className="text-sm font-bold text-white">{item.plan_b}</p>
                                         </div>
                                     </div>
                                 )}
