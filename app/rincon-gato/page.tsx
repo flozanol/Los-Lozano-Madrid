@@ -79,8 +79,8 @@ const RinconGatoPage = () => {
             setShowForm(false);
             fetchRestaurants();
         } else {
-            console.error(error);
-            alert('Error al guardar en local_restaurants');
+            console.error('Error in handleAdd:', error);
+            alert(`Error al guardar en local_restaurants: ${error.message || 'Error desconocido'}`);
         }
         setIsSaving(false);
     };
@@ -96,8 +96,8 @@ const RinconGatoPage = () => {
             setEditingId(null);
             fetchRestaurants();
         } else {
-            console.error(error);
-            alert('Error al actualizar');
+            console.error('Error in handleUpdate:', error);
+            alert(`Error al actualizar: ${error.message || 'Error desconocido'}`);
         }
         setIsSaving(false);
     };

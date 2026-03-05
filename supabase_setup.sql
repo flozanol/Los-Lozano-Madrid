@@ -3,6 +3,9 @@
 -- Copia y pega todo este código y dale a "Run"
 -- ==========================================
 
+-- 0. Extensiones
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 -- 1. Rankings (Para la sección de Ranking Lozano)
 CREATE TABLE IF NOT EXISTS rankings (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -79,6 +82,30 @@ CREATE TABLE IF NOT EXISTS local_restaurants (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Habilitar RLS y políticas para local_restaurants
+ALTER TABLE local_restaurants ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow public read for local_restaurants"
+  ON local_restaurants FOR SELECT
+  TO public
+  USING (true);
+
+CREATE POLICY "Allow public insert for local_restaurants"
+  ON local_restaurants FOR INSERT
+  TO public
+  WITH CHECK (true);
+
+CREATE POLICY "Allow public update for local_restaurants"
+  ON local_restaurants FOR UPDATE
+  TO public
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Allow public delete for local_restaurants"
+  ON local_restaurants FOR DELETE
+  TO public
+  USING (true);
+
 -- 6. Rutas Caminables
 CREATE TABLE IF NOT EXISTS routes (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -88,8 +115,18 @@ CREATE TABLE IF NOT EXISTS routes (
   description TEXT,
   stops TEXT[],
   image_url TEXT,
+  google_maps_url TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- snippet para actualizar rutas si ya existe
+DO $$ 
+BEGIN 
+  BEGIN
+    ALTER TABLE routes ADD COLUMN google_maps_url TEXT;
+  EXCEPTION WHEN duplicate_column THEN NULL; END;
+END $$;
+
 
 -- 7. Actualizar tabla Itinerary (Campos adicionales)
 DO $$ 

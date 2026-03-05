@@ -13,6 +13,7 @@ interface Route {
     distance: string;
     time_est: string;
     image_url: string;
+    google_maps_url: string;
     stops: string[];
     created_at: string;
 }
@@ -27,6 +28,7 @@ const RoutesPage = () => {
         distance: '',
         time_est: '',
         image_url: '',
+        google_maps_url: '',
         stops_str: ''
     });
     const [isSaving, setIsSaving] = useState(false);
@@ -66,11 +68,12 @@ const RoutesPage = () => {
                 distance: newItem.distance,
                 time_est: newItem.time_est,
                 image_url: img,
+                google_maps_url: newItem.google_maps_url,
                 stops: stops
             }]);
 
         if (!error) {
-            setNewItem({ title: '', description: '', distance: '', time_est: '', image_url: '', stops_str: '' });
+            setNewItem({ title: '', description: '', distance: '', time_est: '', image_url: '', google_maps_url: '', stops_str: '' });
             setShowForm(false);
             fetchRoutes();
         } else {
@@ -179,6 +182,12 @@ const RoutesPage = () => {
                                     value={newItem.stops_str}
                                     onChange={e => setNewItem({ ...newItem, stops_str: e.target.value })}
                                 />
+                                <input
+                                    type="text"
+                                    placeholder="Enlace de Google Maps"
+                                    value={newItem.google_maps_url}
+                                    onChange={e => setNewItem({ ...newItem, google_maps_url: e.target.value })}
+                                />
                                 <textarea
                                     placeholder="Descripción de la ruta"
                                     value={newItem.description}
@@ -236,6 +245,12 @@ const RoutesPage = () => {
                                                     onChange={e => setEditItem({ ...editItem, description: e.target.value })}
                                                     placeholder="Descripción"
                                                 />
+                                                <input
+                                                    type="text"
+                                                    value={editItem.google_maps_url}
+                                                    onChange={e => setEditItem({ ...editItem, google_maps_url: e.target.value })}
+                                                    placeholder="Google Maps URL"
+                                                />
                                                 <div className={styles.editActions}>
                                                     <button onClick={() => handleUpdate(route.id)} className={styles.btnSave} disabled={isSaving}>
                                                         {isSaving ? <Loader2 className="animate-spin" size={16} /> : <><Check size={16} /> Guardar</>}
@@ -270,8 +285,17 @@ const RoutesPage = () => {
                                     </div>
 
                                     <div className={styles.itemActions}>
-                                        <button className={styles.btnVote}>
-                                            <Footprints size={16} /> Ver Ruta
+                                        <button
+                                            className={styles.btnVote}
+                                            onClick={() => {
+                                                if (route.google_maps_url) {
+                                                    window.open(route.google_maps_url, '_blank');
+                                                } else {
+                                                    alert('No hay enlace de Google Maps para esta ruta');
+                                                }
+                                            }}
+                                        >
+                                            <MapPin size={16} /> Ver en Maps
                                         </button>
                                     </div>
                                 </div>
