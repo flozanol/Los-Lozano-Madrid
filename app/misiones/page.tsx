@@ -86,7 +86,7 @@ const MissionsPage = () => {
         <>
             <div
                 className="section-bg"
-                style={{ backgroundImage: 'url(/madrid_skyline.webp)', backgroundPosition: 'center' }}
+                style={{ backgroundImage: 'url(/madrid_map_bg.png)', backgroundPosition: 'center' }}
             ></div>
             <div className={`content-wrapper ${styles.restaurantsPage}`}>
 

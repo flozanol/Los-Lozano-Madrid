@@ -72,7 +72,7 @@ const DiaryPage = () => {
         <>
             <div
                 className="section-bg"
-                style={{ backgroundImage: 'url(/madrid_skyline.webp)', backgroundPosition: 'center' }}
+                style={{ backgroundImage: 'url(/madrid_diario.png)', backgroundPosition: 'center' }}
             ></div>
             <div className={`content-wrapper ${styles.restaurantsPage}`}>
 
