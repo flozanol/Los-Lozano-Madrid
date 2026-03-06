@@ -60,21 +60,27 @@ const TodayOperationalMode = () => {
     }
 
     return (
-        <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-black flex items-center gap-2">
-                    <Clock className="text-madrid-red" />
-                    HOY — MODO OPERATIVO
-                </h2>
-                <span className="px-3 py-1 bg-madrid-red text-white text-xs font-bold rounded-full animate-pulse">
-                    EN VIVO
-                </span>
+        <section className="glass-premium p-8">
+            <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-madrid-red/10 rounded-xl">
+                        <Clock className="text-madrid-red" size={20} />
+                    </div>
+                    <h2 className="text-xl font-black text-white uppercase tracking-tight">MODO OPERATIVO</h2>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-madrid-red opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-madrid-red"></span>
+                    </span>
+                    <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em]">En Vivo</span>
+                </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {todayPlan.map((item) => (
-                    <div key={item.id} className="glass overflow-hidden border-l-4 border-madrid-red">
-                        <div className="p-5">
+                    <div key={item.id} className="glass-premium border-l-[6px] border-madrid-red group hover:scale-[1.01] transition-all">
+                        <div className="p-6">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="flex items-center gap-2 text-xs font-bold text-madrid-red uppercase tracking-wider">
                                     {item.time_block === 'Mañana' && <Coffee size={14} />}
@@ -128,7 +134,7 @@ const TodayOperationalMode = () => {
                     </div>
                 ))}
             </div>
-        </div>
+        </section>
     );
 };
 

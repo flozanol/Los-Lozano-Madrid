@@ -13,27 +13,29 @@ const NeighborhoodRadar = () => {
     ];
 
     return (
-        <section className="glass p-6">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-black flex items-center gap-2">
-                    <MapPin className="text-madrid-red" />
-                    RADAR (Cerca del Hotel)
-                </h2>
-                <span className="text-[10px] font-bold text-gray-400 uppercase">A 10 min caminando</span>
+        <section className="glass-premium p-8">
+            <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-madrid-red/10 rounded-xl">
+                        <MapPin className="text-madrid-red" size={20} />
+                    </div>
+                    <h2 className="text-xl font-black text-white uppercase tracking-tight">Radar Local</h2>
+                </div>
+                <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">A 10 min caminando</span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {nearbySpots.map((spot, index) => (
                     <div
                         key={index}
-                        className="p-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 hover:border-madrid-red/50 transition-all group"
+                        className="p-5 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 hover:border-madrid-red/40 hover:bg-white/10 transition-all group"
                     >
-                        <div className="p-2 bg-white/5 rounded-xl w-fit mb-3 group-hover:bg-madrid-red/20 transition-colors">
-                            <spot.icon size={20} className="text-white/80 group-hover:text-white" />
+                        <div className="p-3 bg-white/5 rounded-2xl w-fit mb-4 group-hover:bg-madrid-red/20 transition-all">
+                            <spot.icon size={20} className="text-white/60 group-hover:text-white transition-colors" />
                         </div>
-                        <p className="font-black text-sm mb-0.5 line-clamp-1 text-white">{spot.name}</p>
+                        <p className="font-black text-sm mb-1 line-clamp-1 text-white">{spot.name}</p>
                         <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-white/50 uppercase tracking-tighter">{spot.type}</span>
+                            <span className="text-[10px] font-black text-white/30 uppercase tracking-tighter">{spot.type}</span>
                             <span className="text-[10px] font-black text-madrid-red brightness-125">{spot.time}</span>
                         </div>
                     </div>

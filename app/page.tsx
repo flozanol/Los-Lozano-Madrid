@@ -127,163 +127,193 @@ const HomePage = () => {
 
         <h1 className={styles.title}>
           LOS LOZANO <br />
-          <span className="text-madrid-gradient">EN MADRID</span>
+          <span className="text-madrid-gradient font-black">EN MADRID</span>
         </h1>
 
         <div className={styles.dashboardGrid}>
           {/* TODAY OPERATIONAL MODE - PRIMARY FOCUS */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 space-y-8">
             <TodayOperationalMode />
+            <NeighborhoodRadar />
           </div>
 
           {/* SMART WIDGETS */}
           <div className={styles.sideWidgets}>
-            <div className={`${styles.smallCard} glass`}>
+            <div className="glass-premium p-6">
               <WeatherWidget />
             </div>
-            <Link href="/map" className={`${styles.smallCard} glass ${styles.mapCard}`}>
-              <MapIcon size={24} className={styles.iconRed} />
-              <span>Ver Mapa de Experiencias</span>
+
+            <Link href="/map" className="glass p-6 flex items-center gap-4 group no-underline">
+              <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-madrid-red/20 transition-colors">
+                <MapIcon size={24} className="text-madrid-red" />
+              </div>
+              <span className="font-bold text-white">Mapa de Experiencias</span>
             </Link>
-            <Link href="/safety" className={`${styles.smallCard} glass ${styles.safetyCard}`}>
-              <Shield size={24} className={styles.iconRed} />
-              <span>Centro de Seguridad</span>
+
+            <Link href="/safety" className="glass p-6 flex items-center gap-4 group no-underline">
+              <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-madrid-red/20 transition-colors">
+                <Shield size={24} className="text-madrid-red" />
+              </div>
+              <span className="font-bold text-white">Centro de Seguridad</span>
             </Link>
+
+            {/* COUNTDOWN / PLANNER STATUS */}
+            <div className="glass-premium p-6 mt-4">
+              <div className="flex justify-between items-center mb-6">
+                <span className="px-3 py-1 bg-madrid-red text-white text-[10px] font-black uppercase tracking-widest rounded-full">
+                  {isTripActive ? 'Próximos Pasos' : 'Cuenta Regresiva'}
+                </span>
+                {!isTripActive && <span className="text-xs font-bold text-white/50 uppercase">26 MAR — 06 ABR</span>}
+              </div>
+
+              <div className="mb-6">
+                {!isTripActive ? (
+                  <Countdown targetDate={tripStartDate} />
+                ) : (
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/10">
+                      <div className="p-2 bg-white/5 rounded-lg text-madrid-red"><Coffee size={16} /></div>
+                      <div>
+                        <p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Mañana</p>
+                        <p className="font-bold text-sm text-white">{todayEvents.find(e => e.time_block === 'Mañana')?.event_name || 'Libre'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/10">
+                      <div className="p-2 bg-white/5 rounded-lg text-madrid-red"><Sun size={16} /></div>
+                      <div>
+                        <p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Tarde</p>
+                        <p className="font-bold text-sm text-white">{todayEvents.find(e => e.time_block === 'Tarde')?.event_name || 'Libre'}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <Link href="/calendar" className="flex items-center justify-center gap-2 w-full py-4 bg-white/5 hover:bg-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-white transition-all no-underline border border-white/10">
+                Ver Itinerario <ChevronRight size={16} />
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* NEIGHBORHOOD RADAR */}
-        <div style={{ marginTop: 40 }}>
-          <NeighborhoodRadar />
-        </div>
-
-        {/* COUNTDOWN / PLANNER STATUS */}
-        <div style={{ marginTop: 40 }}>
-          <div className={`${styles.todayCard} glass`}>
-            <div className={styles.cardHeader}>
-              <span className={styles.cardTag}>
-                {isTripActive ? 'Próximos Pasos' : 'Cuenta Regresiva'}
-              </span>
-              {!isTripActive && <span className={styles.dateLabel}>26 MAR — 06 ABR</span>}
-            </div>
-
-            <div className={styles.todayInfo}>
-              {!isTripActive ? (
-                <Countdown targetDate={tripStartDate} />
-              ) : (
-                <div className={styles.dayBlocks}>
-                  <div className={styles.block}>
-                    <div className={styles.blockLabel}><Coffee size={14} /> Mañana</div>
-                    <div className={styles.blockContent}>
-                      {todayEvents.find(e => e.time_block === 'Mañana')?.event_name || 'Libre'}
-                    </div>
-                  </div>
-                  <div className={styles.block}>
-                    <div className={styles.blockLabel}><Sun size={14} /> Tarde</div>
-                    <div className={styles.blockContent}>
-                      {todayEvents.find(e => e.time_block === 'Tarde')?.event_name || 'Libre'}
-                    </div>
-                  </div>
-                  <div className={styles.block}>
-                    <div className={styles.blockLabel}><Moon size={14} /> Noche</div>
-                    <div className={styles.blockContent}>
-                      {todayEvents.find(e => e.time_block === 'Noche')?.event_name || 'Cena'}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            <Link href="/calendar" className={styles.fullItineryBtn}>
-              Ver Itinerario Completo <ChevronRight size={16} />
-            </Link>
-          </div>
-        </div>
-
-        {/* NOTION CONTENT SECTION (NOW SUPABASE) */}
-        <div style={{ marginTop: 40, display: "grid", gap: 24, gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))" }}>
+        {/* FEED SECTION */}
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8 text-left">
 
           {/* ITINERARIO */}
-          <section className="glass" style={{ padding: 24 }}>
-            <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800 }}>📅 Próximos Planes</h2>
-            <p style={{ marginTop: 8, color: "#6b7280", fontSize: 14 }}>
-              Lo que viene en la agenda familiar.
-            </p>
+          <section className="glass-premium p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-white/5 rounded-2xl">
+                <CalendarIcon size={24} className="text-madrid-red" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black text-white">PRÓXIMOS PLANES</h2>
+                <p className="text-sm font-bold text-white/40 uppercase tracking-widest">Agenda Familiar</p>
+              </div>
+            </div>
 
             {loading ? (
-              <div style={{ marginTop: 20, color: "#6b7280" }}>Cargando planes...</div>
+              <div className="py-12 text-center opacity-50">Cargando planes...</div>
             ) : upcomingItinerary.length === 0 ? (
-              <div style={{ marginTop: 20, color: "#6b7280" }}>Aún no hay planes. ¡Añade uno en el calendario!</div>
+              <div className="py-12 text-center opacity-50">Aún no hay planes.</div>
             ) : (
-              <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
+              <div className="space-y-4">
                 {upcomingItinerary.slice(0, 4).map((item) => (
-                  <div key={item.id} className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <div style={{ fontWeight: 900, fontSize: 13, color: "var(--madrid-red)" }}>{item.date_str}</div>
-                      <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.6 }}>{item.event_time}</div>
+                  <div key={item.id} className="p-5 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 transition-all group">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="px-2 py-1 bg-madrid-red/20 text-madrid-red text-[10px] font-black uppercase tracking-widest rounded-lg">{item.date_str}</span>
+                      <span className="text-[10px] font-bold text-white/40 uppercase">{item.event_time}</span>
                     </div>
-                    <div style={{ fontWeight: 800, marginTop: 4, fontSize: 16 }}>{item.event_name}</div>
-                    <div style={{ marginTop: 8, fontSize: 12, opacity: 0.8 }}>👥 {item.participants}</div>
+                    <h3 className="text-lg font-black text-white group-hover:text-madrid-red transition-colors">{item.event_name}</h3>
+                    <div className="mt-3 flex items-center gap-2 text-xs font-bold text-white/60">
+                      <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px]">👥</div>
+                      {item.participants}
+                    </div>
                   </div>
                 ))}
-                <Link href="/calendar" style={{ marginTop: 10, fontSize: 14, fontWeight: 600, color: "var(--madrid-red)" }}>Ir al calendario completo →</Link>
+                <Link href="/calendar" className="inline-flex items-center gap-2 mt-4 text-xs font-black uppercase tracking-widest text-madrid-red hover:gap-4 transition-all no-underline">
+                  Ir al calendario completo <ChevronRight size={14} />
+                </Link>
               </div>
             )}
           </section>
 
-          <div style={{ display: "grid", gap: 24 }}>
-            {/* LUGARES */}
-            <section className="glass" style={{ padding: 24 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800 }}>📍 Imperdibles</h2>
-                <Link href="/places" style={{ fontSize: 12, color: "var(--madrid-red)", fontWeight: 700 }}>VER TODOS</Link>
+          <div className="space-y-8">
+            {/* LUGARES IMPERDIBLES */}
+            <section className="glass p-8">
+              <div className="flex justify-between items-center mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-madrid-red/10 rounded-xl">
+                    <MapPin size={20} className="text-madrid-red" />
+                  </div>
+                  <h2 className="text-xl font-black text-white">IMPERDIBLES</h2>
+                </div>
+                <Link href="/places" className="text-[10px] font-black text-madrid-red uppercase tracking-widest hover:opacity-70">Ver Todos</Link>
               </div>
-              <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
+
+              <div className="divide-y divide-white/5">
                 {spots.length === 0 ? (
-                  <div style={{ color: "#6b7280", fontSize: 14 }}>Aún no hay lugares recomendados.</div>
+                  <div className="py-8 text-center opacity-50">Cargando lugares...</div>
                 ) : (
                   spots.map(s => (
-                    <div key={s.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
+                    <div key={s.id} className="py-4 flex justify-between items-center group">
                       <div>
-                        <div style={{ fontWeight: 700 }}>{s.nombre}</div>
-                        <div style={{ fontSize: 12, color: "#6b7280" }}>{s.tipo}</div>
+                        <h4 className="font-bold text-white group-hover:text-madrid-red transition-colors">{s.nombre}</h4>
+                        <p className="text-xs font-bold text-white/40 uppercase tracking-tighter">{s.tipo}</p>
                       </div>
-                      {s.mapa && <a href={s.mapa} target="_blank" className="p-2 hover:bg-red-50 rounded-full transition-colors"><MapPin size={18} className="text-madrid-red" /></a>}
+                      {s.mapa && (
+                        <a href={s.mapa} target="_blank" className="p-3 bg-white/5 rounded-2xl text-white/40 hover:text-madrid-red hover:bg-madrid-red/10 transition-all">
+                          <MapPin size={18} />
+                        </a>
+                      )}
                     </div>
                   ))
                 )}
               </div>
             </section>
 
-            {/* LUGARES SECRETOS */}
-            <section className="glass" style={{ padding: 24, background: "linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(255,255,255,0.05) 100%)", border: "1px solid rgba(245,158,11,0.2)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h2 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: "#92400e" }}>🕵️‍♂️ Secretos</h2>
-                <Link href="/secret-places" style={{ fontSize: 12, color: "#d97706", fontWeight: 700 }}>EXPLORAR</Link>
+            {/* SECCIÓN SECRETOS - GOLD THEME */}
+            <section className="glass-premium p-8 relative overflow-hidden group">
+              <div className="absolute -right-4 -top-4 opacity-10 group-hover:scale-110 transition-transform">
+                <Sparkles size={120} className="text-amber-500" />
               </div>
-              <p style={{ marginTop: 4, color: "#b45309", fontSize: 13, fontWeight: 500 }}>Madrid fuera de lo común.</p>
-              <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
-                {secretSpots.length === 0 ? (
-                  <div style={{ color: "#6b7280", fontSize: 14 }}>Aún no hay secretos revelados...</div>
-                ) : (
-                  secretSpots.map(s => (
-                    <div key={s.id} className="p-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 backdrop-blur-sm">
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
-                        <div style={{ fontWeight: 800, color: "#92400e", fontSize: 15 }}>{s.nombre}</div>
-                        <Sparkles size={14} className="text-amber-500" />
-                      </div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#d97706", marginTop: 4 }}>{s.tipo}</div>
-                      {s.historia && <div style={{ marginTop: 8, fontSize: 13, color: "#4b5563", lineHeight: 1.4 }}>{s.historia}</div>}
+
+              <div className="relative z-10">
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-500/20 rounded-xl">
+                      <Sparkles size={20} className="text-amber-500" />
                     </div>
-                  ))
-                )}
+                    <h2 className="text-xl font-black text-amber-500">SECRETOS</h2>
+                  </div>
+                  <Link href="/secret-places" className="text-[10px] font-black text-amber-500 uppercase tracking-widest hover:opacity-70">Explorar</Link>
+                </div>
+
+                <p className="text-sm font-bold text-amber-500/60 uppercase tracking-widest mb-6">Madrid fuera de lo común</p>
+
+                <div className="space-y-4">
+                  {secretSpots.length === 0 ? (
+                    <p className="text-center py-4 opacity-50">Shhh... pronto más secretos.</p>
+                  ) : (
+                    secretSpots.map(s => (
+                      <div key={s.id} className="p-5 rounded-2xl border border-amber-500/20 bg-amber-500/5 backdrop-blur-sm hover:bg-amber-500/10 transition-all cursor-default">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-black text-amber-600 uppercase tracking-tight">{s.nombre}</h4>
+                          <span className="text-[10px] font-black bg-amber-500/20 px-2 py-0.5 rounded text-amber-600">{s.tipo}</span>
+                        </div>
+                        {s.historia && <p className="text-sm font-medium text-white/70 leading-relaxed italic">"{s.historia}"</p>}
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </section>
           </div>
-
         </div>
 
-        <footer style={{ marginTop: 40, textAlign: "center", color: "#6b7280", fontSize: 14 }}>
-          Los Lozano en Madrid 2026 • Gestionado en Familia
+        <footer className="mt-20 py-12 border-t border-white/5 text-center">
+          <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">
+            Los Lozano en Madrid 2026 • Gestionado en Familia
+          </p>
         </footer>
       </div>
     </div>
