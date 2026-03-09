@@ -56,8 +56,8 @@ const MapPage = () => {
             <div className={`content-wrapper ${styles.mapPage}`}>
                 <div className="container">
                     <header className={styles.header}>
-                        <h1 className={styles.title}>Mapa de <span className="text-gold">Experiencias</span></h1>
-                        <p className={styles.subtitle}>
+                        <h1 className={styles.title}>Mapa de <span className="text-madrid-gradient">Experiencias</span></h1>
+                        <p className="text-xl font-medium opacity-80">
                             Toca cualquier punto del mapa para guardar un lugar.
                             Comparte restaurantes, monumentos y rincones favoritos con todos.
                         </p>

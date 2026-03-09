@@ -115,8 +115,8 @@ export default function SafetyPage() {
             <div className={`content-wrapper ${styles.safetyPage}`}>
                 <div className="container">
                     <header className={styles.header}>
-                        <h1 className="text-madrid-gradient">Botón de <span className="text-madrid-red">Pánico</span></h1>
-                        <p>Información crítica de seguridad y emergencia para toda la familia.</p>
+                        <h1 className={styles.title}>Botón de <span className="text-madrid-gradient">Pánico</span></h1>
+                        <p className="text-xl font-medium opacity-80">Información crítica de seguridad y emergencia para toda la familia.</p>
                     </header>
 
                     {isLoading ? (

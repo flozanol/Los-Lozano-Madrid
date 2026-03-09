@@ -135,7 +135,7 @@ const SecretPlacesPage = () => {
 
                 <div className={`${styles.header} container`}>
                     <h1 className={styles.title}><span className="text-madrid-gradient">Secretos</span> de Madrid 🕵️‍♂️</h1>
-                    <p>Lugares mágicos y gemas ocultas para explorar en familia.</p>
+                    <p className="text-xl font-medium opacity-80">Lugares mágicos y gemas ocultas para explorar en familia.</p>
                     <button
                         className="btn-primary"
                         style={{ marginTop: '2rem', background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', boxShadow: '0 10px 30px rgba(245, 158, 11, 0.3)' }}

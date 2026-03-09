@@ -211,8 +211,8 @@ const CalendarPage = () => {
             <div className={`content-wrapper ${styles.calendarPage}`}>
                 <div className="container">
                     <header className={styles.header}>
-                        <h1>Itinerario <span className="text-gold">Familiar</span></h1>
-                        <p>Día a día en nuestro viaje a Madrid.</p>
+                        <h1 className={styles.title}>Itinerario <span className="text-madrid-gradient">Familiar</span></h1>
+                        <p className="text-xl font-medium opacity-80">Día a día en nuestro viaje a Madrid.</p>
                         <button className="btn-primary" onClick={editingId ? cancelForm : () => setShowForm(!showForm)}>
                             {showForm ? 'Cancelar' : <><Plus size={20} /> Añadir al Plan</>}
                         </button>
