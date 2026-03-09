@@ -115,9 +115,9 @@ const HomePage = () => {
         ]);
 
         const allFavs: FavoriteItem[] = [
-          ...(favRest.data || []).map(r => ({ id: r.id, nombre: r.name, tipo: r.specialty, imagen: r.image, slug: 'restaurants' })),
-          ...(favPlaces.data || []).map(p => ({ id: p.id, nombre: p.name, tipo: p.category, imagen: p.image, slug: 'places' })),
-          ...(favSecrets.data || []).map(s => ({ id: s.id, nombre: s.name, tipo: s.category, imagen: s.image, slug: 'secret-places' }))
+          ...(favRest.data || []).map((r: any) => ({ id: r.id, nombre: r.name, tipo: r.specialty, imagen: r.image, slug: 'restaurants' })),
+          ...(favPlaces.data || []).map((p: any) => ({ id: p.id, nombre: p.name, tipo: p.category, imagen: p.image, slug: 'places' })),
+          ...(favSecrets.data || []).map((s: any) => ({ id: s.id, nombre: s.name, tipo: s.category, imagen: s.image, slug: 'secret-places' }))
         ];
         setFavorites(allFavs);
 

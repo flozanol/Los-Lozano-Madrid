@@ -238,9 +238,10 @@ const PlacesPage = () => {
                                             <button className={styles.editBtn} onClick={() => startEditing(place)} title="Editar"><Edit2 size={16} /></button>
                                             <button className={styles.deleteBtn} onClick={() => handleDelete(place.id)} title="Eliminar"><Trash2 size={16} /></button>
                                         </div>
-                                        <div className={styles.mapBadge} title="Disponible en el Mapa">
-                                            <MapPin size={12} />
-                                        </div>
+                                        {place.latitude && (
+                                            <div className={styles.mapBadge} title="Disponible en el Mapa">
+                                                <MapPin size={12} />
+                                            </div>
                                         )}
                                         <button
                                             className={`${styles.favoriteBtn} ${place.is_favorite ? styles.btnFavoriteActive : ''}`}
