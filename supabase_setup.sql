@@ -146,4 +146,20 @@ BEGIN
   BEGIN
     ALTER TABLE itinerary ADD COLUMN reservation_details TEXT;
   EXCEPTION WHEN duplicate_column THEN NULL; END;
+
+  BEGIN
+    ALTER TABLE itinerary ADD COLUMN time_block TEXT;
+  EXCEPTION WHEN duplicate_column THEN NULL; END;
+  
+  BEGIN
+    ALTER TABLE itinerary ADD COLUMN transit_time TEXT;
+  EXCEPTION WHEN duplicate_column THEN NULL; END;
+
+  BEGIN
+    ALTER TABLE itinerary ADD COLUMN image_url TEXT;
+  EXCEPTION WHEN duplicate_column THEN NULL; END;
+
+  BEGIN
+    ALTER TABLE itinerary ADD COLUMN confirmed_participants TEXT;
+  EXCEPTION WHEN duplicate_column THEN NULL; END;
 END $$;

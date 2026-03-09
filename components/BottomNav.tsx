@@ -22,7 +22,9 @@ import {
     Footprints,
     BookOpen,
     Target,
-    UtensilsCrossed
+    UtensilsCrossed,
+    Bike,
+    Train
 } from 'lucide-react';
 import styles from './BottomNav.module.css';
 
@@ -41,6 +43,7 @@ const BottomNav = () => {
         { href: '/barrios', icon: MapIcon, label: 'Barrios' },
         { href: '/rincon-gato', icon: UtensilsCrossed, label: 'Rincón Gato' },
         { href: '/rutas', icon: Footprints, label: 'Rutas' },
+        { href: '/movilidad', icon: Bike, label: 'Movilidad' },
         { href: '/ranking', icon: Trophy, label: 'Ranking' },
         { href: '/diario', icon: BookOpen, label: 'Diario' },
         { href: '/misiones', icon: Target, label: 'Misiones' },
