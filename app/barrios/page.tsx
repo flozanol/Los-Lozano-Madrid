@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Plus, Loader2, MapPin, Trash2, Edit2, Check, X, Star, Camera, ShoppingBag, Utensils, Info, Sparkles } from 'lucide-react';
+import { Plus, Loader2, MapPin, Trash2, Edit2, Check, X, Star, Camera, ShoppingBag, Utensils, Info, Sparkles, Heart } from 'lucide-react';
 import styles from '../restaurants/page.module.css';
 import { supabase } from '@/lib/supabase';
 
