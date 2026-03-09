@@ -119,13 +119,13 @@ const HomePage = () => {
         ]);
 
         const allFavs: FavoriteItem[] = [
-          ...(favRest.data || []).map((r: any) => ({ id: r.id, nombre: r.name, tipo: r.specialty || 'Restaurante', imagen: r.image, slug: 'restaurants' })),
-          ...(favPlaces.data || []).map((p: any) => ({ id: p.id, nombre: p.name, tipo: p.category || 'Lugar', imagen: p.image, slug: 'places' })),
-          ...(favSecrets.data || []).map((s: any) => ({ id: s.id, nombre: s.name, tipo: s.category || 'Secreto', imagen: s.image, slug: 'secret-places' })),
-          ...(favLocal.data || []).map((r: any) => ({ id: r.id, nombre: r.name, tipo: r.specialty || 'Rincón del Gato', imagen: r.image_url, slug: 'rincon-gato' })),
-          ...(favBarrios.data || []).map((b: any) => ({ id: b.id, nombre: b.name, tipo: b.vibe || 'Barrio', imagen: b.image_url, slug: 'barrios' })),
-          ...(favRoutes.data || []).map((rt: any) => ({ id: rt.id, nombre: rt.title, tipo: 'Ruta Caminable', imagen: rt.image_url, slug: 'rutas' })),
-          ...(favTapas.data || []).map((t: any) => ({ id: t.id, nombre: t.name, tipo: 'Tapeo y Cañas', imagen: t.image, slug: 'tapas' }))
+          ...(favRest.data || []).map((r: any) => ({ id: r.id, nombre: r.name, tipo: r.specialty || 'Restaurante', imagen: r.image || r.image_url || 'https://images.unsplash.com/photo-1515516969-d41f71df9138?auto=format&fit=crop&w=600&q=80', slug: 'restaurants' })),
+          ...(favPlaces.data || []).map((p: any) => ({ id: p.id, nombre: p.name, tipo: p.category || 'Lugar', imagen: p.image || p.image_url || 'https://images.unsplash.com/photo-1541140134513-85a161dc4a00?auto=format&fit=crop&w=800&q=80', slug: 'places' })),
+          ...(favSecrets.data || []).map((s: any) => ({ id: s.id, nombre: s.name, tipo: s.category || 'Secreto', imagen: s.image || s.image_url || 'https://images.unsplash.com/photo-1555992336-03a23c7b30ee?auto=format&fit=crop&w=800&q=80', slug: 'secret-places' })),
+          ...(favLocal.data || []).map((r: any) => ({ id: r.id, nombre: r.name, tipo: r.specialty || 'Rincón del Gato', imagen: r.image_url || r.image || 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80', slug: 'rincon-gato' })),
+          ...(favBarrios.data || []).map((b: any) => ({ id: b.id, nombre: b.name, tipo: b.vibe || 'Barrio', imagen: b.image_url || b.image || 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=800&q=80', slug: 'barrios' })),
+          ...(favRoutes.data || []).map((rt: any) => ({ id: rt.id, nombre: rt.title, tipo: 'Ruta Caminable', imagen: rt.image_url || rt.image || 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=800&q=80', slug: 'rutas' })),
+          ...(favTapas.data || []).map((t: any) => ({ id: t.id, nombre: t.name, tipo: 'Tapeo y Cañas', imagen: t.image || t.image_url || 'https://images.unsplash.com/photo-1534604973900-c41ab4c5e63a?auto=format&fit=crop&q=80&w=800', slug: 'tapas' }))
         ];
         setFavorites(allFavs);
 
@@ -287,7 +287,7 @@ const HomePage = () => {
                   {favorites.slice(0, 6).map((fav) => (
                     <Link key={`${fav.slug}-${fav.id}`} href={`/${fav.slug}`} className="group no-underline">
                       <div className="relative h-48 rounded-2xl overflow-hidden border border-white/10 group-hover:border-madrid-red/50 transition-all">
-                        <Image src={fav.imagen} alt={fav.nombre} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                        <Image src={fav.imagen} alt={fav.nombre} fill unoptimized className="object-cover group-hover:scale-110 transition-transform duration-500" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                         <div className="absolute bottom-4 left-4 right-4">
                           <p className="text-[10px] font-black text-madrid-red uppercase tracking-widest mb-1">{fav.tipo}</p>
