@@ -15,6 +15,7 @@ interface Route {
     image_url: string;
     google_maps_url: string;
     stops: string[];
+    is_favorite: boolean;
     created_at: string;
 }
 
@@ -104,6 +105,21 @@ const RoutesPage = () => {
             alert('Error al actualizar');
         }
         setIsSaving(false);
+    };
+
+    const toggleFavorite = async (route: Route) => {
+        const newStatus = !route.is_favorite;
+        setRoutes(routes.map(r => r.id === route.id ? { ...r, is_favorite: newStatus } : r));
+
+        const { error } = await supabase
+            .from('routes')
+            .update({ is_favorite: newStatus })
+            .eq('id', route.id);
+
+        if (error) {
+            setRoutes(routes.map(r => r.id === route.id ? { ...r, is_favorite: !newStatus } : r));
+            alert('Error: Añade "is_favorite" (booleano) a la tabla "routes".');
+        }
     };
 
     const handleDelete = async (id: string) => {
@@ -223,6 +239,13 @@ const RoutesPage = () => {
                                             <button className={styles.editBtn} onClick={() => startEditing(route)} title="Editar"><Edit2 size={16} /></button>
                                             <button className={styles.deleteBtn} onClick={() => handleDelete(route.id)} title="Eliminar"><Trash2 size={16} /></button>
                                         </div>
+                                        <button
+                                            className={`${styles.favoriteBtn} ${route.is_favorite ? styles.btnFavoriteActive : ''}`}
+                                            onClick={() => toggleFavorite(route)}
+                                            style={{ position: 'absolute', bottom: '1rem', right: '1rem', zIndex: 10 }}
+                                        >
+                                            <Heart size={18} fill={route.is_favorite ? "currentColor" : "none"} />
+                                        </button>
                                     </div>
 
                                     <div className={styles.itemInfo}>

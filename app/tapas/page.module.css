@@ -278,3 +278,31 @@
     font-weight: 700;
     cursor: pointer;
 }
+
+.favoriteBtn {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    color: var(--graphite-gray);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: var(--transition-smooth);
+    z-index: 10;
+}
+
+.favoriteBtn:hover {
+    transform: scale(1.1);
+}
+
+.btnFavoriteActive {
+    background: var(--madrid-red);
+    color: white;
+}

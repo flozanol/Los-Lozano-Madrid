@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapPin, Navigation, Star, Beer, Plus, Loader2, Edit2, Trash2, Check, X } from 'lucide-react';
+import { MapPin, Navigation, Star, Beer, Plus, Loader2, Edit2, Trash2, Check, X, Heart } from 'lucide-react';
 import styles from './page.module.css';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
@@ -17,6 +17,7 @@ interface TapaPlace {
     route: string;
     latitude?: number | string | null;
     longitude?: number | string | null;
+    is_favorite: boolean;
 }
 
 export default function TapasPage() {
@@ -106,6 +107,21 @@ export default function TapasPage() {
             console.error('Error updating tapa:', error);
         }
         setIsSaving(false);
+    };
+
+    const toggleFavorite = async (tapa: TapaPlace) => {
+        const newStatus = !tapa.is_favorite;
+        setTapas(tapas.map(t => t.id === tapa.id ? { ...t, is_favorite: newStatus } : t));
+
+        const { error } = await supabase
+            .from('tapas')
+            .update({ is_favorite: newStatus })
+            .eq('id', tapa.id);
+
+        if (error) {
+            setTapas(tapas.map(t => t.id === tapa.id ? { ...t, is_favorite: !newStatus } : t));
+            alert('Error: Añade "is_favorite" (booleano) a la tabla "tapas".');
+        }
     };
 
     const handleDelete = async (id: string) => {
@@ -221,6 +237,12 @@ export default function TapasPage() {
                                             <button className={styles.editBtn} onClick={() => startEditing(place)}><Edit2 size={16} /></button>
                                             <button className={styles.deleteBtn} onClick={() => handleDelete(place.id)}><Trash2 size={16} /></button>
                                         </div>
+                                        <button
+                                            className={`${styles.favoriteBtn} ${place.is_favorite ? styles.btnFavoriteActive : ''}`}
+                                            onClick={() => toggleFavorite(place)}
+                                        >
+                                            <Heart size={18} fill={place.is_favorite ? "currentColor" : "none"} />
+                                        </button>
                                     </div>
 
                                     <div className={styles.content}>

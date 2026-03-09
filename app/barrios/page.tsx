@@ -13,6 +13,7 @@ interface Neighborhood {
     description: string;
     image_url: string;
     what_to_do: string[];
+    is_favorite: boolean;
     created_at: string;
 }
 
@@ -98,6 +99,21 @@ const NeighborhoodsPage = () => {
             alert('Error al actualizar');
         }
         setIsSaving(false);
+    };
+
+    const toggleFavorite = async (n: Neighborhood) => {
+        const newStatus = !n.is_favorite;
+        setNeighborhoods(neighborhoods.map(item => item.id === n.id ? { ...item, is_favorite: newStatus } : item));
+
+        const { error } = await supabase
+            .from('barrios')
+            .update({ is_favorite: newStatus })
+            .eq('id', n.id);
+
+        if (error) {
+            setNeighborhoods(neighborhoods.map(item => item.id === n.id ? { ...item, is_favorite: !newStatus } : item));
+            alert('Error: Añade "is_favorite" (booleano) a la tabla "barrios".');
+        }
     };
 
     const handleDelete = async (id: string) => {
@@ -215,6 +231,13 @@ const NeighborhoodsPage = () => {
                                                 <button className={styles.editBtn} onClick={() => startEditing(n)} title="Editar"><Edit2 size={16} /></button>
                                                 <button className={styles.deleteBtn} onClick={() => handleDelete(n.id)} title="Eliminar"><Trash2 size={16} /></button>
                                             </div>
+                                            <button
+                                                className={`${styles.favoriteBtn} ${n.is_favorite ? styles.btnFavoriteActive : ''}`}
+                                                onClick={() => toggleFavorite(n)}
+                                                style={{ position: 'absolute', bottom: '1rem', right: '1rem', zIndex: 10 }}
+                                            >
+                                                <Heart size={18} fill={n.is_favorite ? "currentColor" : "none"} />
+                                            </button>
                                         </div>
 
                                         <div className={styles.itemInfo}>

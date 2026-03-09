@@ -108,16 +108,24 @@ const HomePage = () => {
         }
 
         // Fetch Favorites
-        const [favRest, favPlaces, favSecrets] = await Promise.all([
+        const [favRest, favPlaces, favSecrets, favLocal, favBarrios, favRoutes, favTapas] = await Promise.all([
           supabase.from('restaurants').select('*').eq('is_favorite', true),
           supabase.from('places_to_visit').select('*').eq('is_favorite', true),
-          supabase.from('secret_places').select('*').eq('is_favorite', true)
+          supabase.from('secret_places').select('*').eq('is_favorite', true),
+          supabase.from('local_restaurants').select('*').eq('is_favorite', true),
+          supabase.from('barrios').select('*').eq('is_favorite', true),
+          supabase.from('routes').select('*').eq('is_favorite', true),
+          supabase.from('tapas').select('*').eq('is_favorite', true)
         ]);
 
         const allFavs: FavoriteItem[] = [
-          ...(favRest.data || []).map((r: any) => ({ id: r.id, nombre: r.name, tipo: r.specialty, imagen: r.image, slug: 'restaurants' })),
-          ...(favPlaces.data || []).map((p: any) => ({ id: p.id, nombre: p.name, tipo: p.category, imagen: p.image, slug: 'places' })),
-          ...(favSecrets.data || []).map((s: any) => ({ id: s.id, nombre: s.name, tipo: s.category, imagen: s.image, slug: 'secret-places' }))
+          ...(favRest.data || []).map((r: any) => ({ id: r.id, nombre: r.name, tipo: r.specialty || 'Restaurante', imagen: r.image, slug: 'restaurants' })),
+          ...(favPlaces.data || []).map((p: any) => ({ id: p.id, nombre: p.name, tipo: p.category || 'Lugar', imagen: p.image, slug: 'places' })),
+          ...(favSecrets.data || []).map((s: any) => ({ id: s.id, nombre: s.name, tipo: s.category || 'Secreto', imagen: s.image, slug: 'secret-places' })),
+          ...(favLocal.data || []).map((r: any) => ({ id: r.id, nombre: r.name, tipo: r.specialty || 'Rincón del Gato', imagen: r.image_url, slug: 'rincon-gato' })),
+          ...(favBarrios.data || []).map((b: any) => ({ id: b.id, nombre: b.name, tipo: b.vibe || 'Barrio', imagen: b.image_url, slug: 'barrios' })),
+          ...(favRoutes.data || []).map((rt: any) => ({ id: rt.id, nombre: rt.title, tipo: 'Ruta Caminable', imagen: rt.image_url, slug: 'rutas' })),
+          ...(favTapas.data || []).map((t: any) => ({ id: t.id, nombre: t.name, tipo: 'Tapeo y Cañas', imagen: t.image, slug: 'tapas' }))
         ];
         setFavorites(allFavs);
 
