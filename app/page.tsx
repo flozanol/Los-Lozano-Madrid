@@ -3,12 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Coffee, Sun, Moon, Map as MapIcon, Shield, ChevronRight, Sparkles, MapPin, Calendar as CalendarIcon } from 'lucide-react';
+import { Coffee, Sun, Moon, Map as MapIcon, Shield, ChevronRight, Sparkles, MapPin, Calendar as CalendarIcon, Heart } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Countdown from '@/components/Countdown';
 import WeatherWidget from '@/components/WeatherWidget';
 import TodayOperationalMode from '@/components/TodayOperationalMode';
-import NeighborhoodRadar from '@/components/NeighborhoodRadar';
 import styles from './page.module.css';
 
 // Unified types for dashboard display
@@ -27,6 +26,15 @@ type ItineraryItem = {
   event_time: string;
   time_block?: string;
   participants: string;
+  image_url?: string;
+};
+
+type FavoriteItem = {
+  id: string;
+  nombre: string;
+  tipo: string | null;
+  imagen: string;
+  slug: string; // 'restaurants', 'places', 'secret-places'
 };
 
 const HomePage = () => {
@@ -38,6 +46,7 @@ const HomePage = () => {
   const [spots, setSpots] = useState<Spot[]>([]);
   const [secretSpots, setSecretSpots] = useState<Spot[]>([]);
   const [upcomingItinerary, setUpcomingItinerary] = useState<ItineraryItem[]>([]);
+  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -98,6 +107,20 @@ const HomePage = () => {
           setUpcomingItinerary(itRes.data);
         }
 
+        // Fetch Favorites
+        const [favRest, favPlaces, favSecrets] = await Promise.all([
+          supabase.from('restaurants').select('*').eq('is_favorite', true),
+          supabase.from('places_to_visit').select('*').eq('is_favorite', true),
+          supabase.from('secret_places').select('*').eq('is_favorite', true)
+        ]);
+
+        const allFavs: FavoriteItem[] = [
+          ...(favRest.data || []).map(r => ({ id: r.id, nombre: r.name, tipo: r.specialty, imagen: r.image, slug: 'restaurants' })),
+          ...(favPlaces.data || []).map(p => ({ id: p.id, nombre: p.name, tipo: p.category, imagen: p.image, slug: 'places' })),
+          ...(favSecrets.data || []).map(s => ({ id: s.id, nombre: s.name, tipo: s.category, imagen: s.image, slug: 'secret-places' }))
+        ];
+        setFavorites(allFavs);
+
       } catch (e) {
         console.error("Error fetching data from Supabase", e);
       } finally {
@@ -137,7 +160,6 @@ const HomePage = () => {
             {/* TODAY OPERATIONAL MODE - PRIMARY FOCUS */}
             <div className="md:col-span-2 space-y-8">
               <TodayOperationalMode />
-              <NeighborhoodRadar />
             </div>
 
             {/* SMART WIDGETS */}
@@ -239,6 +261,36 @@ const HomePage = () => {
                 </div>
               )}
             </section>
+
+            {/* FAVORITOS DE LA FAMILIA */}
+            {favorites.length > 0 && (
+              <section className="glass-premium p-8 lg:col-span-2">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="p-3 bg-madrid-red text-white rounded-2xl shadow-lg shadow-madrid-red/20">
+                    <Heart size={24} fill="currentColor" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-black text-white">IMPERDIBLES DE LA FAMILIA</h2>
+                    <p className="text-sm font-bold text-white/40 uppercase tracking-widest">Favoritos Seleccionados</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {favorites.slice(0, 6).map((fav) => (
+                    <Link key={`${fav.slug}-${fav.id}`} href={`/${fav.slug}`} className="group no-underline">
+                      <div className="relative h-48 rounded-2xl overflow-hidden border border-white/10 group-hover:border-madrid-red/50 transition-all">
+                        <Image src={fav.imagen} alt={fav.nombre} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <p className="text-[10px] font-black text-madrid-red uppercase tracking-widest mb-1">{fav.tipo}</p>
+                          <h4 className="text-white font-black text-lg">{fav.nombre}</h4>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
 
             <div className="space-y-8">
               {/* LUGARES IMPERDIBLES */}

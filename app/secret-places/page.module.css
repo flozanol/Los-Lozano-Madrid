@@ -18,10 +18,10 @@
     max-width: 800px;
     margin: 0 auto 5rem;
     padding: 2rem;
-    background: white;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
     border-radius: var(--border-radius-xl);
-    border: 1px solid var(--soft-gray);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(217, 119, 6, 0.2);
 }
 
 .formGrid {
@@ -33,11 +33,11 @@
 
 .addForm input,
 .addForm select {
-    background: var(--bone-white);
-    border: 1px solid var(--soft-gray);
-    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(217, 119, 6, 0.2);
+    padding: 1rem;
     border-radius: 12px;
-    color: var(--graphite-gray);
+    color: white;
     font-family: var(--font-body);
 }
 
@@ -55,10 +55,11 @@
 }
 
 .card {
-    background: white;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
     border-radius: var(--border-radius-xl);
     overflow: hidden;
-    border: 1px solid var(--soft-gray);
+    border: 1px solid rgba(217, 119, 6, 0.1);
     transition: var(--transition-smooth);
     display: flex;
     flex-direction: column;
@@ -66,8 +67,8 @@
 
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    border-color: var(--madrid-red);
+    border-color: #d97706;
+    background: rgba(217, 119, 6, 0.05);
 }
 
 .imageBox {
@@ -141,15 +142,18 @@
 }
 
 .cardContent h3 {
-    font-size: 1.5rem;
-    color: var(--graphite-gray);
+    font-size: 1.8rem;
+    color: #f59e0b;
     line-height: 1.2;
+    font-family: var(--font-heading);
+    font-weight: 900;
 }
 
 .cardContent p {
     font-size: 0.95rem;
-    opacity: 0.7;
+    opacity: 0.8;
     margin-bottom: 1rem;
+    color: white;
 }
 
 .coordenadas {
@@ -174,11 +178,12 @@
 
 .editForm input,
 .editForm textarea {
-    background: var(--bone-white);
-    border: 1px solid var(--soft-gray);
-    padding: 0.8rem;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(217, 119, 6, 0.2);
+    padding: 1rem;
+    border-radius: 12px;
     width: 100%;
+    color: white;
 }
 
 .editActions {
@@ -198,12 +203,46 @@
 }
 
 .btnCancelEdit {
-    background: var(--soft-gray);
-    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(217, 119, 6, 0.1);
     padding: 0.6rem 1rem;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
+    color: white;
+}
+
+.favoriteBtn {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    z-index: 10;
+}
+
+.favoriteBtn:hover {
+    transform: scale(1.1);
+    background: rgba(232, 30, 43, 0.2);
+    border-color: var(--madrid-red);
+    color: var(--madrid-red);
+}
+
+.btnFavoriteActive {
+    background: var(--madrid-red) !important;
+    border-color: var(--madrid-red) !important;
+    color: white !important;
+    box-shadow: 0 10px 20px rgba(232, 30, 43, 0.4);
 }
 
 @media (max-width: 768px) {

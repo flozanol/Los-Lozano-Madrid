@@ -288,9 +288,15 @@
 }
 
 .btnVote:hover {
-    background: white;
-    color: black;
+    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
+}
+
+.btnFavoriteActive {
+    background: var(--madrid-red) !important;
+    color: white !important;
+    border-color: var(--madrid-red) !important;
+    box-shadow: 0 10px 20px rgba(232, 30, 43, 0.3);
 }
 
 @media (max-width: 992px) {

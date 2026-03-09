@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Plus, Loader2, Utensils, Trash2, Edit2, Check, X, MapPin } from 'lucide-react';
+import { Plus, Loader2, Utensils, Trash2, Edit2, Check, X, MapPin, Heart } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -15,6 +15,7 @@ interface Restaurant {
     image: string;
     latitude?: number | string | null;
     longitude?: number | string | null;
+    is_favorite?: boolean;
     created_at: string;
 }
 
@@ -112,6 +113,21 @@ const RestaurantsPage = () => {
     const startEditing = (rest: Restaurant) => {
         setEditingId(rest.id);
         setEditItem(rest);
+    };
+
+    const toggleFavorite = async (rest: Restaurant) => {
+        const newVal = !rest.is_favorite;
+        const { error } = await supabase
+            .from('restaurants')
+            .update({ is_favorite: newVal })
+            .eq('id', rest.id);
+
+        if (!error) {
+            setRestaurants(prev => prev.map(r => r.id === rest.id ? { ...r, is_favorite: newVal } : r));
+        } else {
+            console.error(error);
+            alert('Error: Asegúrate de añadir la columna "is_favorite" (booleano) en la tabla "restaurants" de Supabase.');
+        }
     };
 
     return (
@@ -299,8 +315,12 @@ const RestaurantsPage = () => {
                                     </div>
 
                                     <div className={styles.itemActions}>
-                                        <button className={styles.btnVote}>
-                                            <Utensils size={16} /> Lo quiero probar
+                                        <button
+                                            className={`${styles.btnVote} ${rest.is_favorite ? styles.btnFavoriteActive : ''}`}
+                                            onClick={() => toggleFavorite(rest)}
+                                        >
+                                            <Heart size={16} fill={rest.is_favorite ? "currentColor" : "none"} />
+                                            Lo quiero probar
                                         </button>
                                     </div>
                                 </div>

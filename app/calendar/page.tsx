@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Calendar as CalendarIcon, Clock, Trash2, Plus, Loader2, User, Users, Pencil, CheckCircle, Coffee, Sun, Moon, Car } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
@@ -17,6 +18,7 @@ interface ItineraryItem {
     event_time: string;
     time_block?: string; // Mañana, Tarde, Noche
     transit_time?: string; // Ej. 15 min
+    image_url?: string;
     created_by: string;
     participants: string;
     confirmed_participants?: string;
@@ -34,6 +36,7 @@ const CalendarPage = () => {
         time_block: 'Mañana',
         time: 'Libre',
         transit: '',
+        image_url: '',
         created_by: '',
         participants: 'Toda la familia'
     });
@@ -91,6 +94,7 @@ const CalendarPage = () => {
             time_block: item.time_block || 'Mañana',
             time: item.event_time,
             transit: item.transit_time || '',
+            image_url: item.image_url || '',
             created_by: item.created_by,
             participants: item.participants
         });
@@ -109,6 +113,7 @@ const CalendarPage = () => {
             time_block: 'Mañana',
             time: 'Libre',
             transit: '',
+            image_url: '',
             created_by: '',
             participants: 'Toda la familia'
         });
@@ -126,6 +131,7 @@ const CalendarPage = () => {
             event_time: newEvent.time,
             time_block: newEvent.time_block,
             transit_time: newEvent.transit,
+            image_url: newEvent.image_url,
             created_by: newEvent.created_by,
             participants: newEvent.participants
         };
@@ -152,6 +158,7 @@ const CalendarPage = () => {
                 time_block: 'Mañana',
                 time: 'Libre',
                 transit: '',
+                image_url: '',
                 created_by: '',
                 participants: 'Toda la familia'
             });
@@ -160,7 +167,7 @@ const CalendarPage = () => {
             fetchItinerary();
         } else {
             console.error(error);
-            alert('Error al guardar: Asegúrate de añadir las columnas "time_block" (text) y "transit_time" (text) en la tabla "itinerary" de Supabase.');
+            alert('Error al guardar: Asegúrate de añadir las columnas "time_block" (text), "transit_time" (text) e "image_url" (text) en la tabla "itinerary" de Supabase.');
         }
         setIsSaving(false);
     };
@@ -211,6 +218,9 @@ const CalendarPage = () => {
             <div className={`content-wrapper ${styles.calendarPage}`}>
                 <div className="container">
                     <header className={styles.header}>
+                        <div className="inline-flex p-4 bg-white/10 backdrop-blur-md rounded-3xl mb-0 border border-white/20">
+                            <CalendarIcon className="text-white" size={40} />
+                        </div>
                         <h1 className={styles.title}>Itinerario <span className="text-madrid-gradient">Familiar</span></h1>
                         <p className="text-xl font-medium opacity-80">Día a día en nuestro viaje a Madrid.</p>
                         <button className="btn-primary" onClick={editingId ? cancelForm : () => setShowForm(!showForm)}>
@@ -276,6 +286,15 @@ const CalendarPage = () => {
                                 />
                             </div>
                             <div className={styles.formGroup}>
+                                <label>URL de Imagen</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ej. https://... o dejar vacío"
+                                    value={newEvent.image_url}
+                                    onChange={e => setNewEvent({ ...newEvent, image_url: e.target.value })}
+                                />
+                            </div>
+                            <div className={styles.formGroup}>
                                 <label>Quién lo propone</label>
                                 <input
                                     type="text"
@@ -325,7 +344,18 @@ const CalendarPage = () => {
                                     </div>
                                     <div className={styles.dayItems}>
                                         {group.items.map((item) => (
-                                            <div key={item.id} className={`${styles.itineraryCard} glass`}>
+                                            <div key={item.id} className={`${styles.itineraryCard} glass-premium`}>
+                                                {item.image_url && (
+                                                    <div className={styles.eventImageWrapper}>
+                                                        <Image
+                                                            src={item.image_url}
+                                                            alt={item.event_name}
+                                                            fill
+                                                            className={styles.eventImage}
+                                                            unoptimized={item.image_url.startsWith('http')}
+                                                        />
+                                                    </div>
+                                                )}
                                                 <div className={styles.eventInfo}>
                                                     <div className={styles.blockTag}>
                                                         {item.time_block === 'Mañana' && <Coffee size={14} />}
@@ -342,7 +372,7 @@ const CalendarPage = () => {
                                                     </div>
                                                     {item.transit_time && (
                                                         <div className={styles.transitTag}>
-                                                            <Car size={14} />
+                                                            <Car size={14} className="text-madrid-red" />
                                                             <span>Traslado: {item.transit_time}</span>
                                                         </div>
                                                     )}

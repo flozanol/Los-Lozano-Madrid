@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Plus, Loader2, Trash2, MapPin, Edit2, Check, X } from 'lucide-react';
+import { Plus, Loader2, Trash2, MapPin, Edit2, Check, X, Heart } from 'lucide-react';
 import styles from './page.module.css';
 import { supabase } from '@/lib/supabase';
 
@@ -14,6 +14,7 @@ interface Place {
     image: string;
     latitude?: number | string | null;
     longitude?: number | string | null;
+    is_favorite?: boolean;
     created_at: string;
 }
 
@@ -121,6 +122,21 @@ const PlacesPage = () => {
         setEditItem(place);
     };
 
+    const toggleFavorite = async (place: Place) => {
+        const newVal = !place.is_favorite;
+        const { error } = await supabase
+            .from('places_to_visit')
+            .update({ is_favorite: newVal })
+            .eq('id', place.id);
+
+        if (!error) {
+            setPlaces(prev => prev.map(p => p.id === place.id ? { ...p, is_favorite: newVal } : p));
+        } else {
+            console.error(error);
+            alert('Error: Asegúrate de añadir la columna "is_favorite" (booleano) en la tabla "places_to_visit" de Supabase.');
+        }
+    };
+
     return (
         <>
             <div
@@ -222,11 +238,16 @@ const PlacesPage = () => {
                                             <button className={styles.editBtn} onClick={() => startEditing(place)} title="Editar"><Edit2 size={16} /></button>
                                             <button className={styles.deleteBtn} onClick={() => handleDelete(place.id)} title="Eliminar"><Trash2 size={16} /></button>
                                         </div>
-                                        {place.latitude && (
-                                            <div className={styles.mapBadge} title="Disponible en el Mapa">
-                                                <MapPin size={12} />
-                                            </div>
+                                        <div className={styles.mapBadge} title="Disponible en el Mapa">
+                                            <MapPin size={12} />
+                                        </div>
                                         )}
+                                        <button
+                                            className={`${styles.favoriteBtn} ${place.is_favorite ? styles.btnFavoriteActive : ''}`}
+                                            onClick={() => toggleFavorite(place)}
+                                        >
+                                            <Heart size={18} fill={place.is_favorite ? "currentColor" : "none"} />
+                                        </button>
                                     </div>
                                     <div className={styles.cardContent}>
                                         {editingId === place.id ? (
