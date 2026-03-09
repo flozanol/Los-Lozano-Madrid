@@ -139,7 +139,7 @@ const NeighborhoodsPage = () => {
                         <MapPin className="text-white" size={40} />
                     </div>
                     <h1 className={styles.title}>Barrios de <span className="text-madrid-gradient">Madrid</span></h1>
-                    <p className="text-lg opacity-90">Explora la personalidad única de cada rincón de la capital.</p>
+                    <p className="text-xl font-medium opacity-80">Explora la personalidad única de cada rincón de la capital.</p>
                     <button
                         className="btn-primary"
                         style={{ marginTop: '2rem' }}

@@ -137,7 +137,7 @@ const RoutesPage = () => {
                         <Footprints className="text-white" size={40} />
                     </div>
                     <h1 className={styles.title}>Rutas <span className="text-madrid-gradient">Caminables</span></h1>
-                    <p className="text-lg opacity-90">Explora Madrid a pie con nuestras rutas diseñadas para la familia.</p>
+                    <p className="text-xl font-medium opacity-80">Explora Madrid a pie con nuestras rutas diseñadas para la familia.</p>
                     <button
                         className="btn-primary"
                         style={{ marginTop: '2rem' }}

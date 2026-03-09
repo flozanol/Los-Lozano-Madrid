@@ -81,7 +81,7 @@ const DiaryPage = () => {
                         <BookOpen className="text-white" size={40} />
                     </div>
                     <h1 className={styles.title}>Diario del <span className="text-madrid-gradient">Viaje</span></h1>
-                    <p className="text-lg opacity-90">Momentos, risas y anécdotas para el recuerdo familiar.</p>
+                    <p className="text-xl font-medium opacity-80">Momentos, risas y anécdotas para el recuerdo familiar.</p>
                 </div>
 
                 <div className="container max-w-3xl">
