@@ -125,13 +125,16 @@ const PlacesPage = () => {
         <>
             <div
                 className="section-bg"
-                style={{ backgroundImage: 'url(/madrid_austrias_habsburg.png)' }}
+                style={{ backgroundImage: 'url(/madrid_austrias_habsburg.png)', backgroundPosition: 'center' }}
             ></div>
             <div className={`content-wrapper ${styles.placesPage}`}>
 
                 <div className={`${styles.header} container`}>
+                    <div className="inline-flex p-4 bg-white/10 backdrop-blur-md rounded-3xl mb-6 border border-white/20">
+                        <MapPin size={40} className="text-white" />
+                    </div>
                     <h1 className={styles.title}>Qué <span className="text-madrid-gradient">Visitar</span></h1>
-                    <p>Lugares que no nos podemos perder en esta aventura.</p>
+                    <p className="text-xl font-medium opacity-80">Lugares que no nos podemos perder en esta aventura.</p>
                     <button
                         className="btn-primary"
                         style={{ marginTop: '2rem' }}

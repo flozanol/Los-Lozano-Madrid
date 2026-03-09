@@ -118,13 +118,16 @@ const RestaurantsPage = () => {
         <>
             <div
                 className="section-bg"
-                style={{ backgroundImage: 'url(/madrid_royalty_borbones.png)' }}
+                style={{ backgroundImage: 'url(/madrid_royalty_borbones.png)', backgroundPosition: 'center' }}
             ></div>
             <div className={`content-wrapper ${styles.restaurantsPage}`}>
 
                 <div className={`${styles.header} container`}>
+                    <div className="inline-flex p-4 bg-white/10 backdrop-blur-md rounded-3xl mb-6 border border-white/20">
+                        <Utensils className="text-white" size={40} />
+                    </div>
                     <h1 className={styles.title}>Dónde <span className="text-madrid-gradient">Comer</span></h1>
-                    <p>Selección de templos gastronómicos para disfrutar en familia.</p>
+                    <p className="text-xl font-medium opacity-80">Selección de templos gastronómicos para disfrutar en familia.</p>
                     <button
                         className="btn-primary"
                         style={{ marginTop: '2rem' }}

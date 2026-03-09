@@ -91,16 +91,16 @@ const RankingPage = () => {
                         <Trophy className="text-white" size={40} />
                     </div>
                     <h1 className={styles.title}>Ranking <span className="text-madrid-gradient">Lozano</span></h1>
-                    <p className="text-lg opacity-90">Vota por tus favoritos y decidamos lo mejor del viaje.</p>
+                    <p className="text-xl font-medium opacity-80">Vota por tus favoritos y decidamos lo mejor del viaje.</p>
 
                     <div className="flex flex-wrap justify-center gap-3 mt-12">
                         {categories.map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`px-6 py-3 rounded-2xl font-black text-xs transition-all tracking-widest ${selectedCategory === cat
+                                className={`px-6 py-3 rounded-2xl font-black text-[10px] transition-all tracking-[0.2em] ${selectedCategory === cat
                                     ? 'bg-madrid-red text-white shadow-xl scale-105'
-                                    : 'bg-white/10 text-white/60 hover:bg-white/20 hover:text-white'
+                                    : 'bg-white/5 text-white/40 hover:bg-white/10 hover:text-white border border-white/5'
                                     }`}
                             >
                                 {cat.toUpperCase()}
