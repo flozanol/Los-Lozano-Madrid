@@ -43,7 +43,6 @@ const BottomNav = () => {
         { href: '/barrios', icon: MapIcon, label: 'Barrios' },
         { href: '/rincon-gato', icon: UtensilsCrossed, label: 'Rincón Gato' },
         { href: '/rutas', icon: Footprints, label: 'Rutas' },
-        { href: '/movilidad', icon: Bike, label: 'Movilidad' },
         { href: '/ranking', icon: Trophy, label: 'Ranking' },
         { href: '/diario', icon: BookOpen, label: 'Diario' },
         { href: '/misiones', icon: Target, label: 'Misiones' },
@@ -56,6 +55,7 @@ const BottomNav = () => {
         { href: '/gallery', icon: Camera, label: 'Galería' },
         { href: '/social', icon: MessageSquare, label: 'Recados' },
         { href: '/secret-places', icon: Sparkles, label: 'Secretos' },
+        { href: '/movilidad', icon: Bike, label: 'Movilidad' },
     ];
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
